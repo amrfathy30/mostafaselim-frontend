@@ -1,0 +1,16 @@
+@font-face {
+  font-family: "Expo Arabic Bold";
+  src: url("./assets/fonts/MyFont.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* Optional: make it global */
+body {
+  font-family: "Expo Arabic Bold", sans-serif;
+}
+
+
+footer {
+  font-family: "Expo Arabic Bold", sans-serif;
+}
