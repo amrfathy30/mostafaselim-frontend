@@ -2,7 +2,7 @@
 import './App.css'
 import Header from './Components/Header'
 import Footer from './Components/Footer'
-import Bodycontent from './Components/Bodycontent'
+import BodyContent from './Components/body-content'
 import "./fonts.css";
 
 function App({isRTL}) {
@@ -13,7 +13,10 @@ function App({isRTL}) {
     <div dir={isRTL ? "rtl" : "ltr"} className={isRTL ? "text-right " : "text-left"}>
     <div  className=''>
      <Header className='flex flex-col min-h-screen justify-between ' />
-     <Bodycontent />
+     <div className='min-h-[calc(100vh-138px)]'>
+       <BodyContent />
+     </div>
+    
      <Footer />
     </div>
     </div>

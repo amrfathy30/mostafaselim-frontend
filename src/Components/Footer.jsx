@@ -1,8 +1,9 @@
 import '../fonts.css'
+import { Button } from './button';
 
 export default function Footer() {
   return (
-    <footer className="bg-[#3A5F7D] text-white p-4 mt-4 text-center">
+    <footer className="bg-[#3A5F7D] text-white p-4 text-center">
        
        <div className="text-2xl ">
            <b>اشترك الان ليصلك كل جديد</b>
@@ -13,9 +14,8 @@ export default function Footer() {
           placeholder="ادخل بريدك الالكتروني"
           className="p-2 m-5 rounded-l text-black border-none bg-white outline-none"
         />
-        <button className="bg-[#007FFF] text-white p-2 rounded-r-md mt-2 hover:bg-[#3A5F7D] transition-colors">
-          اشترك
-        </button> 
+     
+        <Button type='primary' onClick={null} className='w-[186px]'>اشترك</Button> 
        </div>
        
 

@@ -9,7 +9,7 @@ import './Header.css';
 
 export default function Header() {
   return (
-    <header className="text-white p-4 h-24  flex flex-row items-center justify-between">
+    <header className="text-white p-4 h-[138px]  flex flex-row items-center justify-between">
       <img src={Logo} alt="Logo" className="header-logo w-32 basis-1/10"  />
       <Navbar />
       <div className='basis-2/10 justify-items-center'>
