@@ -1,11 +1,17 @@
 //import { useState } from 'react'
 import './App.css'
-import Header from './Components/Header'
-import Footer from './Components/Footer'
-import BodyContent from './Components/body-content'
+import Header from './Components/Header';
+import Footer from './Components/Footer';
+import BodyContent from './Components/body-content';
+import BooksSection from './Components/books-section';
 import "./fonts.css";
+import PodcastSection from './Components/podcast-section';
 
-function App({isRTL}) {
+interface AppProps {
+  isRTL: boolean;
+}
+
+function App({isRTL} : AppProps) {
  // const [count, setCount] = useState(0)
 
   return (
@@ -16,6 +22,13 @@ function App({isRTL}) {
      <div className='min-h-[calc(100vh-138px)]'>
        <BodyContent />
      </div>
+     <div className="min-h-screen">
+      <PodcastSection />
+    </div>
+
+     <div className="min-h-screen">
+      <BooksSection />
+    </div>
     
      <Footer />
     </div>

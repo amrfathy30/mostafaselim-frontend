@@ -6,8 +6,8 @@ type Props = {
   className?: string
   disabled?: boolean
   loading?: boolean
-  onClick: React.ButtonHTMLAttributes<HTMLButtonElement | HTMLLabelElement>['onClick']
-  type: 'primary' | 'secondary' 
+  onClick?: React.ButtonHTMLAttributes<HTMLButtonElement | HTMLLabelElement>['onClick']
+  type?: 'primary' | 'secondary' 
 }
 
 export const Button = (props: Props) => {

@@ -1,4 +1,4 @@
-import Logo from '../assets/logo.PNG';
+import logo from '../assets/logo.png';
 import Instegram from '../assets/instagram.png';
 import Facebook from '../assets/facebook.png';
 import Tiktok from '../assets/Tiktok.png';
@@ -6,11 +6,14 @@ import Navbar from './Navbar';
 
 import './Header.css';
 
+interface HeaderProps {
+  className?: string; 
+}
 
-export default function Header() {
+export default function Header({ className }: HeaderProps) {
   return (
     <header className="text-white p-4 h-[138px]  flex flex-row items-center justify-between">
-      <img src={Logo} alt="Logo" className="header-logo w-32 basis-1/10"  />
+      <img src={logo} alt="Logo" className="header-logo w-32 basis-1/10"  />
       <Navbar />
       <div className='basis-2/10 justify-items-center'>
         <ul className="flex space-x-1 ">
