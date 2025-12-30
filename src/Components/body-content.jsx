@@ -7,6 +7,7 @@ import Blogs from "../Pages/Blogs";
 
 export default function BodyContent() {
   return (
+    <>
      <div className="p-8">
             <Routes>
               <Route path="/home" element={<Home />} />
@@ -16,5 +17,6 @@ export default function BodyContent() {
               <Route path="/blogs" element={<Blogs />} />
             </Routes>
           </div>
+    </>
   );
 }
