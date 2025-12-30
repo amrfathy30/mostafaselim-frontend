@@ -1,0 +1,12 @@
+@font-face {
+    font-family: 'Expo Arabic Light';
+    src: url('/src/fonts/ExpoArabicLight.woff2') format('woff2'),
+         url('/src/fonts/ExpoArabicLight.woff') format('woff'),
+         url('/src/fonts/ExpoArabicLight.ttf') format('truetype'),
+         url('/src/fonts/ExpoArabicLight.otf') format('opentype'),
+         url('/src/fonts/ExpoArabicLight.eot') format('embedded-opentype'),
+         url('/src/fonts/ExpoArabicLight.svg#ExpoArabicLight') format('svg');
+}
+* {
+    font-family: 'Expo Arabic Light' !important;
+}
