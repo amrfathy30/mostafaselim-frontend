@@ -1,3 +1,4 @@
+import React from 'react';
 import '../fonts.css'
 import { Button } from './button';
 
@@ -15,7 +16,7 @@ export default function Footer() {
           className="p-2 m-5 rounded-l text-black border-none bg-white outline-none"
         />
      
-        <Button type='primary' onClick={null} className='w-[186px]'>اشترك</Button> 
+        <Button type='primary' onClick={()=>console.log('')} className='w-[186px]'>اشترك</Button> 
        </div>
        
 

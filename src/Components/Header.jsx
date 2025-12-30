@@ -8,6 +8,7 @@ import './Header.css';
 
 
 export default function Header() {
+
   return (
     <header className="text-white p-4 h-[138px]  flex flex-row items-center justify-between">
       <img src={Logo} alt="Logo" className="header-logo w-32 basis-1/10"  />
