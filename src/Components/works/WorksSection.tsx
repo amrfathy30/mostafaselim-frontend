@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { WorkCategory } from '../../Types/works';
-import { worksData } from '../../data/worksData';
+import React, { useState, useEffect } from 'react';
+import { WorkCategory, WorkItem } from '../../Types/works';
+import { getArticles } from '../../services/articleService';
 import TabButton from '../Common/TabButton';
 import LoadMoreButton from '../Common/LoadMoreButton';
 import ArticleCard from './ArticleCard';
@@ -8,8 +8,36 @@ import quoteIcon from '../../assets/historyAssets/quote.svg';
 
 const WorksSection: React.FC = () => {
   const [activeTab, setActiveTab] = useState<WorkCategory>('articles');
+  const [works, setWorks] = useState<WorkItem[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  const filteredData = worksData.filter(item => item.category === activeTab);
+  useEffect(() => {
+    const loadWorks = async () => {
+      try {
+        setIsLoading(true);
+        const response = await getArticles();
+        
+        const apiArticles = response.data?.articles || [];
+        const mappedArticles: WorkItem[] = apiArticles.map((item: any) => ({
+          id: item.article_id,
+          title: item.article_title,
+          time: item.article_time,
+          date: item.article_date,
+          category: 'articles' 
+        }));
+
+        setWorks(mappedArticles);
+      } catch (error) {
+        console.error("Error fetching works:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadWorks();
+  }, []);
+
+  const filteredData = works.filter(item => item.category === activeTab);
 
   const tabs: { id: WorkCategory; label: string }[] = [
     { id: 'articles', label: 'المقالات' },
@@ -50,11 +78,19 @@ const WorksSection: React.FC = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-          {filteredData.map((item) => (
-            <ArticleCard key={item.id} item={item} />
-          ))}
-        </div>
+        {isLoading ? (
+          <div className="py-20 text-center text-[#3A5F7D] font-bold">جاري تحميل البيانات...</div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+            {filteredData.length > 0 ? (
+              filteredData.map((item) => (
+                <ArticleCard key={item.id} item={item} />
+              ))
+            ) : (
+              <div className="col-span-full text-center py-10 text-gray-400">لا توجد بيانات متاحة حالياً</div>
+            )}
+          </div>
+        )}
 
         <div className="flex justify-center mt-12">
           <LoadMoreButton label="قراءة المزيد" />
