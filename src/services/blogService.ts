@@ -1,5 +1,13 @@
 import axiosInstance from '../api/axiosInstance';
 
+export const getBlogs = async () => {
+    const response = await axiosInstance.get('/blogs');
+    return response.data;
+};
+export const getBlog = async (id: number | string) => {
+    const response = await axiosInstance.get(`/blogs/${id}`);
+    return response.data;
+};
 export const adminGetBlogs = async () =>{
     const response = await axiosInstance.get('/admin/blogs');
     return response.data;

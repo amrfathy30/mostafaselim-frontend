@@ -1,5 +1,13 @@
 import axiosInstance from '../api/axiosInstance';
 
+export const getAudios = async () => {
+    const response = await axiosInstance.get('/audios');
+    return response.data;
+};
+export const getAudio = async (id: number | string) => {
+    const response = await axiosInstance.get(`/audios/${id}`);
+    return response.data;
+};
 export const adminGetAudios = async () => {
     const response = await axiosInstance.get('/admin/projects');
     return response.data;
