@@ -13,7 +13,7 @@ const HistorySection: React.FC = () => {
           <div className="flex items-center gap-2 md:gap-3">
             <img 
               src={quoteIcon} 
-              alt="quote" 
+              alt="quote"
               className="w-6 md:w-9 h-auto object-contain -translate-y-4" 
             />
             <h2 className="text-xl md:text-2xl lg:text-3xl font-bold text-[#3A5F7D] whitespace-nowrap">
