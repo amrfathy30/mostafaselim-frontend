@@ -5,11 +5,11 @@ const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const navLinks = [
-    { label: 'الرئيسية', href: '/home' },
-    { label: 'المقالات', href: '#' },
-    { label: 'الكتب', href: '#' },
-    { label: 'البودكاست', href: '#' },
-    { label: 'المدونة', href: '#' },
+    { label: 'الرئيسية', href: '/' },
+    { label: 'المقالات', href: '/about' },
+    { label: 'الكتب', href: '/services' },
+    { label: 'البودكاست', href: '/contact' },
+    { label: 'المدونة', href: '/blogs' },
   ];
 
   return (

@@ -1,6 +1,7 @@
 import { FaCalendarAlt, FaClock } from 'react-icons/fa';
 import AudioPlayer from 'react-h5-audio-player';
 import 'react-h5-audio-player/lib/styles.css';
+import React from 'react';
 
 interface PodcastProps {
   title: string;
