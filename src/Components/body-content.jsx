@@ -11,7 +11,7 @@ export default function BodyContent() {
               <Route path="/" element={<Home />} />
               <Route path="/about" element={<About />} />
               <Route path="/services" element={<Services />} />
-              <Route path="/contact" element={<Contact />} />
+              <Route path="/podcasts" element={<Contact />} />
               <Route path="/blogs" element={<Blogs />} />
             </Routes>
   )

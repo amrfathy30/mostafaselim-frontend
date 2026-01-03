@@ -1,5 +1,12 @@
 import axiosInstance from '../api/axiosInstance';
 
+export const getPublicAudios = async (page = 1, perPage = 4) => {
+  const response = await axiosInstance.get('/audios', {
+    params: { page, per_page: perPage }
+  });
+  return response.data;
+};
+
 export const adminGetAudios = async () => {
     const response = await axiosInstance.get('/admin/projects');
     return response.data;
