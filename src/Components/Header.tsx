@@ -7,7 +7,7 @@ const Header: React.FC = () => {
   const navLinks = [
     { label: 'الرئيسية', href: '/' },
     { label: 'المقالات', href: '/about' },
-    { label: 'الكتب', href: '/services' },
+    { label: 'الكتب', href: '/books' },
     { label: 'البودكاست', href: '/contact' },
     { label: 'المدونة', href: '/blogs' },
   ];

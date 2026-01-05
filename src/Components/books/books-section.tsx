@@ -4,6 +4,7 @@ import TabsSection from '../tabs-section';
 import LoadMore from '../load-more-button';
 import { useNavigate } from 'react-router-dom';
 import { getBooks } from '../../services/bookService';
+import { Link } from "react-router-dom";
 
 export default function BooksSection(){
   const navigate = useNavigate();
@@ -62,10 +63,12 @@ export default function BooksSection(){
       </div>
       <div className="flex justify-center mt-12 pb-10">
 
-        <LoadMore 
-                    text="قراءة المزيد" 
-                    onClick={() => navigate('/books')} 
-                />
+       <Link 
+  to="/books" 
+  className="bg-[#43617E] text-white px-8 py-2 rounded-lg font-expo"
+>
+  قراءة المزيد
+</Link>
       </div>
 
         </section>
