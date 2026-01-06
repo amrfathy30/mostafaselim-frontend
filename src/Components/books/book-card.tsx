@@ -11,7 +11,7 @@ interface Props{
     variant?: 'simple' | 'detailed'
 }
 
-export default function BookCard({book, variant = 'simple' }: Props){
+export default function BookCard({book, variant = 'detailed'}: Props){
     const fallbackImage = "/default-book-image.png";
     const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
         e.currentTarget.src = fallbackImage;
@@ -37,24 +37,33 @@ export default function BookCard({book, variant = 'simple' }: Props){
             {book.publishing_house} 
         </p>
 
-        <div className="mt-auto flex justify-center">
-                <Button 
-                    type="primary" 
-                    className={`!h-[38px] !px-10 !text-[14px] font-expo rounded-lg ${variant === 'simple' ? 'w-auto' : 'flex-1'}`}
-                    onClick={() => console.log("قراءة")}
-                >
-                    قراءة الكتاب
-                </Button>
-                {variant === 'detailed' && (
-                    <Button 
-                        type="secondary" 
-                        className="flex-1 !h-[40px] !text-[14px] !bg-transparent !text-blue-500 border border-blue-500"
-                        onClick={() => console.log("تفاصيل")}
-                    >
-                        معلومات
-                    </Button>
-                )}
-            </div>
+<div className="mt-auto flex items-center justify-center w-full gap-4 px-2 pb-2" dir="rtl">
+    {variant === 'simple' ? (
+        <Button 
+            type="primary" 
+            className="!h-[40px] !w-full !max-w-[160px] !text-[14px] font-expo rounded-lg !bg-[#007bff] !border-none !text-white shadow-sm"
+            onClick={() => console.log("قراءة")}
+        >
+            قراءة الكتاب
+        </Button>
+    ) : (
+        <>
+            <Button 
+                type="primary" 
+                className="!h-[40px] !text-[14px] font-expo rounded-lg !bg-[#007bff] !border-none !text-white flex-1 min-w-[120px] shadow-sm"
+                onClick={() => console.log("قراءة")}
+            >
+                قراءة الكتاب
+            </Button>
+            <button 
+                className="text-[#007bff] text-[14px] font-bold font-expo bg-transparent border-none hover:underline whitespace-nowrap"
+                onClick={() => console.log("تفاصيل")}
+            >
+                معلومات الكتاب
+            </button>
+        </>
+    )}
+</div>
         </div>
     )
 }
