@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import TabsSection from './tabs-section';
 import LoadMore from './load-more-button';
-import PodcastImage from '../assets/img/podcast-image.png'
+import PodcastImage from '../assets/images/podcast-image.png'
 import PodcastCard from './podcast-card';
 
 export default function PodcastSection(){

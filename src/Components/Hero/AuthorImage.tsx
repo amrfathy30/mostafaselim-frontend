@@ -2,11 +2,14 @@ import * as React from "react";
 
 export function AuthorImage() {
   return (
-    <aside className="w-2/5 max-md:ml-0 max-md:w-full">
+    <aside className="relative max-w-[483px] w-[38%] max-md:ml-0 max-md:w-full bg-cover bg-no-repeat rounded-t-full h-full"
+    style={{
+      backgroundImage:'url(/images/author-bg.png)'
+    }}>
       <img
-        src="https://api.builder.io/api/v1/image/assets/TEMP/1f19ee5109f9f367f12a1ba8633ee8f3e60c1e88?placeholderIfAbsent=true&apiKey=1656fb26d9eb401bab18b87cf6a02d25"
+        src="/images/author.png"
         alt="صورة دكتور مصطفي سليم"
-        className="object-contain grow w-full aspect-[0.79] max-md:mt-10 max-md:max-w-full"
+        className="w-[95%] absolute bottom-0 left-0"
       />
     </aside>
   );

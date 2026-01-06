@@ -12,7 +12,7 @@ const Footer: React.FC = () => {
   ];
 
   return (
-    <footer className="bg-[#3A5F7D] text-white py-12 border-t-8 border-white">
+    <footer className="bg-primary text-white py-12 border-t-8 border-white">
       <div className="container mx-auto px-6 lg:px-12">
         
         {/* Newsletter Section */}

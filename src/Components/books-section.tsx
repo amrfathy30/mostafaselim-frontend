@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import BookCard from "./book-card";
-import image1 from "../assets/img/image1.png";
-import image2 from "../assets/img/image2.png";
-import image3 from "../assets/img/image3.png";
+import image1 from "../assets/images/image1.png";
+import image2 from "../assets/images/image2.png";
+import image3 from "../assets/images/image3.png";
 import TabsSection from './tabs-section';
 import LoadMore from './load-more-button';
 
