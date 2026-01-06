@@ -13,7 +13,7 @@ const HistoryCard: React.FC<Props> = ({ data, index }) => {
   const contentLines = data.content.split('. ').filter(line => line); 
 
   return (
-    <div className="relative w-full h-auto md:h-[220px] mb-12 md:mb-0">
+    <div className="relative w-full h-auto md:h-[220px]">
       <TimelineLine isEven={isEven} isFirst={index === 0} />
 
       <div className="md:hidden flex flex-col items-center px-4">

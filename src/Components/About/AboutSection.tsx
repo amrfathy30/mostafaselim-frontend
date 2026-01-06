@@ -60,9 +60,7 @@ const AboutSection: React.FC = () => {
   return (
     <section className="relative py-12 md:py-16 bg-[#F5F5F5] overflow-hidden font-Expo">
       <div className="relative z-10">
-        <div className="flex justify-center items-center mb-8 md:mb-10 px-4">
           <SectionTitle title="عن الدكتور" />
-        </div>
         <div className="mx-auto container space-y-[40px]">
           <AboutCardPersonal />
           <AboutCardEducation />

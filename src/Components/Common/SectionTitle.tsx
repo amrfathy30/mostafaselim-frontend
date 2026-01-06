@@ -9,6 +9,7 @@ interface Props {
 
 const SectionTitle: React.FC<Props> = ({ title }) => {
   return (
+    <div className="flex justify-center items-center mb-8 md:mb-10 px-4">
     <div className="flex items-center gap-2 md:gap-3 h-[82px] space-x-6">
       <div className='flex items-start h-full'>
         <QuoteIcon />
@@ -21,6 +22,7 @@ const SectionTitle: React.FC<Props> = ({ title }) => {
         <QuoteIcon className="rotate-180 " />
       </div>
 
+    </div>
     </div>
   );
 };
