@@ -2,7 +2,6 @@ import { FaCalendarAlt, FaClock } from 'react-icons/fa';
 import AudioPlayer from 'react-h5-audio-player';
 import 'react-h5-audio-player/lib/styles.css';
 import React from 'react';
-import defaultPodcastImage from '../assets/img/podcast-image.png';
 
 interface PodcastProps {
   title: string;
@@ -28,7 +27,7 @@ export default function PodcastCard({
         alt={title}
         onError={(e) => {
           const target = e.target as HTMLImageElement;
-          target.src = defaultPodcastImage;
+          target.src = '/images/podcast-image.png';
         }}
         className="h-24 w-24 rounded-lg object-cover shrink-0"
       />
