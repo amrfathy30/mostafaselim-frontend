@@ -11,7 +11,7 @@ interface Props {
 const ArticleCard: React.FC<Props> = ({ item }) => {
   return (
     <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex flex-col items-center text-center font-expo h-full">
-      <h3 className="text-[#3A5F7D] font-bold text-base md:text-lg mb-6 leading-relaxed line-clamp-2 h-14">
+      <h3 className="text-primary font-bold text-base md:text-lg mb-6 leading-relaxed line-clamp-2 h-14">
         {item.title}
       </h3>
       

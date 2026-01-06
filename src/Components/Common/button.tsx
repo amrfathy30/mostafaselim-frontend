@@ -1,5 +1,5 @@
 import React from 'react'
-import { SpinnerLoader } from '../icons/spinner'
+import { SpinnerLoader } from '../../icons/spinner'
 
 type Props = {
   children: React.ReactNode
@@ -15,7 +15,7 @@ export const Button = (props: Props) => {
 
   return (
     <button
-      className={`h-[56px] text-[20px] font-bold text-[#F5F5F5] rounded-[5px] ${type=='primary'?'bg-[#007FFF]':'bg-transparent border border-[#F5F5F5]'} ${className}`}
+      className={`${className} h-[56px] text-[20px] font-bold text-[#F5F5F5] rounded-[5px] ${type=='primary'?'bg-[#007FFF]':'bg-transparent border border-[#F5F5F5]'}`}
       disabled={disabled}
       onClick={onClick}
     >

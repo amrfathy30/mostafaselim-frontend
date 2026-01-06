@@ -1,28 +1,30 @@
 import * as React from "react";
-import { AuthorButton } from "./AuthorButton";
+import {Button} from '../Common/button'
 
 export function AuthorContent() {
   return (
-    <main className="ml-5 w-3/5 max-md:ml-0 max-md:w-full">
-      <div className="flex relative flex-col self-stretch my-auto w-full font-bold max-md:mt-10 max-md:max-w-full">
-        <header className="w-full text-right text-white max-md:max-w-full">
-          <h1 className="text-6xl leading-none max-md:max-w-full max-md:text-4xl max-sm:text-center">
+    <main className="flex items-center w-3/5 max-md:ml-0 max-md:w-full">
+      <div className="flex relative flex-col self-stretch my-auto w-full font-bold max-md:mt-10 max-md:max-w-full space-y-[70px]">
+        <div className="w-full text-right text-white max-md:max-w-full">
+          <h1 className="text-[58px] leading-[61px] font-bold max-md:max-w-full max-md:text-4xl max-sm:text-center">
             دكتور مصطفي سليم
           </h1>
-          <p className="mt-4 text-3xl leading-[61px] max-md:max-w-full">
-            صحفي وروائي وباحث في الأدب العربي، أكثر من عشر سنوات من
-            الإنتاج الأدبي والصحفي
+          <p className="text-[28px] leading-[61px] mt-2">
+          صحفي وروائي وباحث في الأدب العربي، أكثر من عشر سنوات
+          <br/>
+          من الإنتاج الأدبي والصحفي
           </p>
-        </header>
+        </div>
 
-        <nav className="flex gap-3.5 items-center self-end mt-16 text-xl text-center max-md:mt-10 max-md:max-w-full">
-          <AuthorButton variant="secondary">
+        <div className="flex gap-3.5 items-center self-end  text-xl text-center w-full">
+        
+          <Button type="primary"  onClick={undefined} className="w-[232px]">
+          السيرة الذاتية
+          </Button>
+          <Button type="secondary"  onClick={undefined} className="w-[232px]">
             الأعمال السابقة
-          </AuthorButton>
-          <AuthorButton variant="primary">
-            السيرة الذاتية
-          </AuthorButton>
-        </nav>
+          </Button>
+        </div>
       </div>
     </main>
   );

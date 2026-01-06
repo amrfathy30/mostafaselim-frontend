@@ -56,7 +56,7 @@ const WorksSection: React.FC = () => {
               alt="quote" 
               className="w-6 md:w-8 h-auto object-contain -translate-y-3" 
             />
-            <h2 className="text-2xl md:text-3xl font-bold text-[#3A5F7D] font-expo">الأعمال</h2>
+            <h2 className="text-2xl md:text-3xl font-bold text-primary font-expo">الأعمال</h2>
             <img 
               src={quoteIcon} 
               alt="quote" 
@@ -79,7 +79,7 @@ const WorksSection: React.FC = () => {
         </div>
 
         {isLoading ? (
-          <div className="py-20 text-center text-[#3A5F7D] font-bold">جاري تحميل البيانات...</div>
+          <div className="py-20 text-center text-primary font-bold">جاري تحميل البيانات...</div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
             {filteredData.length > 0 ? (
