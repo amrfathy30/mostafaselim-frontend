@@ -1,4 +1,5 @@
-import { Button } from "./Button";
+import React from 'react';
+import {Button} from '../Components/Common/button'
 interface TabsProps {
     items: string[];
     activeItem: string;

@@ -20,7 +20,7 @@ const HistoryCard: React.FC<Props> = ({ data, index }) => {
         <HistoryNode years={data.years} />
         
         <div className="bg-white p-6 pt-12 rounded-lg shadow-md border border-gray-100 w-full max-w-sm -mt-10">
-          <div className="text-[#3A5F7D] text-right text-sm leading-relaxed font-expo space-y-2">
+          <div className="text-primary text-right text-sm leading-relaxed font-expo space-y-2">
             {contentLines.map((line, idx) => (
               <p key={idx}>• {line.trim()}</p>
             ))}
@@ -33,7 +33,7 @@ const HistoryCard: React.FC<Props> = ({ data, index }) => {
           <>
             <div className="flex items-center justify-end w-1/2 pr-20">
               <div className="bg-white p-6 pl-20 rounded-lg shadow-md border border-gray-100 max-w-[500px] w-full">
-                <div className="text-[#3A5F7D] text-right text-sm lg:text-base leading-relaxed font-expo space-y-1">
+                <div className="text-primary text-right text-sm lg:text-base leading-relaxed font-expo space-y-1">
                   {contentLines.map((line, idx) => (
                     <p key={idx}>• {line.trim()}</p>
                   ))}
@@ -53,7 +53,7 @@ const HistoryCard: React.FC<Props> = ({ data, index }) => {
             </div>
             <div className="flex items-center justify-start w-1/2 pl-20">
               <div className="bg-white p-6 pr-20 rounded-lg shadow-md border border-gray-100 max-w-[500px] w-full">
-                <div className="text-[#3A5F7D] text-right text-sm lg:text-base leading-relaxed font-expo space-y-1">
+                <div className="text-primary text-right text-sm lg:text-base leading-relaxed font-expo space-y-1">
                   {contentLines.map((line, idx) => (
                     <p key={idx}>• {line.trim()}</p>
                   ))}

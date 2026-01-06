@@ -1,0 +1,42 @@
+/* Light */
+@font-face {
+  font-family: 'ExpoArabic';
+  src: url('/fonts/ExpoArabicLight.woff2') format('woff2');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap; /* Helps with loading speed */
+}
+
+/* Regular */
+@font-face {
+  font-family: 'ExpoArabic';
+  src: url('/fonts/ExpoArabicLight.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* SemiBold - Ensure this file name is correct! */
+@font-face {
+  font-family: 'ExpoArabic';
+  src: url('/fonts/ExpoArabicLight.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Bold */
+@font-face {
+  font-family: 'ExpoArabic';
+  src: url('../fonts/ExpoArabicBold.ttf') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Apply to body instead of * for better performance */
+body {
+  font-family: 'ExpoArabic', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
