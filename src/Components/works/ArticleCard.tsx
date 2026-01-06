@@ -1,8 +1,7 @@
 import React from 'react';
 import { WorkItem } from '../../Types/works';
 import ActionButton from '../Common/ActionButton';
-import calendarIcon from '../../assets/worksAssets/calendar.svg';
-import clockIcon from '../../assets/worksAssets/clock.svg';
+import { CalenderIcon, ClockIcon } from '../../icons/work-icons';
 
 interface Props {
   item: WorkItem;
@@ -18,11 +17,12 @@ const ArticleCard: React.FC<Props> = ({ item }) => {
       <div className="flex items-center justify-center gap-6 text-gray-600 text-[16px] md:text-sm mb-6">
         <div className="flex items-center gap-1">
           <span>{item.time}</span>
-          <img src={clockIcon} alt="time" className="w-4 h-4" />
+          <ClockIcon className="w-4 h-4" />
         </div>
         <div className="flex items-center gap-1">
           <span>{item.date}</span>
-          <img src={calendarIcon} alt="date" className="w-4 h-4" />
+        
+          <CalenderIcon className="w-4 h-4"/>
         </div>
       </div>
 

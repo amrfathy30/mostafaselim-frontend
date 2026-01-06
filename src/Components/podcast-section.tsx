@@ -3,7 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import TabsSection from './tabs-section';
 import LoadMore from './load-more-button';
 import PodcastCard from './podcast-card';
-import { getPublicAudios } from '../services/audioService';
+import { getAudios } from '../services/audioService';
+import React from 'react';
 
 export default function PodcastSection() {
     const navigate = useNavigate();
@@ -16,7 +17,7 @@ export default function PodcastSection() {
         const fetchPodcasts = async () => {
             try {
                 setIsLoading(true);
-                const response = await getPublicAudios(1, 4);
+                const response = await getAudios(1, 4);
                 const audioItems = response.data?.audios || [];
 
                 const formattedPodcasts = audioItems.map((item: any) => ({
