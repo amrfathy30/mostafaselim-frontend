@@ -1,7 +1,9 @@
 import * as React from "react";
+import { useNavigate } from "react-router-dom";
 import {Button} from '../Common/button'
 
 export function AuthorContent() {
+  const navigate = useNavigate();
   return (
     <main className="flex items-center w-3/5 max-md:ml-0 max-md:w-full">
       <div className="flex relative flex-col self-stretch my-auto w-full font-bold max-md:mt-10 max-md:max-w-full space-y-[70px]">
@@ -18,8 +20,12 @@ export function AuthorContent() {
 
         <div className="flex gap-3.5 items-center self-end  text-xl text-center w-full">
         
-          <Button type="primary"  onClick={undefined} className="w-[232px]">
-          السيرة الذاتية
+          <Button 
+            type="primary" 
+            onClick={() => navigate('/about')} 
+            className="w-[232px] font-expo"
+          >
+            السيرة الذاتية
           </Button>
           <Button type="secondary"  onClick={undefined} className="w-[232px]">
             الأعمال السابقة
