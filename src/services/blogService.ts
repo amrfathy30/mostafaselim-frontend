@@ -1,5 +1,17 @@
 import axiosInstance from '../api/axiosInstance';
 
+export const getBlogs = async (page = 1, perPage = 9, keyword = '') => {
+    const response = await axiosInstance.get('/blogs', {
+        params: { page, per_page: perPage, keyword }
+    });
+    return response.data;
+};
+
+export const getBlogDetails = async (id: number | string) => {
+    const response = await axiosInstance.get(`/blogs/${id}`);
+    return response.data;
+};
+
 export const adminGetBlogs = async () =>{
     const response = await axiosInstance.get('/admin/blogs');
     return response.data;
