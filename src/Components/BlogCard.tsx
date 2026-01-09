@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { CalenderIcon, ClockIcon, EyeIcon } from '../icons/work-icons';
 
 export interface BlogItem {
@@ -16,6 +17,7 @@ interface Props {
 }
 
 const BlogCard: React.FC<Props> = ({ item }) => {
+  const navigate = useNavigate();
   return (
     <div className="bg-white rounded-[10px] shadow-sm border border-[#E0E0E0] flex flex-col w-full max-w-[453px] p-[13px] font-expo group transition-all duration-300 hover:shadow-md mx-auto h-full">
       <div className="w-full h-[309.69px] overflow-hidden rounded-[7px] mb-[11px]">
@@ -52,9 +54,10 @@ const BlogCard: React.FC<Props> = ({ item }) => {
 
           
         </div>
-
+        
         <div className="w-full flex justify-start mt-auto">
-          <button className="w-[186px] h-[52px] bg-[#007BFF] text-white text-center rounded-[5px] text-[16px] font-bold hover:bg-[#0069D9] transition-colors shadow-sm">
+          <button  onClick={() => navigate(`/blogs/${item.id}`)}
+           className="w-[186px] h-[52px] bg-[#007BFF] text-white text-center rounded-[5px] text-[16px] font-bold hover:bg-[#0069D9] transition-colors shadow-sm">
             قراءة المنشور
           </button>
         </div>
