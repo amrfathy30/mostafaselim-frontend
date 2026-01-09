@@ -46,16 +46,19 @@ const PodcastsPage: React.FC = () => {
   }, [currentPage]);
 
   const togglePlay = (item: any) => {
+  if (activePodcast?.id === item.id) {
     const audio = playerRef.current?.audio.current;
-    if (activePodcast?.id === item.id) {
-      isPlaying ? audio?.pause() : audio?.play();
-      setIsPlaying(!isPlaying);
+    if (isPlaying) {
+      audio?.pause();
     } else {
-      setActivePodcast(item);
-      setIsPlaying(true);
-      setTimeout(() => audio?.play(), 150);
+      audio?.play();
     }
-  };
+    setIsPlaying(!isPlaying);
+  } else {
+    setActivePodcast(item);
+    setIsPlaying(true);
+  }
+};
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -67,7 +70,9 @@ const PodcastsPage: React.FC = () => {
     <main className="min-h-screen bg-[#F5F5F5] py-12 md:py-16 lg:py-20 font-expo" dir="rtl">
       <div className="mx-auto px-6 lg:px-20 max-w-[1423px]">
         <div className="hidden">
-          <AudioPlayer ref={playerRef} src={activePodcast?.audioUrl} onPlay={() => setIsPlaying(true)} onPause={() => setIsPlaying(false)} />
+          <AudioPlayer key={activePodcast?.id} ref={playerRef} src={activePodcast?.audioUrl} autoPlay={isPlaying} 
+          onPlay={() => setIsPlaying(true)} 
+          onPause={() => setIsPlaying(false)} />
         </div>
 
         <div className="flex flex-col items-center mb-8 md:mb-12 lg:mb-16">
