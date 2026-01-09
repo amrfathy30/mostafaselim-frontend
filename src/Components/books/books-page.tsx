@@ -42,8 +42,6 @@ export default function BooksPage() {
                     </div>
 <div className="flex justify-center mb-12 px-4" dir="rtl">
   <div className="relative w-full max-w-2xl flex items-center bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden h-[52px]">
-    
-    {/* 1. حقل الإدخال في اليمين */}
     <input
       type="text"
       placeholder="ابحث في الكتب التي تريدها"
@@ -54,8 +52,6 @@ export default function BooksPage() {
       }}
       className="w-full h-full px-6 text-right outline-none text-gray-600 font-expo border-none"
     />
-
-    {/* 2. زر البحث في أقصى الشمال */}
     <button className="bg-[#007bff] hover:bg-blue-600 text-white h-full px-8 flex items-center gap-2 transition-colors font-expo shrink-0">
         <span className="text-sm">بحث</span>
         <svg 
