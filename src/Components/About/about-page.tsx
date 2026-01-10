@@ -1,7 +1,6 @@
 import React from 'react';
 import Sidebar from '../Sidebar';
-import { ArticleIcon, NumbersIcon,BooksIcon,AwardsIcon,EarSoundIcon,EventsIcon,SearchIcon,TranslateIcon,MicIcon} from '../../icons/sidebar-icons';
-import {PersonalInformationIcon,EducationIcon,ExperienceIcon} from '../../icons/about-icons'
+import {PersonalInformationIcon,EducationIcon,ExperienceIcon, ArticleIcon, NumbersIcon,BooksIcon,AwardsIcon,EarSoundIcon,EventsIcon,SearchIcon,TranslateIcon,MicIcon} from '../../icons/about-icons'
 import quoteIcon from "../../assets/historyAssets/quote.svg";
 
 export default function AboutPage() {

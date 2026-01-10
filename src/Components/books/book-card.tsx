@@ -1,5 +1,6 @@
 import React from "react";
 import { Button } from "../Common/button";
+import { useNavigate } from 'react-router-dom';
 interface Props{
     book:{
         book_id?: number;
@@ -12,6 +13,7 @@ interface Props{
 }
 
 export default function BookCard({book, variant = 'detailed'}: Props){
+    const navigate = useNavigate();
     const fallbackImage = "/default-book-image.png";
     const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
         e.currentTarget.src = fallbackImage;
@@ -57,7 +59,7 @@ export default function BookCard({book, variant = 'detailed'}: Props){
             </Button>
             <button 
                 className="text-[#007bff] text-[14px] font-bold font-expo bg-transparent border-none hover:underline whitespace-nowrap"
-                onClick={() => console.log("تفاصيل")}
+               onClick={() => navigate(`/book/${book.book_id}`)}
             >
                 معلومات الكتاب
             </button>

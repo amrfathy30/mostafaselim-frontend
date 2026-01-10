@@ -7,6 +7,7 @@ import Blogs from "../Pages/Blogs";
 import BooksPage from "../Components/books/books-page";
 import AboutPage from '../Components/About/about-page';
 import SingleBlogPage from "../Pages/SingleBlog";
+import SingleBookPage from "../Components/books/single-book-page";
 
 export default function BodyContent() {
   return (
@@ -18,6 +19,7 @@ export default function BodyContent() {
               <Route path="/blogs" element={<Blogs />} />
               <Route path="/about" element={<AboutPage />} />
               <Route path="/blogs/:id" element={<SingleBlogPage />} />
+              <Route path="/book/:id" element={<SingleBookPage />} />
             </Routes>
   )
 }
