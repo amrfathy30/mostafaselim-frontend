@@ -4,4 +4,120 @@
 @theme {
   --color-primary: #3A5F7D;
   --color-textPrimary: #2B2B2B;
+  
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1280px;
+  --breakpoint-xl: 1440px;
+  --breakpoint-xxl: 1600px;
+}
+/* .rhap_container{
+    padding: 0 !important;
+    box-shadow: none !important;
+
+}
+.rhap_controls-section{
+  width: 82px !important;
+  height: 82px !important;
+  flex: none !important;
+}
+.rhap_additional-controls,.rhap_volume-controls,.rhap_current-time,.rhap_total-time{
+  display: none !important;
+} */
+ /* 1. Main Container Reset */
+.custom-audio-player.rhap_container {
+  background: transparent !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  display: flex !important;
+  flex-direction: row-reverse !important; /* Play button -> Wave -> Time */
+  align-items: center !important;
+}
+
+/* 2. Force Horizontal Layout for inner parts */
+.custom-audio-player .rhap_main {
+  display: flex !important;
+  flex-direction: row-reverse !important;
+  align-items: center !important;
+  width: 100% !important;
+}
+
+/* 3. Play Button Circle (Left Side) */
+.custom-audio-player .rhap_main-controls {
+  order: 1 !important; /* Forces to the left */
+  margin-right: 4px !important;
+}
+
+.custom-audio-player .rhap_play-pause-button {
+  background-color: #F5F5F5 !important; /* Light circle */
+  width: 70px !important;
+  height: 70px !important;
+  border-radius: 20px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.custom-audio-player .rhap_play-pause-button svg {
+  color: #3A5F7D; /* Icon color */
+  width: 26px !important;
+  height: 27px !important;
+}
+
+/* 4. The Waveform (Middle Section) */
+.custom-audio-player .rhap_progress-section {
+  order: 2 !important; /* Forces to middle */
+  flex-grow: 1 !important;
+  height: 40px !important;
+  display: flex !important;
+  align-items: center !important;
+  flex-direction: row-reverse !important;
+  gap: 4px !important;
+}
+
+.custom-audio-player .rhap_progress-container {
+  height: 100% !important;
+  margin: 0 !important;
+}
+
+.custom-audio-player .rhap_progress-bar {
+  height: 100% !important;
+  background-color: #e6e2e1 !important; /* Default bar color */
+  border-radius: 0 !important;
+  
+  /* Robust Waveform Mask (Varying Heights) */
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg width='30' height='40' viewBox='0 0 30 40' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Crect x='2' y='12' width='3' height='16' rx='1.5' fill='black'/%3E%3Crect x='8' y='6' width='3' height='28' rx='1.5' fill='black'/%3E%3Crect x='14' y='0' width='3' height='40' rx='1.5' fill='black'/%3E%3Crect x='20' y='8' width='3' height='24' rx='1.5' fill='black'/%3E%3Crect x='26' y='14' width='3' height='12' rx='1.5' fill='black'/%3E%3C/svg%3E") !important;
+  mask-image: url("data:image/svg+xml,%3Csvg width='30' height='40' viewBox='0 0 30 40' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Crect x='2' y='12' width='3' height='16' rx='1.5' fill='black'/%3E%3Crect x='8' y='6' width='3' height='28' rx='1.5' fill='black'/%3E%3Crect x='14' y='0' width='3' height='40' rx='1.5' fill='black'/%3E%3Crect x='20' y='8' width='3' height='24' rx='1.5' fill='black'/%3E%3Crect x='26' y='14' width='3' height='12' rx='1.5' fill='black'/%3E%3C/svg%3E") !important;
+  mask-size: 30px 40px !important;
+  -webkit-mask-size: 30px 40px !important;
+  mask-repeat: repeat-x !important;
+}
+
+/* Progress fill color */
+.custom-audio-player {
+  background-color: #E4D5D5 !important; 
+}
+.rhap_progress-filled {
+  background-color: #3A5F7D !important; 
+}
+
+/* Remove indicator dot */
+.custom-audio-player .rhap_progress-indicator {
+  display: none !important;
+}
+
+/* 5. Time Section (Right Side) */
+.custom-audio-player .rhap_controls-section {
+  order: 3 !important; /* Forces to right */
+  flex: 0 0 auto !important;
+  margin-left: 0 !important;
+}
+
+.custom-audio-player .rhap_current-time {
+ /* display: none !important; */
+ font-weight: bold;
+}
+
+.custom-audio-player .rhap_total-time {
+  display: none !important;
 }

@@ -5,16 +5,16 @@ import {Button} from '../Common/button'
 export function AuthorContent() {
   const navigate = useNavigate();
   return (
-    <main className="flex items-center w-3/5 max-md:ml-0 max-md:w-full">
+    <div className="flex items-center w-[62%]">
       <div className="flex relative flex-col self-stretch my-auto w-full font-bold max-md:mt-10 max-md:max-w-full space-y-[70px]">
         <div className="w-full text-right text-white max-md:max-w-full">
-          <h1 className="text-[58px] leading-[61px] font-bold max-md:max-w-full max-md:text-4xl max-sm:text-center">
-            دكتور مصطفي سليم
+          <h1 className="text-[42px] xxl:text-[58px] leading-[61px] font-bold max-md:max-w-full ">
+          دكتور مصطفي سليم
           </h1>
-          <p className="text-[28px] leading-[61px] mt-2">
+          <p className="text-[24px] xxl:text-[28px] leading-[43px] xxl:leading-[61px] mt-2">
           صحفي وروائي وباحث في الأدب العربي، أكثر من عشر سنوات
           <br/>
-          من الإنتاج الأدبي والصحفي
+           من الإنتاج الأدبي والصحفي
           </p>
         </div>
 
@@ -32,6 +32,6 @@ export function AuthorContent() {
           </Button>
         </div>
       </div>
-    </main>
+    </div>
   );
 }

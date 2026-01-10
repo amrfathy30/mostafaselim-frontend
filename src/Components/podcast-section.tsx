@@ -44,14 +44,8 @@ export default function PodcastSection() {
     }, [activeTab]);
 
     return (
-        <section dir="rtl" className="py-10 bg-gray-50 font-expo">
+        <section dir="rtl" className="py-10">
             <div className="max-w-6xl mx-auto px-4 mt-10">
-                <TabsSection 
-                    items={tabs} 
-                    activeItem={activeTab} 
-                    onSelect={setActiveTab} 
-                />
-
                 {isLoading ? (
                     <div className="text-center py-20 text-[#43617E]">جاري تحميل البودكاست...</div>
                 ) : (

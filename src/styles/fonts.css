@@ -36,6 +36,7 @@
 
 /* Apply to body instead of * for better performance */
 body {
+  background-color: #F9F6F6;
   font-family: 'ExpoArabic', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

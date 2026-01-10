@@ -16,7 +16,7 @@ function App({isRTL}) {
     <div dir={isRTL ? "rtl" : "ltr"} className={isRTL ? "text-right " : "text-left"}>
     <div  className=''>
      <Header />
-     <div className='min-h-[calc(100vh-138px)]'>
+     <div className='min-h-[calc(100vh-100px)] xxl:min-h-[calc(100vh-138px)]'>
        <BodyContent />
      </div>
     

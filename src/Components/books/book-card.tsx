@@ -17,19 +17,19 @@ export default function BookCard({book, variant = 'detailed'}: Props){
         e.currentTarget.src = fallbackImage;
     };
     return(
-        <div className="bg-white rounded-2xl shadow-sm p-4 flex flex-col text-center border border-gray-50 font-expo ">
+        <div className="bg-white flex flex-col text-center border border-gray-50 h-[814px] p-6 rounded-[33px]">
        <img
                 src={book.image || fallbackImage}
                 alt={book.book_name}
                 onError={handleImageError}
-                className="w-full h-80 rounded-lg mb-4"
+                className="w-full h-[490px] rounded-r-[33px] mb-4 border-l-0 border-t-0 border-2 border-black"
             />
 
-        <h3 className="text-[20px] font-expo font-bold text-[#43617E] mb-1">
+        <h3 className="text-[28px] font-expo font-bold text-primary mb-1 line-clamp-1 cursor-pointer" title={book.book_name}>
             {book.book_name}
         </h3>
        
-        <p className="text-xl text-[#43617E] mb-1">
+        <p className="text-[28px] font-normal text-primary mb-1">
             {`${book.book_date} - الطبعة الثانية`}
         </p>
 
@@ -41,7 +41,7 @@ export default function BookCard({book, variant = 'detailed'}: Props){
     {variant === 'simple' ? (
         <Button 
             type="primary" 
-            className="!h-[40px] !w-full !max-w-[160px] !text-[14px] font-expo rounded-lg !bg-[#007bff] !border-none !text-white shadow-sm"
+            className="h-[52px] w-[186px] text-[18px]"
             onClick={() => console.log("قراءة")}
         >
             قراءة الكتاب

@@ -1,18 +1,17 @@
 
 import type { Config } from 'tailwindcss'
-import colors from 'tailwindcss/colors';
 
 const config: Config = {
   content: ["./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
+    screens: {
+      'sm': '640px',   // Mobile & Small Tablets
+      'md': '768px',   // Standard Tablets (Portrait)
+      'lg': '1280px',  // 13" to 14" Laptops
+      'xl': '1440px',  // 14" to 15" Laptops
+      'xxl': '1600px', // 15" Laptops and Desktops
+    },
     extend: {
-      // fontFamily: {
-      //   'expo': ['ExpoArabicBold', 'sans-serif'],
-      // },
-      // colors: {
-      //   ...colors,
-      //   'primary': '#1da1f2',
-      // },
     },
   },
   plugins: [],

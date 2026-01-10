@@ -1,69 +1,44 @@
 import React from 'react';
-import AboutCardPersonal from './AboutCardPersonal';
-import AboutCardEducation from './AboutCardEducation';
 import SectionTitle from '../Common/SectionTitle';
 import NumbersCard from './NumbersCard';
-import { ArticleIcon } from '../../icons/article';
+import { ArticleIcon, AwardIcon, BooksIcon } from '../../icons/numbers-icons';
+import AboutCard from './AboutCardPersonal';
 
-const AboutSection: React.FC = () => {
+const AboutSection = ({data}) => {
   const numbersData = [
     {
       title: 'المقالات المنشورة',
-      number: '22 مقالة',
+      number: `${data?.articals_count} مقالة`,
       icon: <ArticleIcon />
 
     },
     {
-      title: 'المقالات المنشورة',
-      number: '22 مقالة',
-      icon: <ArticleIcon />
+      title: `الكتب المطبوعة`,
+      number: `${data?.books_count} كتاب`,
+      icon: <BooksIcon />
 
     },
     {
-      title: 'المقالات المنشورة',
-      number: '22 مقالة',
-      icon: <ArticleIcon />
+      title: 'عدد الجوائز',
+      number: `${data?.awords_count} جائزه`,
+      icon: <AwardIcon />
 
     },
     {
-      title: 'المقالات المنشورة',
-      number: '22 مقالة',
-      icon: <ArticleIcon />
-
-    },
-    {
-      title: 'المقالات المنشورة',
-      number: '22 مقالة',
-      icon: <ArticleIcon />
-
-    },
-    {
-      title: 'المقالات المنشورة',
-      number: '22 مقالة',
-      icon: <ArticleIcon />
-
-    },
-    {
-      title: 'المقالات المنشورة',
-      number: '22 مقالة',
-      icon: <ArticleIcon />
-
-    },
-    {
-      title: 'المقالات المنشورة',
-      number: '22 مقالة',
+      title: 'المسموعات',
+      number: `${data?.audios_count} ملف صوتي`,
       icon: <ArticleIcon />
 
     },
 
   ]
   return (
-    <section className="relative py-12 md:py-16 bg-[#F5F5F5] overflow-hidden font-Expo">
+    <section className="relative py-12 md:py-16 overflow-hidden w-full px-[100px] xxl:px-[154px]">
       <div className="relative z-10">
           <SectionTitle title="عن الدكتور" />
         <div className="mx-auto container space-y-[40px]">
-          <AboutCardPersonal />
-          <AboutCardEducation />
+          <AboutCard data={data?.user_info} personal={true}/>
+          <AboutCard data={data?.user_info} personal={false}/>
         </div>
         <div className="flex justify-center items-center my-10 px-4">
           <SectionTitle title="الأرقام تتحدث" />

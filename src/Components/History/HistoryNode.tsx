@@ -1,11 +1,8 @@
 import React from 'react';
 
-interface Props {
-  years: string; 
-}
 
-const HistoryNode: React.FC<Props> = ({ years }) => {
-  const [startYear, endYear] = years.split(':'); 
+const HistoryNode = ({ startYear, endYear }) => {
+
 
   return (
     <div className="flex items-center justify-center w-20 h-20 md:w-[120px] md:h-[120px] bg-white rounded-full shadow-lg shrink-0 z-10 border-2 md:border-4 border-white">

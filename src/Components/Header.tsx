@@ -15,8 +15,8 @@ const Header: React.FC = () => {
   ];
 
   return (
-    <header className="flex items-center justify-center bg-white py-4 shadow-sm relative z-50 sticky top-0 h-[138px]">
-      <div className="container mx-auto px-4 lg:px-12 flex items-center justify-between">
+    <header className="flex items-center justify-center bg-white py-4 shadow-sm relative z-50 sticky top-0 h-fit lg:h-[100px] xxl:h-[138px]">
+      <div className="w-full px-[100px] xxl:px-[154px] flex items-center justify-between">
 
         {/* Logo Section */}
         <div className="flex-shrink-0">

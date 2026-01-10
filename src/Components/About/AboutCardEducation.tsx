@@ -1,5 +1,5 @@
 import React from 'react';
-const AboutCardEducation: React.FC = ({}) => {
+const AboutCardEducation= ({data}) => {
   return (
     <div className="relative flex w-full h-auto rounded-[20px] shadow-[0px_1px_7px_0px_rgba(0,0,0,0.15)] p-6 space-x-6">
 
@@ -8,16 +8,7 @@ const AboutCardEducation: React.FC = ({}) => {
       <span>الناحية التعليمية</span>
       </div>
         <p className='text-[24px] text-[#153957] font-normal leading-[49px] '>
-        فقد نال الدكتور مصطفى سليم الماجستير في الأدب العربي القديم من كلية
-     
-        <br/>
-        دار العلوم عام 2011، ثم الدكتوراه في النقد الأدبي الحديث من كلية الآداب 
-        <br/>
-        بجامعة عين شمس عام 2018 بتقدير امتياز مع مرتبة الشرف الأولى، تحت 
-        <br/>
-        إشراف الدكتور صلاح فضل. تجمع مسيرته بين الدقة البحثية والحس الإبداعي، 
-        <br/>
-        مؤسسًا مشروعه النقدي حول العلاقة بين الحرية والسلطة والإنسان.
+        {data?.user_educational}
         </p>
 
       </div>
