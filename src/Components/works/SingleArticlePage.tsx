@@ -46,6 +46,8 @@ const formattedSources = article.article_reference
       { text: "حوار مع الروائي إبراهيم الكوني، \"عبدوس السرى روح أهم في نزيف ذاكرة\"، بوابة الوسط الليبية 8 أبريل 2019" },
       { text: "سليم مصطفى، \"عبدوس السرى روح أهم في نزيف ذاكرة - حوار مع إبراهيم الكوني\"، مجلة الثقافة الجديدة، العدد 305، 2019" }
     ];
+    console.log(article.article_sections
+);
   return (
     <main className="max-w-7xl mx-auto px-4 py-12 font-expo" dir="rtl">
       <div className="mb-10">
@@ -56,30 +58,34 @@ const formattedSources = article.article_reference
           ]} 
         />
       </div>
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-15 items-start">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-15 items-start">
         <div className="lg:col-span-8 gap-10">
           <DescriptiveInfoSection 
             mainTitle= {article.article_title}
             showTopQuote={true} 
             showBottomQuote={true}
-            sections={[
-              //كود مؤقت
-              { title: "مقدمة", content: article.summary },
-              { title: "النتائج المتوقعة", content: article.expected_results },
-            ]}
-          />
+            sections={article.article_sections.map((section: any) => ({
+                title: section.section_title,
+                content: section.section_content
+                  .filter((c: any) => c.type === 'text')
+                  .map((c: any) => c.content)
+                  .join('\n\n')
+              }))}
+                    />
           <SourcesSection sources={formattedSources} />
         </div>
 
-        <div className="lg:col-span-4 lg:mt-20 sticky top-10">
-          <Sidebar 
-            title="معلومات المقالة" 
-            titleIcon={<InfoIcon />}
-            items={sidebarData} 
-            showShareButton={true} 
-            book={{ book_name: article.article_title }} 
-          />
-        </div>
+       <div className="lg:col-span-4 relative">
+  <div className="sticky top-10 self-start"> 
+    <Sidebar 
+      title="معلومات المقالة" 
+      titleIcon={<InfoIcon />}
+      items={sidebarData} 
+      showShareButton={true} 
+      book={{ book_name: article.article_title }} 
+    />
+  </div>
+</div>
 
       </div>
     </main>
