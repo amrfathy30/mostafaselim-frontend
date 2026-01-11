@@ -2,6 +2,7 @@ import React from 'react';
 import { WorkItem } from '../../Types/works';
 import ActionButton from '../Common/ActionButton';
 import { CalenderIcon, ClockIcon } from '../../icons/work-icons';
+import { Link } from 'react-router-dom';
 
 interface Props {
   item: WorkItem;
@@ -27,7 +28,9 @@ const ArticleCard: React.FC<Props> = ({ item }) => {
       </div>
 
       <div className="mt-auto w-full flex justify-center">
-        <ActionButton label="قراءة المقالة" />
+       <Link to={`/articles/${item.id}`} className="w-full flex justify-center">
+          <ActionButton label="قراءة المقالة" />
+        </Link>
       </div>
     </div>
   );
