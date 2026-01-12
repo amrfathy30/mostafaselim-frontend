@@ -1,7 +1,7 @@
 import React from 'react';
 import ActionButton from '../Common/ActionButton';
 import { CalenderIcon, ClockIcon } from '../../icons/work-icons';
-import { Button } from '../Common/button';
+import { Link } from 'react-router-dom';
 
 
 const ArticleCard = ({ item }) => {
@@ -23,9 +23,10 @@ const ArticleCard = ({ item }) => {
         </div>
       </div>
 
-      <div className="mt-auto w-full flex justify-start">
-
-        <Button className='w-[186px] h-[52px] text-[18px]' children={<span>قراءة المقالة</span>} onClick={undefined} type={'primary'}/>
+      <div className="mt-auto w-full flex justify-center">
+       <Link to={`/articles/${item.id}`} className="w-full flex justify-center">
+          <ActionButton label="قراءة المقالة" />
+        </Link>
       </div>
     </div>
   );
