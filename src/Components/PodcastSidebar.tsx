@@ -1,7 +1,5 @@
 import React from 'react';
-
 import { DateFillIcon, FilterIcon, MicIcon, TimeIcon, TypeIcon } from '../icons/work-icons';
-
 
 interface Props {
   podcast: any;
@@ -20,21 +18,16 @@ const PodcastSidebar: React.FC<Props> = ({ podcast, isMobile = false }) => {
   ];
 
   return (
-    <div
-      className={`
-        ${isMobile ? 'w-full' : 'w-full lg:w-[389px]'}
-        bg-[#3A5F7D] text-white overflow-hidden shadow-lg font-expo flex flex-col shrink-0
-      `}
-    >
-      <div className={`${isMobile ? 'h-[180px] sm:h-[200px] md:h-[250px]' : 'h-[250px] lg:h-[300px]'} flex justify-center items-center`}>
+    <div className={`bg-[#3A5F7D] text-white shadow-lg font-expo flex flex-col shrink-0 transition-all duration-500 overflow-hidden
+        ${isMobile ? 'w-full rounded-b-[10px]' : 'w-full lg:w-[320px] xl:w-[350px] xxl:w-[389px] lg:rounded-[10px] sticky top-24'}
+      `}>
+      <div className={`flex justify-center items-center ${isMobile ? 'py-8' : 'py-10 xxl:py-14'}`}>
         <img
           src={podcast.image || '/images/podcast-image.png'}
-          onError={(e) => {
-            const target = e.target as HTMLImageElement;
-            target.src = '/images/podcast-image.png';
-          }}
           alt={podcast.title}
-          className={`${isMobile ? 'w-[120px] h-[120px] sm:w-[140px] sm:h-[140px] md:w-[170px] md:h-[170px]' : 'w-[150px] h-[150px] lg:w-[195.5px] lg:h-[195.5px]'} rounded-[18px] object-cover shadow-2xl`}
+          className={`rounded-[18px] object-cover shadow-2xl transition-all
+            ${isMobile ? 'w-[140px] h-[140px]' : 'w-[150px] h-[150px] xl:w-[170px] xl:h-[170px] xxl:w-[195px] xxl:h-[195px]'}
+          `}
         />
       </div>
 
@@ -42,20 +35,23 @@ const PodcastSidebar: React.FC<Props> = ({ podcast, isMobile = false }) => {
         {details.map((item, idx) => (
           <div
             key={idx}
-            className={`${isMobile ? 'h-[70px] sm:h-[80px] md:h-[90px] px-3 sm:px-4 md:px-6' : 'h-[90px] lg:h-[115px] px-4 lg:px-8'} py-2 lg:py-3 flex flex-row border-t border-[#DCD1D1]`}
+            className={`flex flex-row border-t border-[#DCD1D1]/30 transition-all gap-10
+              ${isMobile ? 'px-5 py-4' : 'px-6 py-5 xxl:px-8 xxl:py-7'}
+            `}
           >
-            <div className={`${isMobile ? 'w-[30px] h-[30px] sm:w-[35px] sm:h-[35px] md:w-[40px] md:h-[40px]' : 'w-[40px] h-[40px] lg:w-[50px] lg:h-[50px]'} flex justify-center items-center shrink-0`}>
-              <div className={`${isMobile ? 'w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8' : 'w-8 h-8 lg:w-10 lg:h-10'} object-contain`}
-           >
-            {item.icon}
-              </div>
+            <div className="w-8 h-8 xxl:w-10 xxl:h-10 flex justify-center items- shrink-0">
+               <div className="w-6 h-6 xxl:w-8 xxl:h-8 text-white">{item.icon}</div>
             </div>
 
-            <div className="flex-1 flex flex-col pr-2 md:pr-3 text-right justify-center">
-              <span className={`${isMobile ? 'text-[16px] sm:text-[18px] md:text-[22px] leading-[20px] sm:leading-[24px] md:leading-[30px]' : 'text-[20px] lg:text-[26px] leading-[28px] lg:leading-[35px]'} font-extrabold whitespace-nowrap`}>
+            <div className="flex-1 flex flex-col pr-3 text-right justify-center">
+              <span className={`font-bold whitespace-nowrap text-white
+                ${isMobile ? 'text-[16px]' : 'text-[18px] xl:text-[20px] xxl:text-[26px]'}
+              `}>
                 {item.label}
               </span>
-              <span className={`${isMobile ? 'text-[14px] sm:text-[16px] md:text-[20px] leading-[18px] sm:leading-[22px] md:leading-[26px]' : 'text-[18px] lg:text-[26px] leading-[24px] lg:leading-[30px]'} font-normal opacity-90 whitespace-nowrap`}>
+              <span className={`font-normal opacity-80 whitespace-nowrap
+                ${isMobile ? 'text-[14px]' : 'text-[16px] xl:text-[18px] xxl:text-[26px]'}
+              `}>
                 {item.value}
               </span>
             </div>

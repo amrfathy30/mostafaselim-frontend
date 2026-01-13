@@ -46,19 +46,15 @@ const PodcastsPage: React.FC = () => {
   }, [currentPage]);
 
   const togglePlay = (item: any) => {
-  if (activePodcast?.id === item.id) {
-    const audio = playerRef.current?.audio.current;
-    if (isPlaying) {
-      audio?.pause();
+    if (activePodcast?.id === item.id) {
+      const audio = playerRef.current?.audio.current;
+      if (isPlaying) { audio?.pause(); } else { audio?.play(); }
+      setIsPlaying(!isPlaying);
     } else {
-      audio?.play();
+      setActivePodcast(item);
+      setIsPlaying(true);
     }
-    setIsPlaying(!isPlaying);
-  } else {
-    setActivePodcast(item);
-    setIsPlaying(true);
-  }
-};
+  };
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -67,43 +63,47 @@ const PodcastsPage: React.FC = () => {
   };
 
   return (
-    <main className="min-h-screen bg-[#F5F5F5] py-12 md:py-16 lg:py-20 font-expo" dir="rtl">
-      <div className="mx-auto px-6 lg:px-20 max-w-[1423px]">
+    <main className="min-h-screen bg-[#F5F5F5] py-8 md:py-12 xxl:py-20 font-expo" dir="rtl">
+      <div className="container mx-auto px-4 md:px-8 xxl:max-w-[1423px]">
         <div className="hidden">
           <AudioPlayer key={activePodcast?.id} ref={playerRef} src={activePodcast?.audioUrl} autoPlay={isPlaying} 
           onPlay={() => setIsPlaying(true)} 
           onPause={() => setIsPlaying(false)} />
         </div>
 
-        <div className="flex flex-col items-center mb-8 md:mb-12 lg:mb-16">
+        <div className="flex flex-col items-center mb-8 md:mb-12 xxl:mb-16">
           <Title text="البودكاست" />
           <Search placeholder="ابحث عن البودكاست التي تريدها" value={keyword} onChange={setKeyword} onSearch={handleSearch} />
         </div>
 
-        <div className="flex flex-col lg:flex-row gap-6 lg:gap-[31px] items-start">
-          <div className="w-full lg:flex-1 overflow-hidden rounded-[10px] shadow-sm">
+        <div className="flex flex-col lg:flex-row gap-6 xl:gap-8 xxl:gap-[31px] items-start justify-center">
+          <div className="w-full lg:flex-1 xl:max-w-[800px] order-2 lg:order-1">
             {loading ? (
-              <div className="text-center py-20 bg-white text-[#3A5F7D] font-bold text-xl">جاري تحميل البودكاست...</div>
+              <div className="text-center py-20 bg-white rounded-[10px] text-[#3A5F7D] font-bold text-xl shadow-sm">جاري تحميل البودكاست...</div>
             ) : (
-              podcasts.map((item, index) => (
-                <React.Fragment key={item.id}>
-                  <PodcastCard {...item} isFullPage isActive={activePodcast?.id === item.id} isPlaying={isPlaying} isEvenRow={index % 2 !== 0} onToggle={() => togglePlay(item)} />
-                  {activePodcast?.id === item.id && (
-                    <div className="lg:hidden">
-                      <PodcastSidebar podcast={activePodcast} isMobile />
-                    </div>
-                  )}
-                </React.Fragment>
-              ))
+              <div className="flex flex-col gap-0 overflow-hidden rounded-[10px] shadow-sm border border-gray-100">
+                {podcasts.map((item, index) => (
+                  <React.Fragment key={item.id}>
+                    <PodcastCard {...item} isFullPage isActive={activePodcast?.id === item.id} isPlaying={isPlaying} isEvenRow={index % 2 !== 0} onToggle={() => togglePlay(item)} />
+                    {activePodcast?.id === item.id && (
+                      <div className="lg:hidden">
+                        <PodcastSidebar podcast={activePodcast} isMobile />
+                      </div>
+                    )}
+                  </React.Fragment>
+                ))}
+              </div>
             )}
           </div>
 
-          <aside className="hidden lg:block w-[389px] top-24 shrink-0">
-            <PodcastSidebar podcast={activePodcast} />
-          </aside>
+          <aside className="hidden lg:block lg:w-[320px] xl:w-[350px] xxl:w-[389px] order-1 lg:order-2 shrink-0">
+          <PodcastSidebar podcast={activePodcast} />
+        </aside>
         </div>
 
-        <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
+        <div className="mt-10 md:mt-16">
+           <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={(page: number) => setCurrentPage(page)} />
+        </div>
       </div>
     </main>
   );
