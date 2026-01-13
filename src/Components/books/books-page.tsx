@@ -2,10 +2,12 @@ import { useEffect, useState } from 'react';
 import { getBooks } from '../../services/bookService';
 import BookCard from "./book-card";
 import quoteIcon from "../../assets/historyAssets/quote.svg";
+import Pagination from "../../Components/Pagination";
 
 export default function BooksPage() {
     const [books, setBooks] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
     const [loading, setLoading] = useState(false);
     const [search, setSearch] = useState("");
 
@@ -15,6 +17,7 @@ export default function BooksPage() {
             try {
                 const res = await getBooks(currentPage, 9, search);
                 setBooks(res.data.data); 
+                setTotalPages(res.data.pagination.last_page);
             } catch (error) {
                 console.error("Error fetching books", error);
             }
@@ -41,19 +44,22 @@ export default function BooksPage() {
                       </div>
                     </div>
 <div className="flex justify-center mb-12 px-4" dir="rtl">
-  <div className="relative w-full max-w-2xl flex items-center bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden h-[52px]">
+  <div className="w-full max-w-2xl flex flex-col md:flex-row items-center gap-2 md:gap-0">
+    
     <input
       type="text"
-      placeholder="ابحث في الكتب التي تريدها"
+      placeholder="ابحث عن الكتب التي تريدها"
       value={search}
       onChange={(e) => {
         setSearch(e.target.value);
         setCurrentPage(1);
       }}
-      className="w-full h-full px-6 text-right outline-none text-gray-600 font-expo border-none"
+      className="w-full h-[52px] px-6 text-right outline-none text-gray-400 font-expo bg-white 
+                 rounded-md md:rounded-l-none md:rounded-r-md border border-gray-200 shadow-sm"
     />
-    <button className="bg-[#007bff] hover:bg-blue-600 text-white h-full px-8 flex items-center gap-2 transition-colors font-expo shrink-0">
-        <span className="text-sm">بحث</span>
+    <button className="w-full md:w-auto bg-[#007bff] hover:bg-blue-600 text-white h-[52px] px-10 
+                       flex items-center justify-center gap-2 transition-colors font-expo 
+                       rounded-md md:rounded-r-none md:rounded-l-md shadow-md shrink-0">
         <svg 
             xmlns="http://www.w3.org/2000/svg" 
             fill="none" 
@@ -63,13 +69,14 @@ export default function BooksPage() {
             className="w-4 h-4"
         >
             <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
-        </svg>
+        </svg>                
+        <span className="text-base font-bold">بحث</span>
     </button>
   </div>
 </div>
 
             {loading ? (
-                <p className="text-center">جاري التحميل...</p>
+                <p className="text-center py-20 text-gray-500">جاري تحميل الكتب...</p>
             ) : (
                 <>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -77,41 +84,18 @@ export default function BooksPage() {
                             <BookCard key={book.book_id} book={book} variant="detailed" />
                         ))}
                     </div>
-
-<div className="flex justify-center items-center mt-16 gap-3" dir="ltr">
-    <button 
-        onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
-        disabled={currentPage === 1}
-        className="w-[40px] h-[40px] flex items-center justify-center bg-[#43617E] text-white rounded-lg hover:bg-opacity-90 disabled:opacity-40 transition-all shadow-sm"
-    >
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor" className="w-4 h-4">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-        </svg>
-    </button>
-    <div className="flex items-center gap-2">
-        {[1, 2, 3, 20].map((page) => (
-            <button
-                key={page}
-                onClick={() => setCurrentPage(page)}
-                className={`w-[40px] h-[40px] flex items-center justify-center rounded-lg border text-[14px] font-bold transition-all
-                    ${currentPage === page 
-                        ? 'border-[#43617E] text-[#43617E] bg-white shadow-inner' 
-                        : 'border-gray-100 text-gray-400 bg-white hover:border-gray-300'
-                    }`}
-            >
-                {page}
-            </button>
-        ))}
-    </div>
-    <button 
-        onClick={() => setCurrentPage(prev => prev + 1)}
-        className="w-[40px] h-[40px] flex items-center justify-center bg-[#43617E] text-white rounded-lg hover:bg-opacity-90 transition-all shadow-sm"
-    >
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor" className="w-4 h-4">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-        </svg>
-    </button>
-</div>
+                    {!loading && totalPages > 1 && (
+                        <Pagination
+                            currentPage={currentPage}
+                            totalPages={totalPages}
+                            onPageChange={(page) => {
+                            if (page >= 1 && page <= totalPages) {
+                                setCurrentPage(page);
+                                window.scrollTo({ top: 0, behavior: "smooth" });
+                            }
+                            }}
+                        />
+                        )}
                 </>
             )}
         </div>
