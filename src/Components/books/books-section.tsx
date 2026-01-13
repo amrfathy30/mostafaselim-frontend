@@ -29,7 +29,7 @@ export default function BooksSection() {
   return (
     <>
  
-      <div className="max-w-6xl mx-auto px-4">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {loading ? (
           <p className="text-center">جاري التحميل...</p>
         ) : (
@@ -55,7 +55,7 @@ export default function BooksSection() {
 
         <Link
           to="/books"
-          className="bg-[#43617E] text-white px-8 py-2 rounded-lg font-expo"
+          className="bg-[#43617E] text-white px-13 py-2 rounded-sm font-expo "
         >
           قراءة المزيد
         </Link>
