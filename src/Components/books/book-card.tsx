@@ -19,23 +19,23 @@ export default function BookCard({book, variant = 'detailed'}: Props){
         e.currentTarget.src = fallbackImage;
     };
     return(
-        <div className="bg-white flex flex-col text-center border border-gray-50 h-[814px] p-6 rounded-[33px]">
+       <div className="bg-white flex flex-col text-center border border-gray-100 h-full p-4 md:p-6 rounded-[24px] md:rounded-[33px] transition-all hover:shadow-md">
        <img
                 src={book.image || fallbackImage}
                 alt={book.book_name}
                 onError={handleImageError}
-                className="w-full h-[490px] rounded-r-[33px] mb-4 border-l-0 border-t-0 border-2 border-black"
+                className="w-full h-[330px] rounded-r-[33px] mb-4 border-l-0 border-t-0 border-2 border-black"
             />
 
-        <h3 className="text-[28px] font-expo font-bold text-primary mb-1 line-clamp-1 cursor-pointer" title={book.book_name}>
+        <h3 className="text-lg md:text-[20px] font-expo font-bold text-primary mb-1 cursor-pointer" title={book.book_name}>
             {book.book_name}
         </h3>
        
-        <p className="text-[28px] font-normal text-primary mb-1">
+        <p className="text-sm md:text-lg font-semibold text-primary mb-1">
             {`${book.book_date} - الطبعة الثانية`}
         </p>
 
-         <p className="text-xl text-[#43617E] mb-2">
+         <p className="text-xs md:text-xl text-primary mb-4">
             {book.publishing_house} 
         </p>
 
@@ -43,7 +43,7 @@ export default function BookCard({book, variant = 'detailed'}: Props){
     {variant === 'simple' ? (
         <Button 
             type="primary" 
-            className="h-[52px] w-[186px] text-[18px]"
+            className="!h-[45px] w-[145px] !text-[14px]"
             onClick={() => console.log("قراءة")}
         >
             قراءة الكتاب
@@ -52,13 +52,13 @@ export default function BookCard({book, variant = 'detailed'}: Props){
         <>
             <Button 
                 type="primary" 
-                className="!h-[40px] !text-[14px] font-expo rounded-lg !bg-[#007bff] !border-none !text-white flex-1 min-w-[120px] shadow-sm"
+                className="!h-[44px] !text-[14px] !md:text-[16px] font-expo rounded-lg !border-none !text-white flex-1 min-w-[100px] shadow-sm rounded-sm"
                 onClick={() => console.log("قراءة")}
             >
                 قراءة الكتاب
             </Button>
             <button 
-                className="text-[#007bff] text-[14px] font-bold font-expo bg-transparent border-none hover:underline whitespace-nowrap"
+                className="text-[#007bff] text-[14px] font-bold font-expo bg-transparent border-none hover:underline whitespace-nowrap flex-1"
                onClick={() => navigate(`/book/${book.book_id}`)}
             >
                 معلومات الكتاب

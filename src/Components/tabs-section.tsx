@@ -27,13 +27,13 @@ export default function TabsSection({ items, activeItem,articlesRef,booksRef,pod
   }
   }
   return (
-    <div className="flex justify-center items-center gap-4 mb-10">
+    <div className="flex justify-center items-center gap-2 md:gap-4 mb-8">
       {items.map((item,index) => (
         <Button
           key={item}
           onClick={() => scrollToSection(index)}
           type={activeItem === index ? 'primary' : 'secondary'}
-          className={`cursor-pointer px-8 !h-[45px] !text-[18px] !rounded-md transition-all ${
+          className={`cursor-pointer px-4 md:px-8 !h-[45px] !text-[18px] !rounded-sm transition-all ${
             activeItem !== index 
               ? "!bg-white !text-[#43617E] border-none shadow-sm" 
               : "!bg-[#43617E] text-white"
