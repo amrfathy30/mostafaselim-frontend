@@ -93,41 +93,43 @@ export default function PodcastCard({
 
   // Compact Card (for the Home page)
   return (
-    <div className="flex flex-col gap-4 rounded-[22px] bg-white p-4 transition h-[373px]">
-      <div className='h-[207px] flex space-x-3'>
-        <img
+    <div className="flex flex-col rounded-[22px] bg-white p-4 transition min-h-[230px]">
+      <div className="flex flex-col lg:flex-row gap-4">
+        <div className="w-full flex justify-center lg:w-auto">
+           <img
           src={image}
           alt={title}
-          className="aspect-[1/1] rounded-[18px] w-[195px] object-cover border border-gray-100 "
+          className="aspect-square rounded-[18px] w-[130px] sm:w-[150px] md:w-[140px] lg:w-[185px] h-[140px] object-cover border border-gray-100"
         />
+        </div>
         <div>
-          <div className=''>
-            <h3 className="text-[28px] font-normal text-primary h-[78px] line-clamp-2">
+          <div className='flex-1 text-center md:text-right w-full'>
+            <h3 className="text-[18px] md:text-[20px] lg:text-[24px] font-semibold font-expo text-primary">
               {title}
             </h3>
-            <p className="mt-1 text-[22px] text-[#4D4D4D] line-clamp-2">
+            <p className="mt-1  text-[14px] sm:text-[15px] md:text-[16px] text-[#4D4D4D]">
               {description}
             </p>
           </div>
-          <div className="flex flex-row items-center gap-3 mt-2 text-[#4D4D4D]">
+          <div className="flex flex-row items-center gap-1 mt-2 text-[#4D4D4D]">
 
 
             <div className="flex items-center gap-1">
-              <span className="text-[20px]">{duration}</span>
-              <FaClock className="size-4" />
+              <span className="text-[12px] sm:text-[14px] md:text-[16px]">{duration}</span>
+              <FaClock className="size-3" />
 
             </div>
-            <span className="text-[#D9D9D9] text-[10px]">•</span>
+            <span className="text-[#D9D9D9]">•</span>
             <div className="flex items-center gap-1">
-              <span className="text-[20px]">{date}</span>
-              <FaCalendarAlt className="size-4" />
+              <span className="text-[12px] sm:text-[14px] md:text-[16px]">{date}</span>
+              <FaCalendarAlt className="size-3" />
 
             </div>
           </div>
         </div>
       </div>
 
-      <div className="flex flex-1 flex-col justify-between">
+      <div className="mt-auto">
 
         <div className="flex mt-3 w-full items-center justify-center" dir="ltr">
           <AudioPlayer

@@ -38,7 +38,7 @@ const DescriptiveInfoSection: React.FC<Props> = ({ mainTitle, sections,showTopQu
                 </span>
               </div>
               <div className="bg-[#fcfdfe] p-8 md:p-10 pt-10 rounded-[15px] border border-gray-100 shadow-sm transition-all duration-300 hover:shadow-md">
-                <p className="text-gray-600 leading-[2] text-sm md:text-base text-right">
+                <p className="font-expo font-semibold leading-[2] text-base md:text-lg text-right">
                   {section.content}
                 </p>
               </div>

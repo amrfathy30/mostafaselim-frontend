@@ -5,6 +5,7 @@ import LoadMore from './load-more-button';
 import PodcastCard from './podcast-card';
 import { getAudios } from '../services/audioService';
 import React from 'react';
+import { Link } from "react-router-dom";
 
 export default function PodcastSection() {
     const navigate = useNavigate();
@@ -44,7 +45,7 @@ export default function PodcastSection() {
     }, [activeTab]);
 
     return (
-        <section dir="rtl" className="py-10">
+        <section dir="rtl" className="px-4 sm:px-6 lg:px-8">
             <div className="max-w-6xl mx-auto px-4 mt-10">
                 {isLoading ? (
                     <div className="text-center py-20 text-[#43617E]">جاري تحميل البودكاست...</div>
@@ -63,12 +64,15 @@ export default function PodcastSection() {
                     </div>
                 )}
 
-                <div className="mt-12 flex justify-center pb-10">
-                    <LoadMore 
-                        text="سماع المزيد" 
-                        onClick={() => navigate('/podcasts')} 
-                    />
-                </div>
+                <div className="flex justify-center mt-12 pb-10">
+
+        <Link
+          to="/podcasts"
+          className="bg-[#43617E] text-white px-13 py-2 rounded-sm font-expo "
+        >
+          سماع المزيد
+        </Link>
+      </div>
             </div>
         </section>
     );

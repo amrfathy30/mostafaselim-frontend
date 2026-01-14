@@ -59,14 +59,14 @@ const SingleBookPage = () => {
 </div>
             <Button 
   type="primary" 
-  className="!h-[48px] px-20 !text-[16px] font-bold font-expo rounded-md !bg-[#007bff] !border-none !text-white shadow-md hover:!bg-blue-600 active:scale-95 transition-all"
+  className="!h-[48px] px-20 !text-[16px] font-bold rounded-md !bg-[#007bff] !border-none !text-white shadow-md hover:!bg-blue-600 active:scale-95 transition-all"
   onClick={() => console.log("قراءة")}
 >
   قراءة الكتاب
 </Button>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start gap-18">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start font-expo">
             <DescriptiveInfoSection 
                                 mainTitle="معلومات وصفية"
                                 showTopQuote={true}          
