@@ -24,7 +24,7 @@ const HistoryCard = ({ data, index }) => {
           <>
 
             <div className="flex items-center justify-end w-1/2  ">
-              <div className="bg-white p-8 w-full max-h-[149px] overflow-hidden">
+              <div className="bg-white p-8 w-full overflow-hidden">
                 <div className="text-primary text-right text-sm lg:text-base leading-relaxed font-expo space-y-1">
                   {data?.content?.map((line, idx) => (
                     <p key={idx}>• {line.trim()}</p>
@@ -46,7 +46,7 @@ const HistoryCard = ({ data, index }) => {
               <HistoryNode startYear={data?.start_date} endYear={data?.end_date}  />
             </div>
             <div className="flex items-center justify-start w-1/2 ">
-              <div className="bg-white p-8 w-full pr-[80px] max-h-[149px] overflow-hidden">
+              <div className="bg-white p-8 w-full pr-[80px] overflow-hidden">
                 <div className="text-primary text-right text-sm lg:text-base leading-relaxed font-expo space-y-1">
                   {data?.content?.map((line, idx) => (
                     <p key={idx}>• {line.trim()}</p>

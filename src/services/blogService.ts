@@ -12,10 +12,13 @@ export const getBlogDetails = async (id: number | string) => {
     return response.data;
 };
 
-export const adminGetBlogs = async () =>{
-    const response = await axiosInstance.get('/admin/blogs');
+
+export const getAdminBlogs = async (page = 1, perPage = 12, keyword = '') => {
+    const response = await axiosInstance.get('/admin/blogs', {
+      params: { page, per_page: perPage, keyword }
+    });
     return response.data;
-};
+  };
 export const adminGetBlog = async (id: number | string) =>{
     const response = await axiosInstance.get(`/admin/blog/${id}`);
     return response.data;

@@ -11,6 +11,12 @@ export const getBookById = async (id: number | string) => {
   const response = await axiosInstance.get(`/books/${id}`);
   return response.data;
 };
+export const getAdminBooks = async (page = 1, perPage = 12, keyword = '') => {
+  const response = await axiosInstance.get('/admin/books', {
+    params: { page, per_page: perPage, keyword }
+  });
+  return response.data;
+};
 
 export const adminAddBook = async (data: any) => {
   const response = await axiosInstance.post('/admin/book/add', data);

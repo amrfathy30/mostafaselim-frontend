@@ -24,7 +24,7 @@ export default function BookCard({book, variant = 'detailed'}: Props){
                 src={book.image || fallbackImage}
                 alt={book.book_name}
                 onError={handleImageError}
-                className="w-full h-[330px] rounded-r-[33px] mb-4 border-l-0 border-t-0 border-2 border-black"
+                className="w-full aspect-[1/1.3] rounded-r-[33px] mb-4 border-l-0 border-t-0 border-2 border-black"
             />
 
         <h3 className="text-lg md:text-[20px] font-expo font-bold text-primary mb-1 cursor-pointer" title={book.book_name}>

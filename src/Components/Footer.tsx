@@ -80,6 +80,13 @@ const Footer: React.FC = () => {
           <p>جميع حقوق النشر محفوظة لدي دكتور مصطفى سليم 2025</p>
         </div>
 
+        {/* Admin Entry Point */}
+        <div className="text-center mt-4">
+          <a href="/admin" className="text-gray-300 hover:text-white text-xs transition-colors">
+            لوحة التحكم
+          </a>
+        </div>
+
       </div>
     </footer>
   );

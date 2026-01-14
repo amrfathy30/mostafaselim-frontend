@@ -7,7 +7,7 @@ type Props = {
   disabled?: boolean
   loading?: boolean
   onClick: React.ButtonHTMLAttributes<HTMLButtonElement | HTMLLabelElement>['onClick']
-  type: 'primary' | 'secondary' 
+  type: 'primary' | 'secondary' | 'danger' |'tertiary'
 }
 
 export const Button = (props: Props) => {
@@ -15,7 +15,11 @@ export const Button = (props: Props) => {
 
   return (
     <button
-      className={`${className} h-[56px] text-[20px] font-bold text-[#F5F5F5] rounded-[5px] ${type=='primary'?'bg-[#007FFF]':'bg-transparent border border-[#F5F5F5]'}`}
+      className={`${className} h-[56px] text-[20px] font-bold text-[#F5F5F5] rounded-[5px] 
+      ${type=='primary'?'bg-[#007FFF]':
+        type=='danger'?'bg-[#DB3D3D]':
+        type=='tertiary'?'bg-[#3A5F7D]':
+      'bg-transparent border border-[#F5F5F5]'}`}
       disabled={disabled}
       onClick={onClick}
     >

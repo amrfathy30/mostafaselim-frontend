@@ -1,0 +1,10 @@
+export { default as AdminLogin } from './AdminLogin';
+export { default as Dashboard } from './Dashboard';
+export { default as Articles } from './Articles';
+export { default as AddArticle } from './AddArticle';
+export { default as Books } from './Books';
+export { default as AddBook } from './AddBook';
+export { default as Podcasts } from './Podcasts';
+export { default as Blog } from './Blog';
+export { default as AddBlog } from './AddBlog';
+export { default as Settings } from './Settings';

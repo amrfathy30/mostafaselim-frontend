@@ -33,7 +33,7 @@ const AboutSection = ({data}) => {
 
   ]
   return (
-    <section className="relative py-12 md:py-16 overflow-hidden w-full px-[100px] xxl:px-[154px]">
+    <section className="relative py-8 md:py-12 lg:py-16 overflow-hidden w-full px-4 sm:px-6 md:px-12 lg:px-[100px] xxl:px-[154px]">
       <div className="relative z-10">
           <SectionTitle title="عن الدكتور" />
         <div className="mx-auto container space-y-[40px]">
@@ -43,10 +43,10 @@ const AboutSection = ({data}) => {
         <div className="flex justify-center items-center my-10 px-4">
           <SectionTitle title="الأرقام تتحدث" />
         </div>
-        <div className="mx-auto container grid grid-cols-4 gap-4">
-          {numbersData.map(item => {
+        <div className="mx-auto container grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {numbersData.map((item, index) => {
             return (
-              <NumbersCard item={item} />
+              <NumbersCard key={index} item={item} />
             )
           })
 

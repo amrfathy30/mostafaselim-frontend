@@ -1,9 +1,25 @@
 import ReactDOM from "react-dom/client";
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import App from './App.tsx'
+import AdminLayout from './layouts/AdminLayout';
+import { AdminLogin, Dashboard, Articles, AddArticle, Books, AddBook, Podcasts, Blog, AddBlog, Settings } from './Pages/Admin';
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <BrowserRouter>
-    <App isRTL= {true} />
+    <Routes>
+      <Route path="/admin" element={<AdminLayout />}>
+        <Route index element={<AdminLogin />} />
+        <Route path="dashboard" element={<Dashboard />} />
+        <Route path="articles" element={<Articles />} />
+        <Route path="articles/add" element={<AddArticle />} />
+        <Route path="books" element={<Books />} />
+        <Route path="books/add" element={<AddBook />} />
+        <Route path="podcasts" element={<Podcasts />} />
+        <Route path="blog" element={<Blog />} />
+        <Route path="blog/add" element={<AddBlog />} />
+        <Route path="settings" element={<Settings />} />
+      </Route>
+      <Route path="/*" element={<App isRTL={true} />} />
+    </Routes>
   </BrowserRouter>
 );

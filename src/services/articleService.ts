@@ -11,7 +11,12 @@ export const getArticleById = async (id: number | string) => {
   const response = await axiosInstance.get(`/articles/${id}`);
   return response.data;
 };
-
+export const getAdminArticles = async (page = 1, perPage = 12, keyword = '') => {
+  const response = await axiosInstance.get('/admin/articles', {
+    params: { page, per_page: perPage, keyword }
+  });
+  return response.data;
+};
 export const adminAddArticle = async (data: any) => {
   const response = await axiosInstance.post('/admin/article/add', data);
   return response.data;
