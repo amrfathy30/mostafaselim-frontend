@@ -1,12 +1,12 @@
 import axiosInstance from '../api/axiosInstance';
 
 export const adminGetCategories = async () => {
-  const response = await axiosInstance.get('/admin/category/get');
+  const response = await axiosInstance.get('/admin/categories');
   return response.data;
 };
 
 export const adminAddCategory = async (data: any) => {
-  const response = await axiosInstance.post('/admin/category/add', data);
+  const response = await axiosInstance.post('/admin/category/store', data);
   return response.data;
 };
 

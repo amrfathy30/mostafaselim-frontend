@@ -12,26 +12,35 @@ export const getBlogDetails = async (id: number | string) => {
     return response.data;
 };
 
-
 export const getAdminBlogs = async (page = 1, perPage = 12, keyword = '') => {
     const response = await axiosInstance.get('/admin/blogs', {
-      params: { page, per_page: perPage, keyword }
+        params: { page, per_page: perPage, keyword }
     });
     return response.data;
-  };
-export const adminGetBlog = async (id: number | string) =>{
+};
+
+export const adminGetBlog = async (id: number | string) => {
     const response = await axiosInstance.get(`/admin/blog/${id}`);
     return response.data;
 };
-export const adminAddBlog = async (data: any) => {
-    const response = await axiosInstance.post('/admin/blog/store',data);
+
+export const adminAddBlog = async (data: FormData) => {
+    const response = await axiosInstance.post('/admin/blog/store', data, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+    });
     return response.data;
 };
-export const adminUpdateBlog = async (id: number | string, data: any) => {
-    const response = await axiosInstance.post(`/admin/blogs/update/${id}`, data);
+
+export const adminUpdateBlog = async (id: number | string, data: FormData) => {
+    data.append('_method', 'PUT');
+    
+    const response = await axiosInstance.post(`/admin/blog/update/${id}`, data, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+    });
     return response.data;
 };
+
 export const adminDeleteBlog = async (id: number | string) => {
-    const response = await axiosInstance.delete(`/admin/blogs/delete/${id}`);
+    const response = await axiosInstance.delete(`/admin/blog/delete/${id}`);
     return response.data;
 };
