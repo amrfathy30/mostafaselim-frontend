@@ -49,7 +49,7 @@ const formattedSources = article.article_reference
     console.log(article.article_sections
 );
   return (
-    <main className="max-w-7xl mx-auto px-4 py-12 font-expo" dir="rtl">
+   <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-12 font-expo" dir="rtl">
       <div className="mb-10">
         <Breadcrumbs 
           items={[
@@ -72,7 +72,9 @@ const formattedSources = article.article_reference
                   .join('\n\n')
               }))}
                     />
-          <SourcesSection sources={formattedSources} />
+          <div className="mt-12 mb-10">
+      <SourcesSection sources={formattedSources} />
+    </div>
         </div>
 
        <div className="lg:col-span-4 relative">
