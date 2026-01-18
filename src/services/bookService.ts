@@ -18,13 +18,35 @@ export const getAdminBooks = async (page = 1, perPage = 12, keyword = '') => {
   return response.data;
 };
 
-export const adminAddBook = async (data: any) => {
-  const response = await axiosInstance.post('/admin/book/add', data);
+export const adminAddBook = async (data: FormData) => {
+  const response = await axiosInstance.post(
+    '/admin/book/add',
+    data,
+    {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    }
+  );
   return response.data;
 };
 
-export const adminUpdateBook = async (id: number | string, data: any) => {
-  const response = await axiosInstance.post(`/admin/book/update/${id}`, data);
+
+export const adminUpdateBook = async (
+  id: number | string,
+  data: FormData
+) => {
+  data.append('_method', 'PUT');
+
+  const response = await axiosInstance.post(
+    `/admin/book/update/${id}`,
+    data,
+    {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    }
+  );
   return response.data;
 };
 
