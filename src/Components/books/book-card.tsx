@@ -52,7 +52,7 @@ export default function BookCard({book, variant = 'detailed'}: Props){
         <>
             <Button 
                 type="primary" 
-                className="!h-[44px] !text-[14px] !md:text-[16px] font-expo rounded-lg !border-none !text-white flex-1 min-w-[100px] shadow-sm rounded-sm"
+                className="!h-[44px] !text-[14px] !md:text-[16px] font-expo rounded-md !border-none !text-white flex-1 min-w-[150px] shadow-sm rounded-sm"
                 onClick={() => console.log("قراءة")}
             >
                 قراءة الكتاب
