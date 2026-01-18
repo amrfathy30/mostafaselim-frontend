@@ -1,5 +1,12 @@
 import React, { useState } from 'react';
+import AdminPageHeader from '../components/page-header';
 
+interface PaginationData {
+  total: number;
+  current_page: number;
+  last_page: number;
+  per_page: number;
+}
 const Podcasts: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [showAddModal, setShowAddModal] = useState(false);
@@ -8,7 +15,9 @@ const Podcasts: React.FC = () => {
     details: '',
     project: '',
   });
-
+  const [pagination, setPagination] = useState<PaginationData | null>(null);
+  const [startSearch, setStartSearch] = useState(false);
+  const [loading, setLoading] = useState(true);
   const projects = [
     {
       id: 1,
@@ -75,44 +84,17 @@ const Podcasts: React.FC = () => {
 
   return (
     <>
-      <div className="mb-8">
-        <h1 className="text-[32px] font-bold text-primary">المسموعات</h1>
-      </div>
 
       <div className="space-y-6">
-        {/* Header Section */}
-        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-          <div>
-            <p className="text-[#6B7280] text-[16px]">عدد المسموعات : 22</p>
-          </div>
-
-          {/* Search and Add */}
-          <div className="flex flex-col md:flex-row items-stretch md:items-center gap-4 w-full md:w-auto">
-            {/* Search Box */}
-            <div className="flex items-center gap-2">
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="ابحث في المسموعات التي تريدها"
-                className="px-4 py-3 border border-gray-300 rounded-lg text-right w-full md:w-[280px] outline-none focus:border-primary"
-              />
-              <button className="bg-primary text-white px-6 py-3 rounded-lg flex items-center gap-2 hover:bg-primary/90 transition-colors">
-                <SearchIcon />
-                <span>بحث</span>
-              </button>
-            </div>
-
-            {/* Add Button */}
-            <button
-              onClick={() => setShowAddModal(true)}
-              className="bg-[#007FFF] text-white px-6 py-3 rounded-lg hover:bg-[#007FFF]/90 transition-colors"
-            >
-              إضافة كتاب
-            </button>
-          </div>
-        </div>
-
+      <AdminPageHeader
+        total={pagination?.total || 0}
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+        setStartSearch={setStartSearch}
+        btnLoading={loading && startSearch}
+        title={'المسموعات'}
+        titleSingle={'كتاب'}
+        type='books' />
         {/* Main Content - Two Columns */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Projects List - Right Side */}
