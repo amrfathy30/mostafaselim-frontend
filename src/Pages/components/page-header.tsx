@@ -19,8 +19,8 @@ const AdminPageHeader = (data:HeaderInfo) => {
 
 
   return (
-    <div className="mb-8 flex justify-between items-center">
-    <div className='flex flex-col'>
+    <div className="mb-8 flex flex-col md:flex-row justify-between items-center gap-6">
+    <div className='flex flex-col text-center md:text-right w-full md:w-auto'>
       <h1 className="text-[32px] font-bold text-primary">{data?.title}</h1>
       <div>
         <p className="text-[#6B7280] text-[24px]">عدد {data?.title} : {data?.total}</p>
@@ -37,7 +37,7 @@ const AdminPageHeader = (data:HeaderInfo) => {
       />
    
       <Button
-      className='w-full flex items-center justify-center h-[52px] space-x-2'
+      className='w-full flex flex-col md:flex-row items-center justify-center h-[52px] space-x-2'
        onClick={()=>data.setStartSearch(true)} type={'tertiary'}
        loading={data?.btnLoading}>
         <>
@@ -48,7 +48,7 @@ const AdminPageHeader = (data:HeaderInfo) => {
     </div>
     {/* Add */}
     <Button
-      className='w-[221px]'
+      className='w-[230px] md:w-[221px] m-px'
       type='tertiary'
       onClick={() => navigate(`/admin/${data?.type}/add`)}>
       إضافة {data?.titleSingle}

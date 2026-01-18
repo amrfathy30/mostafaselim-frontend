@@ -6,6 +6,7 @@ import { CalendarIcon, ClockIcon, ViewsIcon } from '../../icons/admin';
 import { Button } from '../../Components/Common/button';
 import Pagination from '../../Components/Pagination';
 import AdminPageLoading from '../components/loading';
+import { adminDeleteBook } from '../../services/bookService';
 
 interface PaginationData {
   total: number;
@@ -74,8 +75,14 @@ const Books: React.FC = () => {
     setCurrentPage(page);
     window.scrollTo(0, 0);
   };
+  const handleDeleteBook = async (id: number) => {
+  const confirmed = window.confirm('هل أنت متأكد من حذف الكتاب؟');
 
+  if (!confirmed) return;
 
+  await adminDeleteBook(id);
+  fetchBooks(currentPage);
+};
   return (
     <>
 
@@ -130,7 +137,7 @@ const Books: React.FC = () => {
                   </Button>
                   <Button
                     className='h-[52px] w-[186px]'
-                    onClick={() => console.log('')}
+                    onClick={() => handleDeleteBook(book.book_id)}
                     type="danger"
                   >
                     حذف الكتاب
