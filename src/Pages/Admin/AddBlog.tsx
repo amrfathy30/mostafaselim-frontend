@@ -21,38 +21,39 @@ const AddBlog: React.FC = () => {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchCategories = async () => {
+    const loadInitialData = async () => {
       try {
-        const response = await adminGetCategories();
-        const data = response.data || [];
-        setCategories(Array.isArray(data) ? data : []);
+        const catResponse = await adminGetCategories();
+        const cats = catResponse.data || [];
+        setCategories(Array.isArray(cats) ? cats : []);
+
+        if (isEditMode) {
+          const blogRes = await adminGetBlog(id!);
+          const blog = blogRes.data;
+          
+          setPostTitle(blog.blog_title || '');
+          setPostDetails(blog.blog_content || '');
+
+          const matchedCat = cats.find((c: any) => 
+            c.category_title === blog.blog_classification || c.category_id === blog.category_id
+          );
+
+          setBlogInfo({
+  publisherName: blog.blog_author || 'دكتور مصطفى سليم', 
+  categoryId: matchedCat ? String(matchedCat.category_id) : String(blog.category_id || ''),
+  year: blog.blog_date || '',
+});
+
+          if (blog.blog_image_cover) {
+            setImagePreview(blog.blog_image_cover);
+          }
+        }
       } catch (error) {
         console.error(error);
       }
     };
-    fetchCategories();
 
-    if (isEditMode) {
-      const fetchBlogData = async () => {
-        try {
-          const response = await adminGetBlog(id!);
-          const blog = response.data;
-          setPostTitle(blog.blog_title || '');
-          setPostDetails(blog.blog_content || '');
-          setBlogInfo({
-            publisherName: blog.blog_author || '',
-            categoryId: String(blog.category_id || ''),
-            year: blog.blog_date || '',
-          });
-          if (blog.blog_image_cover) {
-            setImagePreview(blog.blog_image_cover);
-          }
-        } catch (error) {
-          console.error(error);
-        }
-      };
-      fetchBlogData();
-    }
+    loadInitialData();
   }, [id, isEditMode]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -91,7 +92,7 @@ const AddBlog: React.FC = () => {
       
       formData.append('title', postTitle.trim());
       formData.append('content', postDetails.trim());
-      formData.append('publisher', blogInfo.publisherName.trim() || 'Admin');
+      formData.append('publisher', blogInfo.publisherName.trim() || 'دكتور مصطفى سليم');
       formData.append('category_id', blogInfo.categoryId); 
       formData.append('date', blogInfo.year || '2026');
       
@@ -109,7 +110,6 @@ const AddBlog: React.FC = () => {
       navigate('/admin/blog');
     } catch (error: any) {
       console.error('Error saving blog:', error);
-      
       if (error.response?.data?.errors) {
         const errors = error.response.data.errors;
         const errorMessages = Object.values(errors).flat().join('\n');
@@ -143,20 +143,19 @@ const AddBlog: React.FC = () => {
               placeholder="اسم الناشر"
               value={blogInfo.publisherName}
               onChange={(e) => setBlogInfo({ ...blogInfo, publisherName: e.target.value })}
-              className="px-4 py-3 bg-white border border-gray-200 rounded-md text-right outline-none focus:border-primary text-[#B8B2B2]"
+              className="px-4 py-3 bg-white border border-gray-200 rounded-md text-right outline-none text-black font-bold focus:border-[#3A5F7D]"
             />
             
-            <select
+              <select
               value={blogInfo.categoryId}
               onChange={(e) => setBlogInfo({ ...blogInfo, categoryId: e.target.value })}
-              className="px-4 py-3 bg-white border border-gray-200 rounded-md text-right outline-none focus:border-primary cursor-pointer font-bold text-[#B8B2B2]"
+              className="px-4 py-3 bg-white border border-gray-200 rounded-md text-right outline-none focus:border-primary cursor-pointer font-bold text-black"
             >
-              <option value="">نوع المنشور</option>
+              <option value="">اختر نوع المنشور</option>
               {categories.map((cat) => (
                 <option 
                   key={cat.category_id} 
-                  value={cat.category_id}
-                  className="text-black bg-white"
+                  value={String(cat.category_id)}
                 >
                   {cat.category_title}
                 </option>
@@ -168,7 +167,7 @@ const AddBlog: React.FC = () => {
               placeholder="العام"
               value={blogInfo.year}
               onChange={(e) => setBlogInfo({ ...blogInfo, year: e.target.value })}
-              className="px-4 py-3 bg-white border border-gray-200 rounded-md text-right outline-none focus:border-primary text-[#B8B2B2]"
+              className="px-4 py-3 bg-white border border-gray-200 rounded-md text-right outline-none text-black font-bold focus:border-[#3A5F7D]"
             />
 
             <div className="relative">

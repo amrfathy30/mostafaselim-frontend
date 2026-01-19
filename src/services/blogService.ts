@@ -32,8 +32,9 @@ export const adminAddBlog = async (data: FormData) => {
 };
 
 export const adminUpdateBlog = async (id: number | string, data: FormData) => {
-    data.append('_method', 'PUT');
-    
+    if (!data.has('_method')) {
+        data.append('_method', 'PUT');
+    }
     const response = await axiosInstance.post(`/admin/blog/update/${id}`, data, {
         headers: { 'Content-Type': 'multipart/form-data' }
     });
