@@ -8,10 +8,11 @@ import AboutPage from '../Components/About/about-page';
 import SingleBlogPage from "../Pages/SingleBlog";
 import SingleBookPage from "../Components/books/single-book-page";
 import SingleArticlePage from '../Components/works/SingleArticlePage';
-
 import AdminLayout from "../layouts/AdminLayout/AdminLayout";
 import BlogAdmin from "../Pages/Admin/Blog";
 import AddBlog from "../Pages/Admin/AddBlog";
+import AddArticle from "../Pages/Admin/AddArticle";
+import ArticlesAdmin from "../Pages/Admin/Articles";
 import Dashboard from "../Pages/Admin/Dashboard";
 
 export default function BodyContent() {
@@ -32,6 +33,9 @@ export default function BodyContent() {
         <Route path="blog" element={<BlogAdmin />} />
         <Route path="blog/add" element={<AddBlog />} />
         <Route path="blog/edit/:id" element={<AddBlog />} />
+        <Route path="articles" element={<ArticlesAdmin />} /> 
+        <Route path="articles/add" element={<AddArticle />} />
+        <Route path="articles/edit/:id" element={<AddArticle />} />
       </Route>
     </Routes>
   )
