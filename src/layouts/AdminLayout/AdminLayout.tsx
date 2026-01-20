@@ -108,7 +108,7 @@ const AdminLayout: React.FC = () => {
                   }`}
                 >
                   <span className="w-5 h-5 flex items-center justify-center">{item.icon}</span>
-                  <span className="hidden md:inline text-xl xxl:text-[27px] font-normal">{item.title}</span>
+                  <span className="hidden md:inline text-base font-normal">{item.title}</span>
                 </Link>
               );
             })}
@@ -118,10 +118,10 @@ const AdminLayout: React.FC = () => {
           {/* Logout */}
           <button
             onClick={handleLogout}
-            className="flex items-center justify-center justify-start gap-2 px-3 md:px-6 py-3 rounded-[8px] hover:bg-gray-50 transition-colors text-[#E53935] mt-2 flex-shrink-0"
+            className="flex items-center justify-center justify-center gap-2 px-3 md:px-6 py-3 rounded-[8px] hover:bg-gray-50 transition-colors text-[#E53935] mt-2 flex-shrink-0"
           >
             <LogoutIcon />
-            <span className="hidden md:inline text-xl xxl:text-[27px] font-normal">تسجيل الخروج</span>
+            <span className="hidden md:inline text-base font-normal">تسجيل الخروج</span>
           </button>
         </div>
       </aside>
