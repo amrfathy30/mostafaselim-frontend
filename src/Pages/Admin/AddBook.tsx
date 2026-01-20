@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import {  adminGetBook , adminAddBook, adminUpdateBook } from '../../services/bookService';
+import { adminGetCategories } from '../../services/categoryService';
 
 const AddBook: React.FC = () => {
   const navigate = useNavigate();
@@ -12,6 +13,7 @@ const AddBook: React.FC = () => {
   const [secondImage, setSecondImage] = useState<File | null>(null);
   const [existingCover, setExistingCover] = useState<string | null>(null);
   const [existingSecondImage, setExistingSecondImage] = useState<string | null>(null);
+  const [categories, setCategories] = useState<any[]>([]);
 
   const [bookInfo, setBookInfo] = useState({
     publisher: '',
@@ -27,72 +29,104 @@ const AddBook: React.FC = () => {
   });
 
 useEffect(() => {
-  if (isEdit && id) {
-    setLoading(true);
-    adminGetBook(id)
-      .then((res) => {
-        const book = res.data;
-        setBookInfo({
-          bookName: book.book_name || '',
-          publishDate: book.book_date || '',
-          publisher: book.publishing_house || '',
-          language: book.book_lang || '',
-          editionNumber: book.book_edition_number || '',
-          category: book.book_classfiction || '',
-          goals: book.book_goals || '',
-          description: book.book_summary || '',
-          pages: book.book_pages?.toString() || '',
-          link: book.book_link || '',
-        });
-        
-        if (book.image) setExistingCover(book.image);
-        if (book.images && book.images[1]) setExistingSecondImage(book.images[1]); 
-      })
-      .catch(err => console.error(err))
-      .finally(() => setLoading(false));
-  }
+    const loadData = async () => {
+        setLoading(true);
+        try {
+            const catRes = await adminGetCategories();
+            const cats = catRes.data || [];
+            setCategories(Array.isArray(cats) ? cats : []);
+
+            if (isEdit && id) {
+                const res = await adminGetBook(id);
+                const book = res.data;
+
+                const matchedCat = cats.find((c: any) => 
+                    c.category_id === book.category_id || c.category_title === book.book_classfiction
+                );
+
+                setBookInfo({
+                    bookName: book.book_name || '',
+                    publishDate: String(book.book_date || book.date || '').substring(0, 4),
+                    publisher: book.publishing_house || '',
+                    language: book.book_lang || '',
+                    editionNumber: book.book_edition_number || '',
+                    category: matchedCat ? String(matchedCat.category_id) : String(book.category_id || ''),
+                    goals: book.book_goals || '',
+                    description: book.book_summary || '',
+                    pages: book.book_pages?.toString() || '',
+                    link: book.book_link || '',
+                });
+
+                if (book.image) setExistingCover(book.image);
+
+                if (book.images && Array.isArray(book.images) && book.images.length > 0) {
+
+                    setExistingSecondImage(book.images[0]); 
+                } else if (book.second_image) {
+                    setExistingSecondImage(book.second_image);
+                }
+            }
+        } catch (err) {
+            console.error("Error loading data:", err);
+        } finally {
+            setLoading(false);
+        }
+    };
+    loadData();
 }, [id, isEdit]);
 
 
 
-  const handlePublish = async () => {
-    if (!bookInfo.bookName.trim()) {
-      alert('يجب إدخال اسم الكتاب');
-      return;
+const handlePublish = async () => {
+  if (!bookInfo.bookName.trim()) {
+    alert('يجب إدخال اسم الكتاب');
+    return;
+  }
+
+  setLoading(true);
+  try {
+    const formData = new FormData();
+    if (isEdit) {
+      formData.append('_method', 'PUT');
     }
 
-    setLoading(true);
-    try {
-      const formData = new FormData();
-      formData.append('book_name', bookInfo.bookName);
-      formData.append('book_date', bookInfo.publishDate);
-      formData.append('publishing_house', bookInfo.publisher);
-      formData.append('book_lang', bookInfo.language);
-      formData.append('book_pages', bookInfo.pages);
-      formData.append('book_edition_number', bookInfo.editionNumber);
-      formData.append('book_classfiction', bookInfo.category);
-      formData.append('book_summary', bookInfo.description);
-      formData.append('book_goals', bookInfo.goals);
-      formData.append('book_link', bookInfo.link);
-
-      if (coverImage) formData.append('image[]', coverImage);
-      if (secondImage) formData.append('image[]', secondImage);
-
-      if (isEdit) {
-        await adminUpdateBook(id!, formData);
-      } else {
-        await adminAddBook(formData);
-      }
-
-     navigate('/admin/books');
-    } catch (error: any) {
-      console.error("Error saving book:", error);
-      const errorMsg = error.response?.data?.message || 'حدث خطأ أثناء الحفظ';
-      alert(errorMsg);
-    } finally {
-      setLoading(false);
+    formData.append('title', bookInfo.bookName); 
+    formData.append('date', bookInfo.publishDate); 
+    formData.append('publishing_house', bookInfo.publisher);
+    formData.append('lang', bookInfo.language); 
+    formData.append('pages', bookInfo.pages); 
+    formData.append('edition_number', bookInfo.editionNumber); 
+    formData.append('category_id', bookInfo.category); 
+    formData.append('summary', bookInfo.description);
+    formData.append('goals', bookInfo.goals);
+    formData.append('link', bookInfo.link);
+    if (coverImage) {
+      formData.append('images[]', coverImage);
     }
-  };
+    if (secondImage) {
+      formData.append('images[]', secondImage);
+    }
+
+    if (isEdit) {
+      await adminUpdateBook(id!, formData);
+    } else {
+      await adminAddBook(formData);
+    }
+
+    alert('تم الحفظ بنجاح');
+    navigate('/admin/books');
+  } catch (error: any) {
+    console.error("Error saving book:", error);
+    if (error.response?.data?.errors) {
+       const errors = error.response.data.errors;
+       alert(Object.values(errors).flat().join('\n'));
+    } else {
+       alert(error.response?.data?.message || 'حدث خطأ أثناء الحفظ');
+    }
+  } finally {
+    setLoading(false);
+  }
+};
   
 
   return (
@@ -121,13 +155,21 @@ useEffect(() => {
               onChange={(e) => setBookInfo({ ...bookInfo, bookName: e.target.value })}
               className="px-4 py-3 bg-white border border-gray-200 rounded-lg text-right outline-none focus:border-primary"
             />
-            <input
-              type="text"
-              placeholder="التصنيف"
-              value={bookInfo.category}
-              onChange={(e) => setBookInfo({ ...bookInfo, category: e.target.value })}
-              className="px-4 py-3 bg-white border border-gray-200 rounded-lg text-right outline-none focus:border-primary"
-            />
+            <select
+                value={bookInfo.category}
+                onChange={(e) => setBookInfo({ ...bookInfo, category: e.target.value })}
+                className="px-4 py-3 bg-white border border-gray-200 rounded-lg text-right outline-none focus:border-primary cursor-pointer w-full font-bold text-black"
+              >
+                <option value="">اختر التصنيف</option>
+                {categories.map((cat) => (
+                  <option 
+                    key={cat.category_id} 
+                    value={String(cat.category_id)} 
+                  >
+                    {cat.category_title}
+                  </option>
+                ))}
+              </select>
             <input
               type="text"
               placeholder="دار النشر"
@@ -135,7 +177,7 @@ useEffect(() => {
               onChange={(e) => setBookInfo({ ...bookInfo, publisher: e.target.value })}
               className="px-4 py-3 bg-white border border-gray-200 rounded-lg text-right outline-none focus:border-primary"
             />
-            <input
+             <input
               type="text"
               placeholder="تاريخ النشر"
               value={bookInfo.publishDate}
