@@ -82,11 +82,11 @@ const Blog: React.FC = () => {
   return (
     <>
       <DeleteModal 
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        onConfirm={confirmDelete}
-        title={selectedBlog?.title || ''}
-        typeTitle="حذف المدونة"
+        isOpen={isModalOpen} 
+        onClose={() => setIsModalOpen(false)} 
+        onConfirm={confirmDelete} 
+        itemTitle={selectedBlog?.title || ''} 
+        itemType="المدونة" 
       />
 
       <AdminPageHeader 
