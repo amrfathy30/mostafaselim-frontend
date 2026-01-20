@@ -13,7 +13,7 @@ const ArticleCard: React.FC<Props> = ({ item }) => {
   const articleDate = item?.date || item?.article_date;
 
   return (
-    <div className="bg-white shadow-sm border border-gray-100 flex flex-col items-start text-start w-full p-4 xl:p-10 h-auto xxl:h-[251px] gap-4 xxl:gap-[23px] transition-all hover:shadow-md font-expo">
+    <div className="bg-white  border border-gray-100 flex flex-col items-start text-start w-full p-4 xl:p6 h-auto xxl:h-[251px] gap-4 xxl:gap-[23px] transition-all hover:shadow-md font-expo">
       
       <h3 className="text-[#3A5F7D] font-normal line-clamp-2 text-lg xl:text-xl xxl:text-[26px] leading-relaxed xxl:leading-[39px]">
         {articleTitle}

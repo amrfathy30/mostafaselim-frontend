@@ -82,7 +82,7 @@ const Books: React.FC = () => {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onConfirm={confirmDelete}
-        title={selectedBook?.title || ''}
+        itemTitle={selectedBook?.title || ''}
         typeTitle="حذف الكتاب"
       />
 

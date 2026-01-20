@@ -10,7 +10,14 @@ const Footer: React.FC = () => {
     'البودكاست',
     'المدونة'
   ];
-
+  const navLinks = [
+    { label: 'الرئيسية', to: '/' },
+    // { label: 'عن الدكتور', to: '/about' },
+    { label: 'المقالات', to: '/articles' },
+    { label: 'الكتب', to: '/books' },
+    { label: 'البودكاست', to: '/podcasts' },
+    { label: 'المدونة', to: '/blogs' },
+  ];
   return (
     <footer className="bg-primary text-white py-12 border-t-8 border-white">
       <div className="container mx-auto px-6 lg:px-12">

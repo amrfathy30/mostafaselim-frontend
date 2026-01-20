@@ -32,7 +32,7 @@ const HistoryCard = ({ data, index }) => {
                 </div>
               </div>
             </div>
-            <div className="hidden md:flex absolute left-1/2 -translate-x-[calc(100%-3px)] flex w-[85px] h-[170px] bg-transparent rounded-l-full shrink-0  border-r-0 border-3  border-primary "></div>
+            <div className="hidden md:flex absolute left-1/2 -translate-x-[calc(100%-3px)] flex w-[85px] h-[calc(100%+19px)] bg-transparent rounded-l-full shrink-0  border-r-0 border-3  border-primary "></div>
             <div className="flex items-center justify-center absolute left-1/2 -translate-x-1/2">
               <HistoryNode  startYear={data?.start_date} endYear={data?.end_date}  />
             </div>
@@ -41,7 +41,7 @@ const HistoryCard = ({ data, index }) => {
         ) : (
           <>
             <div className="w-1/2"></div>
-            <div className="hidden md:flex absolute left-1/2 -translate-x-[calc(-3px)] flex w-[85px] h-[168px] bg-transparent rounded-r-full shrink-0  border-l-0 border-3  border-primary "></div>
+            <div className="hidden md:flex absolute left-1/2 -translate-x-[calc(-3px)] flex w-[85px] h-[calc(100%+19px)] bg-transparent rounded-r-full shrink-0  border-l-0 border-3  border-primary "></div>
             <div className="flex items-center justify-center absolute left-1/2 -translate-x-1/2">
               <HistoryNode startYear={data?.start_date} endYear={data?.end_date}  />
             </div>

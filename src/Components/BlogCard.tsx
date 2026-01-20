@@ -19,7 +19,7 @@ interface Props {
 const BlogCard: React.FC<Props> = ({ item }) => {
   const navigate = useNavigate();
   return (
-    <div className="bg-white rounded-[10px] shadow-sm border border-[#E0E0E0] flex flex-col w-full max-w-[453px] p-[13px] font-expo group transition-all duration-300 hover:shadow-md mx-auto h-full">
+    <div className="bg-white rounded-[10px] flex flex-col w-full max-w-[453px] p-[13px] font-expo group transition-all duration-300  mx-auto h-full">
       <div className="w-full h-[309.69px] overflow-hidden rounded-[7px] mb-[11px]">
         <img 
           src={item.image} 
@@ -29,12 +29,19 @@ const BlogCard: React.FC<Props> = ({ item }) => {
       </div>
 
       <div className="w-full flex flex-col items-center text-right px-[3px]">
-        <h3 className="text-[#3A5F7D] font-bold text-[18px] md:text-[20px] leading-[1.4] h-[56px] line-clamp-2 mb-[5px] mt-[25px]">
+        <h3 className="w-full text-right text-[#3A5F7D] font-bold text-[18px] md:text-[20px] leading-[1.4] h-[56px] line-clamp-2 mb-[5px] mt-[25px]">
           {item.title}
         </h3>
         
-        <div className="flex flex-row-reverse items-center gap-[11px] mb-[25px]">
-
+        <div className="w-full text-right flex items-center justify-left gap-[11px] mb-[25px]">
+ <div className="flex flex-row-reverse items-center gap-[6px]">
+            <CalenderIcon className="w-[18px] h-[18px] text-[#4D4D4D]" />
+            <span className="text-[#4D4D4D] text-[14px] leading-none">{item.date}</span>
+          </div>
+  <div className="flex flex-row-reverse items-center gap-[6px]">
+            <ClockIcon className="w-[18px] h-[18px] text-[#4D4D4D]" />
+            <span className="text-[#4D4D4D] text-[14px] leading-none">{item.time}</span>
+          </div>
             <div className="flex flex-row-reverse items-center gap-[6px]">
             <EyeIcon className="w-[18px] h-[18px] text-[#4D4D4D]" />
             <span className="text-[#4D4D4D] text-[14px] leading-none">
@@ -42,16 +49,9 @@ const BlogCard: React.FC<Props> = ({ item }) => {
             </span>
           </div>
 
-          <div className="flex flex-row-reverse items-center gap-[6px]">
-            <ClockIcon className="w-[18px] h-[18px] text-[#4D4D4D]" />
-            <span className="text-[#4D4D4D] text-[14px] leading-none">{item.time}</span>
-          </div>
+        
           
-          <div className="flex flex-row-reverse items-center gap-[6px]">
-            <CalenderIcon className="w-[18px] h-[18px] text-[#4D4D4D]" />
-            <span className="text-[#4D4D4D] text-[14px] leading-none">{item.date}</span>
-          </div>
-
+         
           
         </div>
         
