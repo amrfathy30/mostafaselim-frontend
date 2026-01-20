@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { getSetting, updateSetting } from '../../services/settingService';
+import { getAdminProfile, updateAdminProfile } from '../../services/authService';
 
 type TabType = 'user' | 'website';
 
@@ -7,6 +8,7 @@ const Settings: React.FC = () => {
   const [activeTab, setActiveTab] = useState<TabType>('user');
   const [showPasswordReset, setShowPasswordReset] = useState(false);
   const [passwordStep, setPasswordStep] = useState<1 | 2>(1);
+  const [isLoading, setIsLoading] = useState(false);
 
   const [userInfo, setUserInfo] = useState({
     name: '',
@@ -46,10 +48,30 @@ const Settings: React.FC = () => {
     favicon: null as File | null,
   });
 
-  useEffect(() => {
-    const fetchSettings = async () => {
+useEffect(() => {
+    const fetchAllData = async () => {
       try {
-        const response = await getSetting();
+        const [settingRes, userRes] = await Promise.all([
+          getSetting(),
+          getAdminProfile()
+        ]);
+
+        if (settingRes) {
+          setWebsiteInfo(prev => ({ ...prev, ...settingRes.data || settingRes }));
+        }
+
+        if (userRes) {
+          const userData = userRes.data || userRes;
+          setUserInfo({
+            name: userData.name || '',
+            full_name: userData.full_name || '',
+            email: userData.email || '',
+            bio: userData.bio || '',
+            personal_aspect: userData.personal_aspect || '',
+            educational_aspect: userData.educational_aspect || '',
+            phone: userData.phone || '',
+          });
+          const response = await getSetting();
         if (response.status === 200) {
           setWebsiteInfo({
             site_name: response.data.site_name || '',
@@ -60,22 +82,23 @@ const Settings: React.FC = () => {
             linkedin: response.data.linkedin || '',
             instagram: response.data.instagram || '',
             footer: response.data.footer || '',
-          });
-          
+          });}
         }
       } catch (error) {
-        console.error("خطأ في جلب الإعدادات:", error);
+        console.error("خطأ في جلب البيانات:", error);
       }
     };
-    fetchSettings();
+
+    fetchAllData();
   }, []);
+
 
   const handleSaveWebsiteInfo = async () => {
     const formData = new FormData();
     
     formData.append('_method', 'PUT'); 
 
-    Object.entries(websiteInfo).forEach(([key, value]) => {
+     Object.entries(websiteInfo).forEach(([key, value]) => {
       formData.append(key, value);
     });
 
@@ -97,33 +120,46 @@ const Settings: React.FC = () => {
     }
   };
 
-  const handleSaveUserInfo = async () => {
-  const formData = new FormData();
-  
-  formData.append('_method', 'PUT');
+const handleSaveUserInfo = async () => {
+    setIsLoading(true);
+    const formData = new FormData();
+    
+    formData.append('_method', 'PUT'); 
 
-  Object.entries(userInfo).forEach(([key, value]) => {
-    formData.append(key, value);
-  });
+    formData.append('name', userInfo.name.trim());
+    formData.append('full_name', userInfo.full_name.trim());
+    formData.append('email', userInfo.email.trim());
+    formData.append('phone', userInfo.phone.trim());
+    formData.append('bio', userInfo.bio.trim());
+    formData.append('personal_aspect', userInfo.personal_aspect.trim());
+    formData.append('educational_aspect', userInfo.educational_aspect.trim());
 
-  if (files.cv) formData.append('cv', files.cv);
-  if (files.image_cover) formData.append('image_cover', files.image_cover);
-
-  if (files.images.length > 0) {
-    files.images.forEach((file) => {
-      formData.append('images[]', file);
-    });
-  }
-
-  try {
-    const res = await updateSetting(formData); 
-    if (res.status === 200) {
-      alert("تم تحديث معلومات المستخدم بنجاح");
+    if (files.cv instanceof File) {
+        formData.append('cv', files.cv);
     }
-  } catch (error: any) {
-    console.error("خطأ في تحديث بيانات المستخدم:", error.response?.data);
-    alert("حدث خطأ أثناء الحفظ");
-  }
+    
+    if (files.image_cover instanceof File) {
+        formData.append('image_cover', files.image_cover);
+    }
+
+    if (files.images && files.images.length > 0) {
+        files.images.forEach((file) => formData.append('images[]', file));
+    }
+
+    try {
+        const res = await updateAdminProfile(formData);
+        alert("تم تحديث معلومات المستخدم بنجاح");
+    } catch (error: any) {
+        const errors = error.response?.data?.errors;
+        if (errors) {
+            const firstKey = Object.keys(errors)[0];
+            alert(`خطأ في ${firstKey}: ${errors[firstKey][0]}`);
+        } else {
+            alert("حدث خطأ غير متوقع");
+        }
+    } finally {
+        setIsLoading(false);
+    }
 };
 
   const handleVerifyOldPassword = () => {
@@ -180,7 +216,7 @@ const Settings: React.FC = () => {
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-[14px] text-[#6B7280] mb-2 text-right">name</label>
+                <label className="block text-[14px] text-[#6B7280] mb-2 text-right">الاسم</label>
                 <input
                   type="text"
                   value={userInfo.name}
@@ -189,7 +225,7 @@ const Settings: React.FC = () => {
                 />
               </div>
               <div>
-                <label className="block text-[14px] text-[#6B7280] mb-2 text-right">full_name</label>
+                <label className="block text-[14px] text-[#6B7280] mb-2 text-right">الاسم الكامل</label>
                 <input
                   type="text"
                   value={userInfo.full_name}
@@ -198,7 +234,7 @@ const Settings: React.FC = () => {
                 />
               </div>
               <div>
-                <label className="block text-[14px] text-[#6B7280] mb-2 text-right">email</label>
+                <label className="block text-[14px] text-[#6B7280] mb-2 text-right">بريد إلكتروني</label>
                 <input
                   type="email"
                   value={userInfo.email}
@@ -207,7 +243,7 @@ const Settings: React.FC = () => {
                 />
               </div>
               <div>
-                <label className="block text-[14px] text-[#6B7280] mb-2 text-right">phone</label>
+                <label className="block text-[14px] text-[#6B7280] mb-2 text-right">الهاتف</label>
                 <input
                   type="text"
                   value={userInfo.phone}
@@ -218,7 +254,7 @@ const Settings: React.FC = () => {
             </div>
 
             <div className="mt-4">
-              <label className="block text-[14px] text-[#6B7280] mb-2 text-right">bio</label>
+              <label className="block text-[14px] text-[#6B7280] mb-2 text-right">النبذة التعريفية</label>
               <textarea
                 value={userInfo.bio}
                 onChange={(e) => setUserInfo({ ...userInfo, bio: e.target.value })}
@@ -229,7 +265,7 @@ const Settings: React.FC = () => {
             </div>
 
             <div className="mt-4">
-              <label className="block text-[14px] text-[#6B7280] mb-2 text-right">personal_aspect</label>
+              <label className="block text-[14px] text-[#6B7280] mb-2 text-right">الجانب الشخصي</label>
               <textarea
                 value={userInfo.personal_aspect}
                 onChange={(e) => setUserInfo({ ...userInfo, personal_aspect: e.target.value })}
@@ -240,7 +276,7 @@ const Settings: React.FC = () => {
             </div>
 
             <div className="mt-4">
-              <label className="block text-[14px] text-[#6B7280] mb-2 text-right">educational_aspect</label>
+              <label className="block text-[14px] text-[#6B7280] mb-2 text-right">الجانب التعليمي</label>
               <textarea
                 value={userInfo.educational_aspect}
                 onChange={(e) => setUserInfo({ ...userInfo, educational_aspect: e.target.value })}
@@ -253,7 +289,7 @@ const Settings: React.FC = () => {
             {/* File Uploads */}
             <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
-                <label className="block text-[14px] text-[#6B7280] mb-2 text-right">cv</label>
+                <label className="block text-[14px] text-[#6B7280] mb-2 text-right">السيرة الذاتية</label>
                 <div className="relative">
                   <input
                     type="file"
@@ -272,7 +308,7 @@ const Settings: React.FC = () => {
                 </div>
               </div>
               <div>
-                <label className="block text-[14px] text-[#6B7280] mb-2 text-right">image_cover</label>
+                <label className="block text-[14px] text-[#6B7280] mb-2 text-right">صورة الغلاف</label>
                 <div className="relative">
                   <input
                     type="file"
@@ -292,7 +328,7 @@ const Settings: React.FC = () => {
                 </div>
               </div>
               <div>
-                <label className="block text-[14px] text-[#6B7280] mb-2 text-right">images[]</label>
+                <label className="block text-[14px] text-[#6B7280] mb-2 text-right">الصور</label>
                 <div className="relative">
                   <input
                     type="file"
@@ -343,7 +379,7 @@ const Settings: React.FC = () => {
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-[14px] text-[#6B7280] mb-2 text-right">site_name</label>
+                <label className="block text-[14px] text-[#6B7280] mb-2 text-right"> اسم الموقع</label>
                 <input
                   type="text"
                   value={websiteInfo.site_name}
@@ -352,7 +388,7 @@ const Settings: React.FC = () => {
                 />
               </div>
               <div>
-                <label className="block text-[14px] text-[#6B7280] mb-2 text-right">site_email</label>
+                <label className="block text-[14px] text-[#6B7280] mb-2 text-right">البريد الإلكتروني للموقع</label>
                 <input
                   type="email"
                   value={websiteInfo.site_email}
@@ -361,7 +397,7 @@ const Settings: React.FC = () => {
                 />
               </div>
               <div>
-                <label className="block text-[14px] text-[#6B7280] mb-2 text-right">site_phone</label>
+                <label className="block text-[14px] text-[#6B7280] mb-2 text-right">هاتف الموقع</label>
                 <input
                   type="text"
                   value={websiteInfo.site_phone}
@@ -422,7 +458,7 @@ const Settings: React.FC = () => {
               <h3 className="text-[16px] font-bold text-[#2B2B2B] text-right mb-4">روابط التواصل الاجتماعي</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-[14px] text-[#6B7280] mb-2 text-right">facebook</label>
+                  <label className="block text-[14px] text-[#6B7280] mb-2 text-right">فيسبوك</label>
                   <input
                     type="url"
                     value={websiteInfo.facebook}
@@ -431,7 +467,7 @@ const Settings: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-[14px] text-[#6B7280] mb-2 text-right">twitter</label>
+                  <label className="block text-[14px] text-[#6B7280] mb-2 text-right">تويتر</label>
                   <input
                     type="url"
                     value={websiteInfo.twitter}
@@ -440,7 +476,7 @@ const Settings: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-[14px] text-[#6B7280] mb-2 text-right">linkedin</label>
+                  <label className="block text-[14px] text-[#6B7280] mb-2 text-right">لينكد إن</label>
                   <input
                     type="url"
                     value={websiteInfo.linkedin}
@@ -449,7 +485,7 @@ const Settings: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-[14px] text-[#6B7280] mb-2 text-right">instagram</label>
+                  <label className="block text-[14px] text-[#6B7280] mb-2 text-right">إنستجرام</label>
                   <input
                     type="url"
                     value={websiteInfo.instagram}
