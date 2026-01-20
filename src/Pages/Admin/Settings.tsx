@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { getSetting, updateSetting } from '../../services/settingService';
 
 type TabType = 'user' | 'website';
 
@@ -8,13 +9,13 @@ const Settings: React.FC = () => {
   const [passwordStep, setPasswordStep] = useState<1 | 2>(1);
 
   const [userInfo, setUserInfo] = useState({
-    name: 'دكتور سليم',
-    full_name: 'دكتور سليم مصطفي',
-    email: 'doctor@g.com',
+    name: '',
+    full_name: '',
+    email: '',
     bio: '',
     personal_aspect: '',
     educational_aspect: '',
-    phone: '123456789',
+    phone: '',
   });
 
   const [passwordData, setPasswordData] = useState({
@@ -30,13 +31,13 @@ const Settings: React.FC = () => {
   });
 
   const [websiteInfo, setWebsiteInfo] = useState({
-    site_name: 'تعديل',
-    site_email: 'doctor@gmail.com',
-    site_phone: '0123456789',
-    facebook: 'https://web.telegram.org/a/',
-    twitter: 'https://web.telegram.org/a/',
-    linkedin: 'https://web.telegram.org/a/',
-    instagram: 'https://web.telegram.org/a/',
+    site_name: '',
+    site_email: '',
+    site_phone: '',
+    facebook: '',
+    twitter: '',
+    linkedin: '',
+    instagram: '',
     footer: '',
   });
 
@@ -45,13 +46,85 @@ const Settings: React.FC = () => {
     favicon: null as File | null,
   });
 
-  const handleSaveWebsiteInfo = () => {
-    console.log('Saving website info:', websiteInfo, websiteFiles);
+  useEffect(() => {
+    const fetchSettings = async () => {
+      try {
+        const response = await getSetting();
+        if (response.status === 200) {
+          setWebsiteInfo({
+            site_name: response.data.site_name || '',
+            site_email: response.data.site_email || '',
+            site_phone: response.data.site_phone || '',
+            facebook: response.data.facebook || '',
+            twitter: response.data.twitter || '',
+            linkedin: response.data.linkedin || '',
+            instagram: response.data.instagram || '',
+            footer: response.data.footer || '',
+          });
+          
+        }
+      } catch (error) {
+        console.error("خطأ في جلب الإعدادات:", error);
+      }
+    };
+    fetchSettings();
+  }, []);
+
+  const handleSaveWebsiteInfo = async () => {
+    const formData = new FormData();
+    
+    formData.append('_method', 'PUT'); 
+
+    Object.entries(websiteInfo).forEach(([key, value]) => {
+      formData.append(key, value);
+    });
+
+    if (websiteFiles.logo) {
+      formData.append('logo', websiteFiles.logo);
+    }
+    if (websiteFiles.favicon) {
+      formData.append('favicon', websiteFiles.favicon);
+    }
+
+    try {
+      const res = await updateSetting(formData);
+      if (res.status === 200) {
+        alert("تم تحديث إعدادات الموقع بنجاح");
+      }
+    } catch (error: any) {
+      console.error("خطأ في التحديث:", error.response?.data);
+      alert(error.response?.data?.message || "حدث خطأ أثناء الحفظ");
+    }
   };
 
-  const handleSaveUserInfo = () => {
-    console.log('Saving user info:', userInfo);
-  };
+  const handleSaveUserInfo = async () => {
+  const formData = new FormData();
+  
+  formData.append('_method', 'PUT');
+
+  Object.entries(userInfo).forEach(([key, value]) => {
+    formData.append(key, value);
+  });
+
+  if (files.cv) formData.append('cv', files.cv);
+  if (files.image_cover) formData.append('image_cover', files.image_cover);
+
+  if (files.images.length > 0) {
+    files.images.forEach((file) => {
+      formData.append('images[]', file);
+    });
+  }
+
+  try {
+    const res = await updateSetting(formData); 
+    if (res.status === 200) {
+      alert("تم تحديث معلومات المستخدم بنجاح");
+    }
+  } catch (error: any) {
+    console.error("خطأ في تحديث بيانات المستخدم:", error.response?.data);
+    alert("حدث خطأ أثناء الحفظ");
+  }
+};
 
   const handleVerifyOldPassword = () => {
     console.log('Verifying old password:', passwordData.oldPassword);
@@ -192,10 +265,9 @@ const Settings: React.FC = () => {
                     htmlFor="cv-upload"
                     className="flex items-center justify-between w-full px-4 py-3 bg-white border border-gray-200 rounded-lg cursor-pointer hover:border-primary"
                   >
-                    <span className="text-[#6B7280]">×</span>
                     <span className="text-[14px] text-[#2B2B2B] truncate">
-                      {files.cv?.name || 'wqMOX1SkR/Mohammed-Ta...'}
-                    </span>
+                      {files.cv?.name || 'لم يتم اختيار ملف'} 
+                        </span>
                   </label>
                 </div>
               </div>
@@ -213,10 +285,9 @@ const Settings: React.FC = () => {
                     htmlFor="cover-upload"
                     className="flex items-center justify-between w-full px-4 py-3 bg-white border border-gray-200 rounded-lg cursor-pointer hover:border-primary"
                   >
-                    <span className="text-[#6B7280]">×</span>
                     <span className="text-[14px] text-[#2B2B2B] truncate">
-                      {files.image_cover?.name || 'c9bL_hnlm/user1.png'}
-                    </span>
+                         {files.image_cover ? files.image_cover.name : 'اختر صورة الغلاف...'}
+                      </span>
                   </label>
                 </div>
               </div>
@@ -235,9 +306,10 @@ const Settings: React.FC = () => {
                     htmlFor="images-upload"
                     className="flex items-center justify-between w-full px-4 py-3 bg-white border border-gray-200 rounded-lg cursor-pointer hover:border-primary"
                   >
-                    <span className="text-[#6B7280]">×</span>
                     <span className="text-[14px] text-[#2B2B2B]">
-                      {files.images.length > 0 ? `${files.images.length} files selected` : '2 files selected'}
+                      {files.images.length > 0 
+                        ? `${files.images.length} ملفات مختارة` 
+                        : 'لم يتم اختيار صور'}
                     </span>
                   </label>
                 </div>
