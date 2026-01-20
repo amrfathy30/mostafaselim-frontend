@@ -86,6 +86,7 @@ const Blog: React.FC = () => {
         onClose={() => setIsModalOpen(false)}
         onConfirm={confirmDelete}
         title={selectedBlog?.title || ''}
+        typeTitle="حذف المدونة"
       />
 
       <AdminPageHeader 
