@@ -22,6 +22,7 @@ export default function Home() {
         const response = await getHomeData();
         const _homeData = response.data || [];
         setHomeData(_homeData)
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       } catch (error) {
         console.error(error);
       } finally {

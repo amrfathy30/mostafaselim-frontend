@@ -34,6 +34,7 @@ const PodcastsPage: React.FC = () => {
       setPodcasts(formatted);
       if (formatted.length && !activePodcast) setActivePodcast(formatted[0]);
       setTotalPages(data?.pagination?.last_page || 1);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     } catch (error) {
       console.error(error);
     } finally {
