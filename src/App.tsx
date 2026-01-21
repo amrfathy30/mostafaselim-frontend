@@ -41,13 +41,13 @@ function App({ isRTL }: AppProps) {
       <div dir={isRTL ? "rtl" : "ltr"} className={isRTL ? "text-right " : "text-left"}>
         <div className=''>
           {/* لو الصفحة مش تبع الأدمن، أظهر الهيدر والفوتر العاديين */}
-          {!isAdminPage && <Header/>}
+          {!isAdminPage && <Header settings={settingsData}/>}
 
           <div className={isAdminPage ? 'w-full' : 'min-h-[calc(100vh-100px)] xxl:min-h-[calc(100vh-138px)]'}>
             <BodyContent />
           </div>
           
-          {!isAdminPage && <Footer />}
+          {!isAdminPage && <Footer settings={settingsData}/>}
         </div>
       </div>
     </div>

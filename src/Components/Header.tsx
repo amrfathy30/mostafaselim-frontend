@@ -1,10 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Logo, MenuIcon, CloseIcon, Facebook, Instagram, TikTokIcon } from './Icons';
 import { Link, useLocation } from 'react-router-dom';
+import { getSetting } from '../services/settingService';
 
-const Header: React.FC = () => {
+const Header = ({
+  settings
+}) => {
   const location = useLocation()
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
 
   const navLinks = [
     { label: 'الرئيسية', to: '/' },
@@ -43,10 +47,10 @@ const Header: React.FC = () => {
           <a href="#" className="hover:opacity-80 transition-opacity">
             <TikTokIcon color='#3A5F7D' className="w-8 h-8" />
           </a>
-          <a  target='_blank' className="hover:opacity-80 transition-opacity">
+          <a href={settings?.facebook || "#"} target="_blank" rel="noreferrer" className="hover:opacity-80 transition-opacity">
             <Facebook color='#3A5F7D' className="w-8 h-8" />
           </a>
-          <a href="#" className="hover:opacity-80 transition-opacity">
+          <a href={settings?.instagram || "#"} target="_blank" rel="noreferrer" className="hover:opacity-80 transition-opacity">
             <Instagram color='#3A5F7D' className="w-8 h-8" />
           </a>
         </div>
@@ -86,10 +90,10 @@ const Header: React.FC = () => {
             <a href="#" className="hover:opacity-80 transition-opacity">
               <TikTokIcon color='#3A5F7D' className="w-10 h-10" />
             </a>
-            <a href="#" className="hover:opacity-80 transition-opacity">
+            <a href={settings?.facebook || "#"} target="_blank" rel="noreferrer" className="hover:opacity-80 transition-opacity">
               <Facebook color='#3A5F7D' className="w-10 h-10" />
             </a>
-            <a href="#" className="hover:opacity-80 transition-opacity">
+           <a href={settings?.instagram || "#"} target="_blank" rel="noreferrer" className="hover:opacity-80 transition-opacity">
               <Instagram color='#3A5F7D' className="w-10 h-10" />
             </a>
           </div>

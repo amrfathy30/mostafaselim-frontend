@@ -1,14 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Facebook, Instagram, TikTokIcon, Logo } from './Icons';
 import { subscribe } from '../services/homeService';
-import { Button } from '../Components/Common/button';
-import toast from 'react-hot-toast';
+import {Button} from '../Components/Common/button'
+import toast, { Toaster } from 'react-hot-toast';
 
-const Footer: React.FC = () => {
+const Footer= ({
+  settings
+}) => {
   const [email, setEmail] = useState('');
   const [emailTarget, setEmailTarget] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(false);
-
+ 
   const footerLinks = [
     { label: 'الرئيسية', to: '/' },
     { label: 'المقالات', to: '/articles' },
@@ -70,10 +72,10 @@ const Footer: React.FC = () => {
           <a href="#" className="hover:opacity-80 transition-opacity">
             <TikTokIcon size={32} />
           </a>
-          <a href="#" className="hover:opacity-80 transition-opacity">
+          <a href={settings?.facebook || "#"} target="_blank" rel="noreferrer" className="hover:opacity-80 transition-opacity">
             <Facebook size={32} />
           </a>
-          <a href="#" className="hover:opacity-80 transition-opacity">
+          <a href={settings?.instagram || "#"} target="_blank" rel="noreferrer" className="hover:opacity-80 transition-opacity">
             <Instagram size={32} />
           </a>
         </div>
@@ -96,14 +98,14 @@ const Footer: React.FC = () => {
           </nav>
 
           <div className="flex items-center gap-3" dir="ltr">
-            <a href="#" className="hover:opacity-80 transition-opacity">
-              <TikTokIcon size={32} color="white" />
+          <a href="#" className="hover:opacity-80 transition-opacity">
+              <TikTokIcon size={32} />
             </a>
-            <a href="#" className="hover:opacity-80 transition-opacity">
-              <Facebook size={32} color="white" />
+            <a href={settings?.facebook || "#"} target="_blank" rel="noreferrer" className="hover:opacity-80 transition-opacity">
+              <Facebook size={32} />
             </a>
-            <a href="#" className="hover:opacity-80 transition-opacity">
-              <Instagram size={32} color="white" />
+            <a href={settings?.instagram || "#"} target="_blank" rel="noreferrer" className="hover:opacity-80 transition-opacity">
+              <Instagram size={32} />
             </a>
           </div>
         </div>
