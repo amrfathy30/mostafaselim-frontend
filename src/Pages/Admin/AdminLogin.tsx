@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { adminForgetPassword, adminLogin, adminResetPassword, getAdminProfile } from '../../services/authService';
 
+const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/;
+
 const AdminLogin: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -32,10 +34,30 @@ const AdminLogin: React.FC = () => {
     checkExistingAuth();
   }, [navigate]);
 
+  const validateEmail = (email: string) => {
+  return String(email)
+    .toLowerCase()
+    .match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
+};
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError('');
+    if (!validateEmail(email)) {
+    setError('البريد الإلكتروني غير صالح');
+    setLoading(false)
+    return;
+  }
+  if (password.length < 6) {
+    setError('كلمة المرور يجب أن لا تقل عن 6 أحرف');
+    setLoading(false);
+    return;
+  }
+  if (!passwordRegex.test(password)) { 
+    setError('كلمة المرور يجب أن تحتوي على حرف كبير، حرف صغير، رقم، ورمز خاص'); 
+    setLoading(false); return; 
+  }
 
     try {
       const response = await adminLogin({ email, password });
@@ -183,6 +205,21 @@ const ForgetPasswordModal = ({
     e.preventDefault();
     setLoading(true);
     setError('');
+       if (password.length < 6) {
+            setError('كلمة المرور الجديدة يجب أن تكون 6 أحرف على الأقل');
+            setLoading(false);
+            return;
+          }
+          if (!passwordRegex.test(password)) {
+      setError('كلمة المرور يجب أن تحتوي على حرف كبير، حرف صغير، رقم، ورمز خاص');
+      setLoading(false);
+      return;
+    }
+       if (password !== passwordConfirmation) {
+            setError('كلمات المرور غير متطابقة');
+            setLoading(false);
+            return;
+          }
     const data={
       email:email,
       token:otp,
