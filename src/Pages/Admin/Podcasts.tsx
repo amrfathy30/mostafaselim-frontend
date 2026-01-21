@@ -54,11 +54,8 @@ const Podcasts: React.FC = () => {
       setProjects(fetchedProjects);
       setActiveKeyword(keyword); 
       
-      if (fetchedProjects.length > 0) {
+      if (fetchedProjects.length > 0 && !selectedProject) {
         handleSelectProject(fetchedProjects[0].project_id);
-      } else {
-        setSelectedProject(null);
-        setAudioSegments([]);
       }
     } catch (error) {
       console.error(error);
@@ -82,8 +79,7 @@ const Podcasts: React.FC = () => {
 
   const filteredAudios = audioSegments.filter(segment => 
     (segment.audio_title || '').toLowerCase().includes(activeKeyword.toLowerCase()) ||
-    (segment.audio_details || '').toLowerCase().includes(activeKeyword.toLowerCase()) ||
-    (selectedProject?.project_title || '').toLowerCase().includes(activeKeyword.toLowerCase())
+    (segment.audio_details || '').toLowerCase().includes(activeKeyword.toLowerCase())
   );
 
   const openAddProject = () => {
@@ -102,7 +98,13 @@ const Podcasts: React.FC = () => {
 
   const openAddAudio = () => {
     setIsEditMode(false);
-    setAudioFormData({ title: '', details: '', project_id: selectedProject?.project_id.toString() || '', file: null });
+    setCurrentId(null);
+    setAudioFormData({ 
+      title: '', 
+      details: '', 
+      project_id: selectedProject?.project_id.toString() || '', 
+      file: null 
+    });
     setShowAudioModal(true);
   };
 
@@ -123,6 +125,7 @@ const Podcasts: React.FC = () => {
     data.append('title', projectFormData.title);
     data.append('category_id', '6'); 
     if (projectFormData.image) data.append('image_cover', projectFormData.image);
+    
     setSubmitLoading(true);
     try {
       if (isEditMode && currentId) {
@@ -138,11 +141,16 @@ const Podcasts: React.FC = () => {
   };
 
   const handleSubmitAudio = async () => {
+    if (!isEditMode && !audioFormData.file) {
+      alert("برجاء رفع الملف الصوتي أولاً");
+      return;
+    }
     const data = new FormData();
     data.append('title', audioFormData.title);
     data.append('details', audioFormData.details);
     data.append('project_id', audioFormData.project_id);
     if (audioFormData.file) data.append('content', audioFormData.file);
+
     setSubmitLoading(true);
     try {
       if (isEditMode && currentId) {
@@ -153,6 +161,7 @@ const Podcasts: React.FC = () => {
       }
       setShowAudioModal(false);
       if (selectedProject) handleSelectProject(selectedProject.project_id);
+      loadProjects(searchQuery);
     } catch (error) { console.error(error); } 
     finally { setSubmitLoading(false); }
   };
@@ -183,10 +192,10 @@ const Podcasts: React.FC = () => {
         setSearchQuery={setSearchQuery}
         setStartSearch={setStartSearch}
         btnLoading={loading && startSearch}
-        onClick={openAddAudio} 
+        onClick={() => openAddAudio()} 
       />
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mt-10">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mt-10 px-4">
         
         <div className="lg:col-span-4 flex flex-col bg-white rounded-[15px] border border-gray-100 shadow-sm overflow-hidden h-[80vh]">
           <h2 className="text-[22px] font-bold text-[#1E4D74] p-5 text-center border-b border-gray-50">المشاريع</h2>
@@ -216,7 +225,7 @@ const Podcasts: React.FC = () => {
                   </div>
                   <div className="text-[#1E4D74] text-[16px] font-medium space-y-1 text-center md:text-right md:pr-16">
                     <p>تاريخ النشر : 12/2/2025</p>
-                    <p>المتحدث : مصطفي سليم</p>
+                    <p>المتحدث : د/ مصطفي سليم</p>
                   </div>
                 </div>
               )) : (
@@ -264,7 +273,7 @@ const Podcasts: React.FC = () => {
               ))
             ) : (
               <div className="text-center py-20 bg-gray-50">
-                <p className="text-gray-400">لا توجد مقاطع تطابق بحثك في هذا المشروع</p>
+                <p className="text-gray-400">لا توجد مقاطع حالياً</p>
                 <button onClick={openAddAudio} className="mt-4 text-blue-600 font-bold underline">إضافة مقطع جديد</button>
               </div>
             )}
@@ -274,7 +283,7 @@ const Podcasts: React.FC = () => {
 
       {showProjectModal && (
         <div className="fixed inset-0 bg-black/40 backdrop-blur-[2px] flex items-center justify-center z-[150] p-4">
-          <div className="bg-white rounded-[25px] p-10 w-full max-w-lg shadow-2xl relative animate-in fade-in zoom-in duration-200">
+          <div className="bg-white rounded-[25px] p-10 w-full max-w-lg shadow-2xl relative">
             <h2 className="text-[26px] font-bold text-[#1E4D74] text-center mb-10">{isEditMode ? 'تعديل مشروع' : 'إضافة مشروع'}</h2>
             <div className="space-y-6">
               <input type="text" placeholder="عنوان المشروع" value={projectFormData.title} onChange={(e) => setProjectFormData({ ...projectFormData, title: e.target.value })} className="w-full px-6 py-4 bg-[#F3F4F6] border-none rounded-[15px] text-right outline-none text-[#1E4D74] font-bold" />
@@ -288,14 +297,14 @@ const Podcasts: React.FC = () => {
                 {submitLoading ? 'جاري الحفظ...' : isEditMode ? 'حفظ التعديلات' : 'إنشاء المشروع'}
               </button>
             </div>
-            <button onClick={() => setShowProjectModal(false)} className="absolute top-6 left-6 text-gray-400">✕</button>
+            <button onClick={() => setShowProjectModal(false)} className="absolute top-6 left-6 text-gray-400 text-2xl">✕</button>
           </div>
         </div>
       )}
 
       {showAudioModal && (
         <div className="fixed inset-0 bg-black/40 backdrop-blur-[2px] flex items-center justify-center z-[150] p-4">
-          <div className="bg-white rounded-[25px] p-10 w-full max-w-lg shadow-2xl relative animate-in fade-in zoom-in duration-200">
+          <div className="bg-white rounded-[25px] p-10 w-full max-w-lg shadow-2xl relative">
             <h2 className="text-[26px] font-bold text-[#1E4D74] text-center mb-10">{isEditMode ? 'تعديل مقطع' : 'إضافة مقطع'}</h2>
             <div className="space-y-6">
               <input type="text" placeholder="عنوان المقطع" value={audioFormData.title} onChange={(e) => setAudioFormData({ ...audioFormData, title: e.target.value })} className="w-full px-6 py-4 bg-[#F3F4F6] border-none rounded-[15px] text-right outline-none text-[#1E4D74] font-bold" />
@@ -314,7 +323,7 @@ const Podcasts: React.FC = () => {
                 {submitLoading ? 'جاري الحفظ...' : isEditMode ? 'حفظ التعديلات' : 'نشر المقطع'}
               </button>
             </div>
-            <button onClick={() => setShowAudioModal(false)} className="absolute top-6 left-6 text-gray-400">✕</button>
+            <button onClick={() => setShowAudioModal(false)} className="absolute top-6 left-6 text-gray-400 text-2xl">✕</button>
           </div>
         </div>
       )}
