@@ -1,12 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Facebook, Instagram, TikTokIcon, Logo } from './Icons';
 import { subscribe } from '../services/homeService';
 import {Button} from '../Components/Common/button'
 import toast, { Toaster } from 'react-hot-toast';
+import { getSetting } from '../services/settingService';
 const Footer: React.FC = () => {
   const [email, setEmail] = useState('');
   const [emailTarget, setEmailTarget] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(false);
+  const [settings, setSettings] = useState<any>(null);
   const footerLinks = [
     { label: 'الرئيسية', to: '/' },
     // { label: 'عن الدكتور', to: '/about' },
@@ -16,7 +18,19 @@ const Footer: React.FC = () => {
     { label: 'المدونة', to: '/blogs' },
   ];
 
-
+  useEffect(() => {
+    const fetchSettings = async () => {
+      try {
+        const response = await getSetting();
+        if (response.status === 200 || response.message === "success") {
+          setSettings(response.data);
+        }
+      } catch (err) {
+        console.error("Error fetching settings:", err);
+      }
+    };
+    fetchSettings();
+  }, []);
   const handleSubmit = async () => {
     const data = {
       'email': email
@@ -72,10 +86,10 @@ const Footer: React.FC = () => {
           <a href="#" className="hover:opacity-80 transition-opacity">
             <TikTokIcon size={32} />
           </a>
-          <a href="#" className="hover:opacity-80 transition-opacity">
+          <a href={settings?.facebook || "#"} target="_blank" rel="noreferrer" className="hover:opacity-80 transition-opacity">
             <Facebook size={32} />
           </a>
-          <a href="#" className="hover:opacity-80 transition-opacity">
+          <a href={settings?.instagram || "#"} target="_blank" rel="noreferrer" className="hover:opacity-80 transition-opacity">
             <Instagram size={32} />
           </a>
         </div>
@@ -88,10 +102,10 @@ const Footer: React.FC = () => {
             <a href="#" className="hover:opacity-80 transition-opacity">
               <TikTokIcon size={32} />
             </a>
-            <a href="#" className="hover:opacity-80 transition-opacity">
+            <a href={settings?.facebook || "#"} target="_blank" rel="noreferrer" className="hover:opacity-80 transition-opacity">
               <Facebook size={32} />
             </a>
-            <a href="#" className="hover:opacity-80 transition-opacity">
+            <a href={settings?.instagram || "#"} target="_blank" rel="noreferrer" className="hover:opacity-80 transition-opacity">
               <Instagram size={32} />
             </a>
           </div>
