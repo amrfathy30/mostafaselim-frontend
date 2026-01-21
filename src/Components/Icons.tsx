@@ -51,7 +51,7 @@ export const Instagram = ({ size = 28, className, ...props }: IconProps) => (
 export const Logo = ({ variant = 'dark', className = "", ...props }: { variant?: 'dark' | 'light', className?: string } & React.SVGProps<SVGSVGElement>) => {
     // #3A5F7D is the secondary color used in the design.
     // Use white for light variant (on dark backgrounds).
-    const fillColor = variant === 'light' ? '#FFFFFF' : '#3A5F7D';
+    const fillColor = variant === 'light' ? '#8CBED6' : '#3A5F7D';
 
     return (
         <svg 

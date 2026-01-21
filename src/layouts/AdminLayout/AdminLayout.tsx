@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Outlet, Link, useNavigate, useLocation } from 'react-router-dom';
 import { Logo } from '../../Components/Icons';
 import { getAdminProfile } from '../../services/authService';
+import { Toaster } from 'react-hot-toast';
 
 const AdminLayout: React.FC = () => {
   const navigate = useNavigate();
@@ -80,6 +81,7 @@ const AdminLayout: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-[#E8EDEF] p-4 md:p-8 xl:p-10 xxl:p-[74px] " dir="rtl">
+            <Toaster position="bottom-right"/>
       {/* Sidebar */}
       <aside className="w-[60px] md:w-[250px] xxl:w-[375px] bg-white flex flex-col rounded-[16px] overflow-hidden fixed top-4 md:top-8 xl:top-10 xxl:top-[74px] bottom-4 md:bottom-8 xl:bottom-10 xxl:bottom-[74px] right-4 md:right-6 lg:right-8 z-10">
         {/* Top blue border */}

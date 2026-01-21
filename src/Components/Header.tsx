@@ -19,9 +19,9 @@ const Header: React.FC = () => {
       <div className="w-full px-4 sm:px-6 md:px-12 lg:px-[100px] xxl:px-[154px] flex items-center justify-between">
 
         {/* Logo Section */}
-        <div className="flex-shrink-0">
+        <a  href='/' className="flex-shrink-0">
           <Logo variant="dark" />
-        </div>
+        </a>
 
         {/* Desktop Navigation - Hidden on Tablet & Mobile (lg breakpoint) */}
         <nav className="hidden lg:flex items-center gap-8 xl:gap-[34px]">
@@ -43,7 +43,7 @@ const Header: React.FC = () => {
           <a href="#" className="hover:opacity-80 transition-opacity">
             <TikTokIcon color='#3A5F7D' className="w-8 h-8" />
           </a>
-          <a href="#" className="hover:opacity-80 transition-opacity">
+          <a  target='_blank' className="hover:opacity-80 transition-opacity">
             <Facebook color='#3A5F7D' className="w-8 h-8" />
           </a>
           <a href="#" className="hover:opacity-80 transition-opacity">

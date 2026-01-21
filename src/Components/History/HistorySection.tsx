@@ -8,7 +8,7 @@ const HistorySection= ({data}) => {
 
 
   return (
-    <section className="relative py-8 md:py-12 lg:py-16 bg-[#F5F5F5] overflow-hidden w-full px-4 sm:px-6 md:px-12 lg:px-[100px] xxl:px-[154px]">
+    <section id="work_history" className="relative py-8 md:py-12 lg:py-16 bg-[#F5F5F5] overflow-hidden w-full px-4 sm:px-6 md:px-12 lg:px-[100px] xxl:px-[154px]">
       <div className="relative z-10">
         
         <SectionTitle title={'تاريخ الأعمال والجوائز'}/>

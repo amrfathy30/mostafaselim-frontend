@@ -15,7 +15,7 @@ export const Button = (props: Props) => {
 
   return (
     <button
-      className={`${className} h-[56px] text-[20px] font-bold text-[#F5F5F5] rounded-[5px] 
+      className={`${className} h-[56px] text-[20px] font-bold text-[#F5F5F5] rounded-[5px] disabled:opacity-[0.6] disabled:cursor-not-allowed
       ${type=='primary'?'bg-[#007FFF]':
         type=='danger'?'bg-[#DB3D3D]':
         type=='tertiary'?'bg-[#3A5F7D]':

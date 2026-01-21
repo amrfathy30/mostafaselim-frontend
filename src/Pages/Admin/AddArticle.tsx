@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { Button } from '../../Components/Common/button';
 import { adminAddArticle, adminUpdateArticle, adminGetArticle } from '../../services/articleService';
 import { adminGetCategories } from '../../services/categoryService';
-import toast from 'react-hot-toast';
+import toast, { Toaster } from 'react-hot-toast';
 
 interface Paragraph {
   id: number;

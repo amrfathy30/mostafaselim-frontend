@@ -1,6 +1,7 @@
 import React from "react";
 import { Button } from "../Common/button";
 import { useNavigate } from 'react-router-dom';
+import { openExternalLink } from "../../helper";
 interface Props{
     book:{
         book_id?: number;
@@ -8,6 +9,7 @@ interface Props{
         book_date: string;
         publishing_house: string;
         image: string;
+        book_link:string
     }
     variant?: 'simple' | 'detailed'
 }
@@ -44,7 +46,7 @@ export default function BookCard({book, variant = 'detailed'}: Props){
         <Button 
             type="primary" 
             className="!h-[45px] w-[145px] !text-[14px]"
-            onClick={() => console.log("قراءة")}
+            onClick={() =>openExternalLink(book?.book_link)}   
         >
             قراءة الكتاب
         </Button>
@@ -53,7 +55,7 @@ export default function BookCard({book, variant = 'detailed'}: Props){
             <Button 
                 type="primary" 
                 className="!h-[44px] !text-[14px] !md:text-[16px] font-expo rounded-md !border-none !text-white flex-1 min-w-[150px] shadow-sm rounded-sm"
-                onClick={() => console.log("قراءة")}
+                onClick={() =>openExternalLink(book?.book_link)}
             >
                 قراءة الكتاب
             </Button>

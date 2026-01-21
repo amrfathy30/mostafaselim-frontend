@@ -1,11 +1,11 @@
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "../Common/button";
+import { handleNavigateToSection, openExternalLink } from "../../helper";
 
 
 
-export function AuthorContent() {
-  const navigate = useNavigate();
+export function AuthorContent({data}) {
   return (
     <div className="flex items-center w-full lg:w-[62%]">
       <div className="flex relative flex-col self-stretch my-auto w-full font-bold space-y-6 md:space-y-10 lg:space-y-[70px]">
@@ -20,16 +20,16 @@ export function AuthorContent() {
           </p>
         </div>
 
-        <div className="flex flex-col-reverse sm:flex-row gap-3 sm:gap-3.5 items-center justify-center lg:justify-end text-base sm:text-lg lg:text-xl text-center w-full px-4 sm:px-0">
+        <div className="flex sm:flex-row gap-3 sm:gap-3.5 items-center justify-center lg:justify-start text-base sm:text-lg lg:text-xl text-center w-full px-4 sm:px-0">
         
           <Button 
             type="primary" 
-            onClick={() => navigate('/about')} 
+            onClick={() => openExternalLink(data?.user_cv)} 
             className="w-full sm:w-[180px] md:w-[200px] lg:w-[232px] font-expo"
           >
             السيرة الذاتية
           </Button>
-          <Button type="secondary"  onClick={undefined} className="w-full sm:w-[180px] md:w-[200px] lg:w-[232px]">
+          <Button type="secondary"  onClick={()=>handleNavigateToSection('work_history')} className="w-full sm:w-[180px] md:w-[200px] lg:w-[232px]">
             الأعمال السابقة
           </Button>
         </div>

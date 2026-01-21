@@ -14,7 +14,7 @@ export default function AuthorHero({
       <div className="w-full h-full">
       <div className="relative w-full h-full px-4 sm:px-6 md:px-12 lg:px-[100px] xxl:px-[154px]">
         <div className="flex flex-col lg:flex-row gap-5 w-full h-full justify-center items-center">
-          <AuthorContent />
+          <AuthorContent data={data}/>
           <AuthorImage data={data}/>
         </div>
       </div>
