@@ -18,6 +18,7 @@ export default function BooksPage() {
                 const res = await getBooks(currentPage, 9, search);
                 setBooks(res.data.data); 
                 setTotalPages(res.data.pagination.last_page);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
             } catch (error) {
                 console.error("Error fetching books", error);
             }
