@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Button } from '../../Components/Common/button'; 
-import { SearchIcon } from '../../icons/admin'; 
+import { Button } from '../../Components/Common/button';
+import { SearchIcon } from '../../icons/admin';
 
 interface HeaderInfo {
     total: number;
@@ -12,7 +12,7 @@ interface HeaderInfo {
     title: string;
     titleSingle: string;
     type: string;
-    onClick?: () => void; 
+    onClick?: () => void;
 }
 
 const AdminPageHeader = (data: HeaderInfo) => {
@@ -35,6 +35,7 @@ const AdminPageHeader = (data: HeaderInfo) => {
           placeholder={`ابحث في ${data?.title} التي تريدها`}
           className="bg-white px-4 py-3 border border-gray-300 rounded-lg text-right w-full outline-none focus:border-primary"
         />
+   
         <Button
           className='w-full flex flex-col md:flex-row items-center justify-center h-[52px] space-x-2'
           onClick={() => data.setStartSearch(true)} 

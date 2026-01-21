@@ -7,7 +7,9 @@ import {
   adminAddAudio, 
   adminUpdateAudio, 
   adminDeleteAudio,
-  adminDeleteProject 
+  adminDeleteProject,
+  adminAddProject, 
+  adminUpdateProject 
 } from '../../services/audioService'; 
 
 interface Project {
@@ -24,39 +26,48 @@ const Podcasts: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [submitLoading, setSubmitLoading] = useState(false); 
   const [searchQuery, setSearchQuery] = useState('');
+  const [activeKeyword, setActiveKeyword] = useState(''); 
   const [startSearch, setStartSearch] = useState(false);
 
-  const [showAddEditModal, setShowAddEditModal] = useState(false);
+  const [showAudioModal, setShowAudioModal] = useState(false);
+  const [showProjectModal, setShowProjectModal] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
-  const [currentAudioId, setCurrentAudioId] = useState<number | null>(null);
+  const [currentId, setCurrentId] = useState<number | null>(null);
   
-  const [formData, setFormData] = useState({
-    title: '',
-    details: '', 
-    project_id: '',
-    file: null as File | null
+  const [audioFormData, setAudioFormData] = useState({
+    title: '', details: '', project_id: '', file: null as File | null
+  });
+
+  const [projectFormData, setProjectFormData] = useState({
+    title: '', image: null as File | null
   });
 
   const [deleteModalConfig, setDeleteModalConfig] = useState({
-    isOpen: false,
-    id: 0,
-    title: '',
-    type: '' 
+    isOpen: false, id: 0, title: '', type: '' as 'مقطع' | 'مشروع'
   });
 
-  useEffect(() => { loadProjects(); }, []);
-
-  const loadProjects = async () => {
+  const loadProjects = async (keyword: string = '') => {
     setLoading(true);
     try {
-      const response = await adminGetAudios();
-      setProjects(response.data);
-      if (response.data.length > 0 && !selectedProject) {
-        handleSelectProject(response.data[0].project_id);
+      const response = await adminGetAudios(keyword);
+      const fetchedProjects = response.data || [];
+      setProjects(fetchedProjects);
+      setActiveKeyword(keyword); 
+      
+      if (fetchedProjects.length > 0 && !selectedProject) {
+        handleSelectProject(fetchedProjects[0].project_id);
       }
-    } catch (error) { console.error(error); } 
-    finally { setLoading(false); }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+      setStartSearch(false);
+    }
   };
+
+  useEffect(() => {
+    loadProjects(searchQuery);
+  }, [startSearch]);
 
   const handleSelectProject = async (id: number) => {
     try {
@@ -66,64 +77,93 @@ const Podcasts: React.FC = () => {
     } catch (error) { console.error(error); }
   };
 
-  const openAddModal = () => {
+  const filteredAudios = audioSegments.filter(segment => 
+    (segment.audio_title || '').toLowerCase().includes(activeKeyword.toLowerCase()) ||
+    (segment.audio_details || '').toLowerCase().includes(activeKeyword.toLowerCase())
+  );
+
+  const openAddProject = () => {
     setIsEditMode(false);
-    setCurrentAudioId(null);
-    setFormData({ 
+    setProjectFormData({ title: '', image: null });
+    setShowProjectModal(true);
+  };
+
+  const openEditProject = () => {
+    if (!selectedProject) return;
+    setIsEditMode(true);
+    setCurrentId(selectedProject.project_id);
+    setProjectFormData({ title: selectedProject.project_title, image: null });
+    setShowProjectModal(true);
+  };
+
+  const openAddAudio = () => {
+    setIsEditMode(false);
+    setCurrentId(null);
+    setAudioFormData({ 
       title: '', 
       details: '', 
       project_id: selectedProject?.project_id.toString() || '', 
       file: null 
     });
-    setShowAddEditModal(true);
+    setShowAudioModal(true);
   };
 
-  const openEditModal = (segment: any) => {
+  const openEditAudio = (segment: any) => {
     setIsEditMode(true);
-    setCurrentAudioId(segment.id || segment.audio_id); 
-    setFormData({
-      title: segment.title || segment.audio_title || '',
-      details: segment.details || segment.audio_details || segment.description || '',
+    setCurrentId(segment.audio_id || segment.id);
+    setAudioFormData({
+      title: segment.audio_title || segment.title,
+      details: segment.audio_details || segment.details,
       project_id: selectedProject?.project_id.toString() || '',
       file: null
     });
-    setShowAddEditModal(true);
+    setShowAudioModal(true);
   };
 
-  const handleSubmit = async () => {
-    if (!isEditMode && !formData.file) {
-        return;
-    }
-
+  const handleSubmitProject = async () => {
     const data = new FormData();
-    data.append('title', formData.title);
-    data.append('details', formData.details); 
-    data.append('project_id', formData.project_id);
+    data.append('title', projectFormData.title);
+    data.append('category_id', '6'); 
+    if (projectFormData.image) data.append('image_cover', projectFormData.image);
     
-    if (formData.file) {
-        data.append('content', formData.file); 
+    setSubmitLoading(true);
+    try {
+      if (isEditMode && currentId) {
+        data.append('_method', 'PUT');
+        await adminUpdateProject(currentId, data);
+      } else {
+        await adminAddProject(data);
+      }
+      setShowProjectModal(false);
+      loadProjects(searchQuery);
+    } catch (error) { console.error(error); } 
+    finally { setSubmitLoading(false); }
+  };
+
+  const handleSubmitAudio = async () => {
+    if (!isEditMode && !audioFormData.file) {
+      alert("برجاء رفع الملف الصوتي أولاً");
+      return;
     }
+    const data = new FormData();
+    data.append('title', audioFormData.title);
+    data.append('details', audioFormData.details);
+    data.append('project_id', audioFormData.project_id);
+    if (audioFormData.file) data.append('content', audioFormData.file);
 
     setSubmitLoading(true);
     try {
-      if (isEditMode && currentAudioId) {
+      if (isEditMode && currentId) {
         data.append('_method', 'PUT');
-        await adminUpdateAudio(currentAudioId, data);
+        await adminUpdateAudio(currentId, data);
       } else {
         await adminAddAudio(data);
       }
-      setShowAddEditModal(false);
+      setShowAudioModal(false);
       if (selectedProject) handleSelectProject(selectedProject.project_id);
-      loadProjects();
-    } catch (error: any) {
-      console.error("Error submitting form:", error);
-    } finally {
-        setSubmitLoading(false);
-    }
-  };
-
-  const confirmDelete = (id: number, title: string, type: 'مقطع' | 'مشروع') => {
-    setDeleteModalConfig({ isOpen: true, id, title, type });
+      loadProjects(searchQuery);
+    } catch (error) { console.error(error); } 
+    finally { setSubmitLoading(false); }
   };
 
   const handleDelete = async () => {
@@ -131,18 +171,18 @@ const Podcasts: React.FC = () => {
       if (deleteModalConfig.type === 'مقطع') {
         await adminDeleteAudio(deleteModalConfig.id);
         if (selectedProject) handleSelectProject(selectedProject.project_id);
-      } else if (deleteModalConfig.type === 'مشروع') {
+      } else {
         await adminDeleteProject(deleteModalConfig.id);
         setSelectedProject(null);
         setAudioSegments([]);
+        loadProjects(searchQuery);
       }
       setDeleteModalConfig({ ...deleteModalConfig, isOpen: false });
-      loadProjects(); 
     } catch (error) { console.error(error); }
   };
 
   return (
-    <div className="p-2 font-expo rtl" dir="rtl">
+    <div className="font-expo min-h-screen" dir="rtl">
       <AdminPageHeader 
         total={projects.length} 
         title="المسموعات" 
@@ -151,130 +191,150 @@ const Podcasts: React.FC = () => {
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
         setStartSearch={setStartSearch}
-        btnLoading={loading}
-        onClick={openAddModal} 
+        btnLoading={loading && startSearch}
+        onClick={() => openAddAudio()} 
       />
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mt-8">
-        <div className="lg:col-span-4 space-y-4">
-          <h2 className="text-xl font-bold text-gray-800 mb-4">المشاريع</h2>
-          <div className="space-y-4 max-h-[70vh] overflow-y-auto pl-2">
-            {projects.map((project) => (
-              <div 
-                key={project.project_id}
-                onClick={() => handleSelectProject(project.project_id)}
-                className={`bg-white rounded-2xl p-4 border transition-all cursor-pointer hover:shadow-md ${selectedProject?.project_id === project.project_id ? 'border-blue-500 ring-1 ring-blue-500' : 'border-gray-100'}`}
-              >
-                <div className="flex items-center justify-between mb-4">
-                  <div className="flex items-center gap-2">
-                    <span className="bg-gray-50 text-gray-500 text-xs px-2 py-1 rounded-lg border border-gray-100">{project.audios_count} مقطع</span>
-                    <span className="text-gray-400 text-xs">النوع : نقد</span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <span className="font-bold text-gray-800">{project.project_title}</span>
-                    <div className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center overflow-hidden">
-                       <img src={project.project_image_cover} alt="" className="w-full h-full object-cover" />
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mt-10 px-4">
+        
+        <div className="lg:col-span-4 flex flex-col bg-white rounded-[15px] border border-gray-100 shadow-sm overflow-hidden h-[80vh]">
+          <h2 className="text-[22px] font-bold text-[#1E4D74] p-5 text-center border-b border-gray-50">المشاريع</h2>
+          <div className="flex-1 overflow-y-auto ltr-container" dir="ltr" style={{ scrollbarGutter: 'stable' }}>
+            <div dir="rtl" className="flex flex-col">
+              {projects.length > 0 ? projects.map((project) => (
+                <div 
+                  key={project.project_id}
+                  onClick={() => handleSelectProject(project.project_id)}
+                  className={`p-5 border-b border-gray-100 transition-all cursor-pointer hover:bg-gray-50  ${
+                    selectedProject?.project_id === project.project_id ? 'bg-[#E5E7EB]' : 'bg-white'
+                  }`}
+                >
+                  <div className="flex justify-between items-start mb-3">
+                    <div className="flex gap-3">
+                      <div className="w-14 h-14 rounded-lg bg-[#007BFF] flex items-center justify-center overflow-hidden shrink-0 shadow-sm">
+                        <img src={project.project_image_cover} alt="" className="w-full h-full object-cover" />
+                      </div>
+                      <div className="text-right">
+                        <h3 className="font-bold text-[#1E4D74] text-[18px]">{project.project_title}</h3>
+                        <p className="text-[#4B5563] text-[14px]">النوع : نقد</p>
+                      </div>
+                    </div>
+                    <div className="text-center text-[#1E4D74] text-[14px] font-medium leading-tight pr-5">
+                      {project.audios_count} <br /> مقطع
                     </div>
                   </div>
+                  <div className="text-[#1E4D74] text-[16px] font-medium space-y-1 text-center md:text-right md:pr-16">
+                    <p>تاريخ النشر : 12/2/2025</p>
+                    <p>المتحدث : د/ مصطفي سليم</p>
+                  </div>
                 </div>
-                <div className="text-right text-xs text-gray-400 space-y-1 pr-12">
-                  <p>تاريخ النشر : 12/2/2025</p>
-                  <p>المتحدث : مصطفي سليم</p>
-                </div>
-              </div>
-            ))}
+              )) : (
+                <div className="text-center py-10 text-gray-400">لا توجد مشاريع تطابق البحث</div>
+              )}
+            </div>
           </div>
-          <button className="w-full bg-[#1E4D74] text-white py-4 rounded-xl font-bold mt-4 hover:bg-opacity-90 shadow-lg transition-all">
-            إضافة مشروع
-          </button>
+          <div className="p-4 bg-white border-t border-gray-50">
+            <button onClick={openAddProject} className="w-full bg-[#007BFF] text-white py-3 rounded-[5px] font-bold hover:bg-blue-600 transition-all text-[18px] shadow-sm">إضافة مشروع</button>
+          </div>
         </div>
 
         <div className="lg:col-span-8 space-y-6">
-          <div className="bg-white rounded-2xl p-5 border border-gray-100 flex items-center justify-between shadow-sm">
-             <div className="flex gap-3">
-                <button className="bg-blue-600 text-white px-6 py-2 rounded-xl text-sm font-bold hover:bg-blue-700">تعديل المشروع</button>
-                <button onClick={() => confirmDelete(selectedProject?.project_id || 0, selectedProject?.project_title || '', 'مشروع')} className="bg-orange-500 text-white px-6 py-2 rounded-xl text-sm font-bold hover:bg-orange-600">
-                  حذف المشروع
-                </button>
-             </div>
-             <h3 className="text-xl font-bold text-gray-800">{selectedProject?.project_title || 'اختر مشروعاً'}</h3>
-          </div>
+          {selectedProject && (
+            <div className="bg-white rounded-[15px] p-6 border border-gray-100 flex items-center justify-between shadow-sm">
+              <h3 className="text-[22px] font-bold text-[#1E4D74]">{selectedProject.project_title}</h3>
+              <div className="flex gap-3">
+                <button onClick={openEditProject} className="bg-[#007BFF] text-white px-6 py-2 rounded-[5px] text-[15px] font-bold hover:bg-blue-600">تعديل المشروع</button>
+                <button onClick={() => setDeleteModalConfig({ isOpen: true, id: selectedProject.project_id, title: selectedProject.project_title, type: 'مشروع' })} className="bg-[#DB3D3D] text-white px-6 py-2 rounded-[5px] text-[15px] font-bold hover:bg-red-700">حذف المشروع</button>
+              </div>
+            </div>
+          )}
 
-          <div className="space-y-4">
-            {audioSegments.length > 0 ? audioSegments.map((segment) => (
-              <div key={segment.id || segment.audio_id} className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm hover:shadow-md transition-all">
-                <div className="flex items-start justify-between gap-6">
-                  <div className="flex flex-col items-center gap-3 min-w-[120px]">
-                    <span className="text-gray-400 font-medium tabular-nums">0:00/12:30</span>
-                    <button onClick={() => openEditModal(segment)} className="w-full bg-blue-600 text-white py-2 rounded-xl text-xs font-bold hover:bg-blue-700">تعديل المقطع</button>
-                    <button onClick={() => confirmDelete(segment.id || segment.audio_id, segment.title || segment.audio_title, 'مقطع')} className="w-full bg-red-500 text-white py-2 rounded-xl text-xs font-bold hover:bg-red-600">حذف المقطع</button>
-                  </div>
+          <div className="bg-white rounded-[15px] border border-gray-100 shadow-sm overflow-hidden">
+            {filteredAudios.length > 0 ? (
+              filteredAudios.map((segment, index) => (
+                <div 
+                  key={segment.audio_id} 
+                  className={`p-6 px-8 flex items-center justify-between gap-8 transition-all ${
+                    index % 2 === 0 ? 'bg-[#FFFFFF]' : 'bg-[#F9F9F9]'
+                  } ${index !== filteredAudios.length - 1 ? 'border-b border-gray-100' : ''}`}
+                >
                   <div className="flex-1 text-right">
-                    <h4 className="text-lg font-bold text-gray-800 mb-2">{segment.title || segment.audio_title}</h4>
-                    <p className="text-gray-500 text-sm leading-relaxed">{segment.details || segment.audio_details || segment.description}</p>
+                    <h4 className="text-[20px] font-bold text-[#1E4D74] mb-1">{segment.audio_title}</h4>
+                    <p className="text-[#6B7280] text-[16px] leading-relaxed line-clamp-2 font-medium">{segment.audio_details}</p>
+                  </div>
+                  <div className="flex flex-col gap-3 min-w-[140px] items-center">
+                    <span className="text-[#9CA3AF] text-[16px] font-bold tabular-nums">0:00/12:30</span>
+                    <div className="flex flex-col gap-2 w-full">
+                      <button onClick={() => openEditAudio(segment)} className="bg-[#007BFF] text-white py-2 rounded-[5px] text-[15px] font-bold hover:bg-blue-600">تعديل المقطع</button>
+                      <button onClick={() => setDeleteModalConfig({ isOpen: true, id: segment.audio_id, title: segment.audio_title, type: 'مقطع' })} className="bg-[#DB3D3D] text-white py-2 rounded-[5px] text-[15px] font-bold hover:bg-red-700">حذف المقطع</button>
+                    </div>
                   </div>
                 </div>
-              </div>
-            )) : (
-              <div className="text-center py-20 bg-gray-50 rounded-2xl border border-dashed border-gray-200">
-                <p className="text-gray-400">لا توجد مقاطع صوتية لهذا المشروع حالياً</p>
-                <button onClick={openAddModal} className="mt-4 text-blue-600 font-bold underline">إضافة أول مقطع</button>
+              ))
+            ) : (
+              <div className="text-center py-20 bg-gray-50">
+                <p className="text-gray-400">لا توجد مقاطع حالياً</p>
+                <button onClick={openAddAudio} className="mt-4 text-blue-600 font-bold underline">إضافة مقطع جديد</button>
               </div>
             )}
           </div>
         </div>
       </div>
 
-      {showAddEditModal && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-[110] p-4">
-          <div className="bg-white rounded-[32px] p-10 w-full max-w-xl shadow-2xl relative">
-            <h2 className="text-2xl font-bold text-[#1E4D74] text-center mb-8">{isEditMode ? 'تعديل مقطع' : 'إضافة مقطع'}</h2>
-            <div className="space-y-5">
-              <input type="text" placeholder="عنوان المقطع" value={formData.title} onChange={(e) => setFormData({ ...formData, title: e.target.value })} className="w-full px-6 py-4 bg-gray-50 border border-gray-100 rounded-2xl text-right outline-none focus:ring-2 focus:ring-blue-500/20" />
-              <textarea placeholder="تفاصيل المقطع" value={formData.details} onChange={(e) => setFormData({ ...formData, details: e.target.value })} rows={4} className="w-full px-6 py-4 bg-gray-50 border border-gray-100 rounded-2xl text-right outline-none focus:ring-2 focus:ring-blue-500/20 resize-none" />
+      {showProjectModal && (
+        <div className="fixed inset-0 bg-black/40 backdrop-blur-[2px] flex items-center justify-center z-[150] p-4">
+          <div className="bg-white rounded-[25px] p-10 w-full max-w-lg shadow-2xl relative">
+            <h2 className="text-[26px] font-bold text-[#1E4D74] text-center mb-10">{isEditMode ? 'تعديل مشروع' : 'إضافة مشروع'}</h2>
+            <div className="space-y-6">
+              <input type="text" placeholder="عنوان المشروع" value={projectFormData.title} onChange={(e) => setProjectFormData({ ...projectFormData, title: e.target.value })} className="w-full px-6 py-4 bg-[#F3F4F6] border-none rounded-[15px] text-right outline-none text-[#1E4D74] font-bold" />
               <div className="relative">
-                <select value={formData.project_id} onChange={(e) => setFormData({ ...formData, project_id: e.target.value })} className="w-full px-6 py-4 bg-gray-50 border border-gray-100 rounded-2xl text-right outline-none appearance-none focus:ring-2 focus:ring-blue-500/20">
-                  <option value="">مشروع المقطع</option>
-                  {projects.map((p) => <option key={p.project_id} value={p.project_id}>{p.project_title}</option>)}
-                </select>
-                <div className="absolute left-6 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400">
-                  <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" /></svg>
-                </div>
-              </div>
-              <div className="relative group">
-                <input type="file" onChange={(e) => setFormData({...formData, file: e.target.files ? e.target.files[0] : null})} className="hidden" id="audio-upload" accept="audio/*" />
-                <label htmlFor="audio-upload" className="w-full flex items-center justify-center gap-3 px-6 py-4 bg-[#4A6D8C] text-white rounded-2xl cursor-pointer hover:bg-opacity-90 font-bold">
-                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg>
-                  {formData.file ? formData.file.name : 'ارفع المقطع'}
+                <input type="file" onChange={(e) => setProjectFormData({...projectFormData, image: e.target.files?.[0] || null})} className="hidden" id="proj-img-up" accept="image/*" />
+                <label htmlFor="proj-img-up" className="w-full flex items-center justify-center gap-3 px-6 py-4 bg-[#4A6D8C] text-white rounded-[15px] cursor-pointer hover:bg-opacity-90 font-bold">
+                   {projectFormData.image ? projectFormData.image.name : 'ارفع غلاف المشروع'}
                 </label>
               </div>
-              
-              <button 
-                onClick={handleSubmit} 
-                disabled={submitLoading}
-                className={`w-full text-white py-5 rounded-2xl font-bold text-lg mt-4 shadow-lg transition-all flex items-center justify-center gap-2 ${submitLoading ? 'bg-blue-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'}`}
-              >
-                {submitLoading ? (
-                  <>
-                    <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                    </svg>
-                    جاري التحميل...
-                  </>
-                ) : (
-                  isEditMode ? 'حفظ التعديلات' : 'نشر المقطع'
-                )}
+              <button onClick={handleSubmitProject} disabled={submitLoading} className="w-full bg-[#007BFF] text-white py-4 rounded-[15px] font-bold shadow-lg text-[20px] mt-4">
+                {submitLoading ? 'جاري الحفظ...' : isEditMode ? 'حفظ التعديلات' : 'إنشاء المشروع'}
               </button>
             </div>
-            <button onClick={() => setShowAddEditModal(false)} className="absolute top-6 left-6 text-gray-300 hover:text-gray-500">
-              <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
-            </button>
+            <button onClick={() => setShowProjectModal(false)} className="absolute top-6 left-6 text-gray-400 text-2xl">✕</button>
           </div>
         </div>
       )}
 
-      <DeleteModal isOpen={deleteModalConfig.isOpen} onClose={() => setDeleteModalConfig({ ...deleteModalConfig, isOpen: false })} onConfirm={handleDelete} itemTitle={deleteModalConfig.title} itemType={deleteModalConfig.type} />
+      {showAudioModal && (
+        <div className="fixed inset-0 bg-black/40 backdrop-blur-[2px] flex items-center justify-center z-[150] p-4">
+          <div className="bg-white rounded-[25px] p-10 w-full max-w-lg shadow-2xl relative">
+            <h2 className="text-[26px] font-bold text-[#1E4D74] text-center mb-10">{isEditMode ? 'تعديل مقطع' : 'إضافة مقطع'}</h2>
+            <div className="space-y-6">
+              <input type="text" placeholder="عنوان المقطع" value={audioFormData.title} onChange={(e) => setAudioFormData({ ...audioFormData, title: e.target.value })} className="w-full px-6 py-4 bg-[#F3F4F6] border-none rounded-[15px] text-right outline-none text-[#1E4D74] font-bold" />
+              <textarea placeholder="تفاصيل المقطع" value={audioFormData.details} onChange={(e) => setAudioFormData({ ...audioFormData, details: e.target.value })} rows={4} className="w-full px-6 py-4 bg-[#F3F4F6] border-none rounded-[15px] text-right outline-none resize-none text-[#1E4D74] font-medium" />
+              <select value={audioFormData.project_id} onChange={(e) => setAudioFormData({ ...audioFormData, project_id: e.target.value })} className="w-full px-6 py-4 bg-[#F3F4F6] border-none rounded-[15px] text-right outline-none appearance-none font-bold text-[#1E4D74]">
+                <option value="">مشروع المقطع</option>
+                {projects.map((p) => <option key={p.project_id} value={p.project_id}>{p.project_title}</option>)}
+              </select>
+              <div className="relative">
+                <input type="file" onChange={(e) => setAudioFormData({...audioFormData, file: e.target.files?.[0] || null})} className="hidden" id="aud-file-up" accept="audio/*" />
+                <label htmlFor="aud-file-up" className="w-full flex items-center justify-center gap-3 px-6 py-4 bg-[#4A6D8C] text-white rounded-[15px] cursor-pointer font-bold">
+                  {audioFormData.file ? audioFormData.file.name : 'ارفع المقطع'}
+                </label>
+              </div>
+              <button onClick={handleSubmitAudio} disabled={submitLoading} className="w-full bg-[#007BFF] text-white py-4 rounded-[15px] font-bold shadow-lg text-[20px] mt-4">
+                {submitLoading ? 'جاري الحفظ...' : isEditMode ? 'حفظ التعديلات' : 'نشر المقطع'}
+              </button>
+            </div>
+            <button onClick={() => setShowAudioModal(false)} className="absolute top-6 left-6 text-gray-400 text-2xl">✕</button>
+          </div>
+        </div>
+      )}
+
+      <DeleteModal 
+        isOpen={deleteModalConfig.isOpen} 
+        onClose={() => setDeleteModalConfig({ ...deleteModalConfig, isOpen: false })} 
+        onConfirm={handleDelete} 
+        itemTitle={deleteModalConfig.title} 
+        itemType={deleteModalConfig.type} 
+      />
     </div>
   );
 };

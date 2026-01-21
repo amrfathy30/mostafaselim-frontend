@@ -12,8 +12,10 @@ export const getAudioById = async (id: number | string) => {
   return response.data;
 };
 
-export const adminGetAudios = async () => {
-    const response = await axiosInstance.get('/admin/projects');
+export const adminGetAudios = async (keyword: string = '') => {
+    const response = await axiosInstance.get('/admin/projects', {
+        params: { keyword: keyword || undefined }
+    });
     return response.data;
 };
 
@@ -36,13 +38,17 @@ export const adminUpdateAudio = async (id: number | string, data: FormData) => {
     return response.data;
 };
 
-export const adminAddProject = async (data: any) => {
-    const response = await axiosInstance.post('/admin/project/store', data);
+export const adminAddProject = async (data: FormData) => {
+    const response = await axiosInstance.post('/admin/project/store', data, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+    });
     return response.data;
 };
 
-export const adminUpdateProject = async (id: number | string, data: any) => {
-    const response = await axiosInstance.post(`/admin/project/update/${id}`, data);
+export const adminUpdateProject = async (id: number | string, data: FormData) => {
+    const response = await axiosInstance.post(`/admin/project/update/${id}`, data, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+    });
     return response.data;
 };
 
