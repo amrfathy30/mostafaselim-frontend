@@ -162,21 +162,9 @@ const handleSaveUserInfo = async () => {
     }
 };
 
-  const handleVerifyOldPassword = () => {
-    console.log('Verifying old password:', passwordData.oldPassword);
-    setPasswordStep(2);
-  };
 
-  const handleResetPassword = () => {
-    if (passwordData.newPassword !== passwordData.confirmPassword) {
-      alert('كلمة المرور غير متطابقة');
-      return;
-    }
-    console.log('Resetting password');
-    setShowPasswordReset(false);
-    setPasswordStep(1);
-    setPasswordData({ oldPassword: '', newPassword: '', confirmPassword: '' });
-  };
+
+
 
   return (
     <>
@@ -360,12 +348,6 @@ const handleSaveUserInfo = async () => {
               >
                 حفظ التغييرات
               </button>
-              <button
-                onClick={() => setShowPasswordReset(true)}
-                className="bg-[#F97316] text-white px-8 py-3 rounded-lg hover:bg-[#F97316]/90 transition-colors"
-              >
-                إعادة تعيين كلمة المرور
-              </button>
             </div>
           </div>
         </div>
@@ -521,78 +503,7 @@ const handleSaveUserInfo = async () => {
         </div>
       )}
 
-      {/* Password Reset Modal */}
-      {showPasswordReset && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-[12px] p-6 w-full max-w-[400px] mx-4 relative">
-            <button
-              onClick={() => {
-                setShowPasswordReset(false);
-                setPasswordStep(1);
-                setPasswordData({ oldPassword: '', newPassword: '', confirmPassword: '' });
-              }}
-              className="absolute top-4 left-4 text-gray-400 hover:text-gray-600 text-xl"
-            >
-              ✕
-            </button>
 
-            <h2 className="text-[20px] font-bold text-primary text-center mb-6">
-              إعادة تعيين كلمة المرور
-            </h2>
-
-            {/* Step 1: Verify Old Password */}
-            {passwordStep === 1 && (
-              <div className="space-y-4">
-                <p className="text-[14px] text-[#6B7280] text-center mb-4">
-                  الخطوة 1: تحقق من كلمة المرور الحالية
-                </p>
-                <input
-                  type="password"
-                  placeholder="كلمة المرور الحالية"
-                  value={passwordData.oldPassword}
-                  onChange={(e) => setPasswordData({ ...passwordData, oldPassword: e.target.value })}
-                  className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg text-right outline-none focus:border-primary"
-                />
-                <button
-                  onClick={handleVerifyOldPassword}
-                  className="w-full bg-primary text-white py-3 rounded-lg hover:bg-primary/90 transition-colors"
-                >
-                  تحقق
-                </button>
-              </div>
-            )}
-
-            {/* Step 2: Set New Password */}
-            {passwordStep === 2 && (
-              <div className="space-y-4">
-                <p className="text-[14px] text-[#6B7280] text-center mb-4">
-                  الخطوة 2: أدخل كلمة المرور الجديدة
-                </p>
-                <input
-                  type="password"
-                  placeholder="كلمة المرور الجديدة"
-                  value={passwordData.newPassword}
-                  onChange={(e) => setPasswordData({ ...passwordData, newPassword: e.target.value })}
-                  className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg text-right outline-none focus:border-primary"
-                />
-                <input
-                  type="password"
-                  placeholder="تأكيد كلمة المرور"
-                  value={passwordData.confirmPassword}
-                  onChange={(e) => setPasswordData({ ...passwordData, confirmPassword: e.target.value })}
-                  className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg text-right outline-none focus:border-primary"
-                />
-                <button
-                  onClick={handleResetPassword}
-                  className="w-full bg-primary text-white py-3 rounded-lg hover:bg-primary/90 transition-colors"
-                >
-                  تغيير كلمة المرور
-                </button>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
     </>
   );
 };
