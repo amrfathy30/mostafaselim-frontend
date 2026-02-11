@@ -56,10 +56,10 @@ const AdminLogin: React.FC = () => {
       return;
     }
  
-    if (!passwordRegex.test(password)) {
-      setError('كلمة المرور يجب أن لا تقل عن ٨ احرف وتحتوي على حرف كبير، حرف صغير، رقم، ورمز خاص');
-      setLoading(false); return;
-    }
+    // if (!passwordRegex.test(password)) {
+    //   setError('كلمة المرور يجب أن لا تقل عن ٨ احرف وتحتوي على حرف كبير، حرف صغير، رقم، ورمز خاص');
+    //   setLoading(false); return;
+    // }
 
     try {
       const response = await adminLogin({ email, password });

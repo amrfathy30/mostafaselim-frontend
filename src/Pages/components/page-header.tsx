@@ -37,7 +37,7 @@ const AdminPageHeader = (data: HeaderInfo) => {
         />
    
         <Button
-          className='w-full flex flex-col md:flex-row items-center justify-center h-[52px] space-x-2'
+          className='w-full flex flex-col md:flex-row items-center justify-center space-x-2'
           onClick={() => data.setStartSearch(true)} 
           type={'tertiary'}
           loading={data?.btnLoading}

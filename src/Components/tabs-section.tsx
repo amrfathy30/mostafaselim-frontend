@@ -1,41 +1,26 @@
-import React from 'react';
-import {Button} from '../Components/Common/button'
+import { Button } from "../Components/Common/button";
+
 interface TabsProps {
-    items: string[];
-    activeItem: number;
-    articlesRef:any,
-    booksRef:any,
-    podcastsRef:any,
+  items: string[];
+  activeItem: number;
+  setActiveItem: (index: number) => void;
 }
-export default function TabsSection({ items, activeItem,articlesRef,booksRef,podcastsRef }: TabsProps) {
 
-  const scrollToSection=(index)=>{
-  const targetRef= index ==0 ?articlesRef :index==1?podcastsRef:booksRef
-
-  if (targetRef && targetRef.current) {
-    // 1. Get the distance of the element from the top of the document
-    const elementPosition = targetRef.current.getBoundingClientRect().top + window.pageYOffset;
-    
-    // 2. Define an offset (e.g., 100px) so the content isn't touching the very top
-    // This is especially important if you have a sticky header.
-    const offset = 150; 
-
-    window.scrollTo({
-      top: elementPosition - offset,
-      behavior: 'smooth'
-    });
-  }
-  }
+export default function TabsSection({
+  items,
+  activeItem,
+  setActiveItem,
+}: TabsProps) {
   return (
     <div className="flex justify-center items-center gap-2 md:gap-4 mb-8">
-      {items.map((item,index) => (
+      {items.map((item, index) => (
         <Button
           key={item}
-          onClick={() => scrollToSection(index)}
-          type={activeItem === index ? 'primary' : 'secondary'}
+          onClick={() => setActiveItem(index)}
+          type={activeItem === index ? "primary" : "secondary"}
           className={`cursor-pointer px-4 md:px-8 !h-[45px] !text-[18px] !rounded-sm transition-all ${
-            activeItem !== index 
-              ? "!bg-white !text-[#43617E] border-none" 
+            activeItem !== index
+              ? "!bg-white !text-[#43617E] border-none"
               : "!bg-[#43617E] text-white"
           }`}
         >

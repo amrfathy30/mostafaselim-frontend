@@ -105,7 +105,7 @@ const Blog: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 font-expo">
             {blogs.map((blog) => (
               <div key={blog.blog_id} className="relative bg-white rounded-[12px] overflow-hidden border border-gray-200 p-3">
-                <div className='absolute top-6 w-fit p-3 h-[60px] bg-gradient-to-r to-[#007FFF] from-[#3A5F7D] text-white text-lg font-bold rounded-tr-[20px] rounded-bl-[30px] flex items-center justify-center z-10'>
+                <div className='absolute top-6 w-fit p-3 h-[60px] bg-gradient-to-r to-[#007FFF] from-[#3A5F7D] text-white font-bold rounded-tr-[20px] rounded-bl-[30px] flex items-center justify-center z-10'>
                   {blog?.blog_classification}
                 </div>
                 <img className='w-full h-[310px] rounded-[12px] object-cover' src={blog?.blog_image_cover} alt={blog?.blog_title}/>
@@ -119,10 +119,10 @@ const Blog: React.FC = () => {
                   </div>
 
                   <div className="flex items-center justify-center gap-3">
-                    <Button className='h-[52px] w-1/2' onClick={() => navigate(`/admin/blog/edit/${blog.blog_id}`)} type="primary">
+                    <Button className='w-1/2' onClick={() => navigate(`/admin/blog/edit/${blog.blog_id}`)} type="primary">
                       تعديل المنشور
                     </Button>
-                    <Button className='h-[52px] w-1/2' onClick={() => openDeleteModal(blog.blog_id, blog.blog_title)} type="danger">
+                    <Button className='w-1/2' onClick={() => openDeleteModal(blog.blog_id, blog.blog_title)} type="danger">
                       حذف المنشور
                     </Button>
                   </div>
