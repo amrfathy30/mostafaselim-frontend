@@ -44,7 +44,7 @@ const Header = ({
         {/* Social Icons - Visible on Desktop AND Tablet (md breakpoint and up) */}
         {/* dir="ltr" ensures the order is TikTok -> Facebook -> Instagram from Left to Right */}
         <div className="hidden md:flex items-center gap-3 text-secondary" dir="ltr">
-          <a href="#" className="hover:opacity-80 transition-opacity">
+          <a href={settings?.linkedin || "#"} target="_blank" rel="noreferrer" className="hover:opacity-80 transition-opacity">
             <TikTokIcon color='#3A5F7D' className="w-8 h-8" />
           </a>
           <a href={settings?.facebook || "#"} target="_blank" rel="noreferrer" className="hover:opacity-80 transition-opacity">
@@ -87,7 +87,7 @@ const Header = ({
 
           {/* Social Icons in Dropdown - Only visible on Mobile (< md) */}
           <div className="flex md:hidden items-center justify-center gap-6 pt-4 border-t border-gray-100 text-secondary" dir="ltr">
-            <a href="#" className="hover:opacity-80 transition-opacity">
+            <a href={settings?.linkedin || "#"} target="_blank" rel="noreferrer" className="hover:opacity-80 transition-opacity">
               <TikTokIcon color='#3A5F7D' className="w-10 h-10" />
             </a>
             <a href={settings?.facebook || "#"} target="_blank" rel="noreferrer" className="hover:opacity-80 transition-opacity">

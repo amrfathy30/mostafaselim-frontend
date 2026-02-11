@@ -69,7 +69,7 @@ const Footer= ({
         </div>
 
         <div className="flex lg:hidden items-center justify-center gap-6 mb-10" dir="ltr">
-          <a href="#" className="hover:opacity-80 transition-opacity">
+          <a href={settings?.linkedin || "#"} target="_blank" rel="noreferrer" className="hover:opacity-80 transition-opacity">
             <TikTokIcon size={32} />
           </a>
           <a href={settings?.facebook || "#"} target="_blank" rel="noreferrer" className="hover:opacity-80 transition-opacity">
@@ -98,7 +98,7 @@ const Footer= ({
           </nav>
 
           <div className="flex items-center gap-3" dir="ltr">
-          <a href="#" className="hover:opacity-80 transition-opacity">
+          <a href={settings?.linkedin || "#"} target="_blank" rel="noreferrer" className="hover:opacity-80 transition-opacity">
               <TikTokIcon size={32} />
             </a>
             <a href={settings?.facebook || "#"} target="_blank" rel="noreferrer" className="hover:opacity-80 transition-opacity">
