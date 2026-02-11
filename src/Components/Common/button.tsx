@@ -1,29 +1,36 @@
-import React from 'react'
-import { SpinnerLoader } from '../../icons/spinner'
+import React from "react";
+import { SpinnerLoader } from "../../icons/spinner";
 
 type Props = {
-  children: React.ReactNode
-  className?: string
-  disabled?: boolean
-  loading?: boolean
-  onClick: React.ButtonHTMLAttributes<HTMLButtonElement | HTMLLabelElement>['onClick']
-  type: 'primary' | 'secondary' | 'danger' |'tertiary'
-}
+  children: React.ReactNode;
+  className?: string;
+  disabled?: boolean;
+  loading?: boolean;
+  onClick: React.ButtonHTMLAttributes<
+    HTMLButtonElement | HTMLLabelElement
+  >["onClick"];
+  type: "primary" | "secondary" | "danger" | "tertiary";
+};
 
 export const Button = (props: Props) => {
-  const { onClick, className, children ,loading,disabled,type} = props
+  const { onClick, className, children, loading, disabled, type } = props;
 
   return (
     <button
-      className={`${className} py-2 font-bold text-[#F5F5F5] rounded-[5px] disabled:opacity-[0.6] disabled:cursor-not-allowed
-      ${type=='primary'?'bg-[#007FFF]':
-        type=='danger'?'bg-[#DB3D3D]':
-        type=='tertiary'?'bg-[#3A5F7D]':
-      'bg-transparent border border-[#F5F5F5]'}`}
+      className={`${className} hover:cursor-pointer py-2 font-bold text-[#F5F5F5] rounded-[5px] disabled:opacity-[0.6] disabled:cursor-not-allowed
+      ${
+        type == "primary"
+          ? "bg-[#007FFF]"
+          : type == "danger"
+            ? "bg-[#DB3D3D]"
+            : type == "tertiary"
+              ? "bg-[#3A5F7D]"
+              : "bg-transparent border border-[#F5F5F5]"
+      }`}
       disabled={disabled}
       onClick={onClick}
     >
-      {loading?<SpinnerLoader/>:children}
+      {loading ? <SpinnerLoader /> : children}
     </button>
-  )
-}
+  );
+};
