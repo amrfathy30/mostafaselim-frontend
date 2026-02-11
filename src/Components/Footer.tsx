@@ -78,27 +78,35 @@ const Footer = ({ settings }) => {
           className="flex lg:hidden items-center justify-center gap-6 mb-10"
           dir="ltr"
         >
-          <a href="#" className="hover:opacity-80 transition-opacity">
-        <div className="flex lg:hidden items-center justify-center gap-6 mb-10" dir="ltr">
-          <a href={settings?.linkedin || "#"} target="_blank" rel="noreferrer" className="hover:opacity-80 transition-opacity">
-            <TikTokIcon size={32} />
-          </a>
-          <a
-            href={settings?.facebook || "#"}
-            target="_blank"
-            rel="noreferrer"
-            className="hover:opacity-80 transition-opacity"
+          <div
+            className="flex lg:hidden items-center justify-center gap-6 mb-10"
+            dir="ltr"
           >
-            <Facebook size={32} />
-          </a>
-          <a
-            href={settings?.instagram || "#"}
-            target="_blank"
-            rel="noreferrer"
-            className="hover:opacity-80 transition-opacity"
-          >
-            <Instagram size={32} />
-          </a>
+            <a
+              href={settings?.linkedin || "#"}
+              target="_blank"
+              rel="noreferrer"
+              className="hover:opacity-80 transition-opacity"
+            >
+              <TikTokIcon size={32} />
+            </a>
+            <a
+              href={settings?.facebook || "#"}
+              target="_blank"
+              rel="noreferrer"
+              className="hover:opacity-80 transition-opacity"
+            >
+              <Facebook size={32} />
+            </a>
+            <a
+              href={settings?.instagram || "#"}
+              target="_blank"
+              rel="noreferrer"
+              className="hover:opacity-80 transition-opacity"
+            >
+              <Instagram size={32} />
+            </a>
+          </div>
         </div>
 
         <div className="hidden lg:flex items-center justify-between pt-8 border-t border-white/20">
@@ -120,7 +128,12 @@ const Footer = ({ settings }) => {
             ))}
           </nav>
           <div className="flex items-center gap-3" dir="ltr">
-          <a href={settings?.linkedin || "#"} target="_blank" rel="noreferrer" className="hover:opacity-80 transition-opacity">
+            <a
+              href={settings?.linkedin || "#"}
+              target="_blank"
+              rel="noreferrer"
+              className="hover:opacity-80 transition-opacity"
+            >
               <TikTokIcon size={32} />
             </a>
             <a
