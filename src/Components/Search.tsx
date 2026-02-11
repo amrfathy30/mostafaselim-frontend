@@ -21,7 +21,7 @@ const Search: React.FC<SearchProps> = ({ placeholder, value, onChange, onSearch 
 
       <button
         type="submit"
-        className="w-full md:w-[186px] h-[50px] md:h-[56px] bg-[#007FFF] text-white rounded-[5px] font-bold text-[18px] md:text-[20px] flex items-center justify-center gap-2 hover:bg-blue-600 active:bg-blue-700 transition-all"
+        className="w-full md:w-[186px] h-[50px] md:h-[56px] bg-[#007FFF] text-white rounded-[5px] font-bold text-[18px] md:text-[20px] flex items-center justify-center gap-2 hover:bg-blue-600 active:bg-blue-700 transition-all cursor-pointer"
       >
         <img src={searchIcon} alt="search" className="w-5 h-5 object-contain" />
         <span>بحث</span>

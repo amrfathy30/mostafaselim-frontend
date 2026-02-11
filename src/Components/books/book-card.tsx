@@ -45,7 +45,7 @@ export default function BookCard({book, variant = 'detailed'}: Props){
     {variant === 'simple' ? (
         <Button 
             type="primary" 
-            className="!h-[45px] w-[145px] !text-[14px]"
+            className="!h-[45px] w-[145px] !text-[14px] cursor-pointer"
             onClick={() =>openExternalLink(book?.book_link)}   
         >
             قراءة الكتاب
@@ -54,13 +54,13 @@ export default function BookCard({book, variant = 'detailed'}: Props){
         <>
             <Button 
                 type="primary" 
-                className="!h-[44px] !text-[14px] !md:text-[16px] font-expo rounded-md !border-none !text-white flex-1 min-w-[150px] shadow-sm rounded-sm"
+                className="!h-[44px] !text-[14px] !md:text-[16px] font-expo rounded-md !border-none !text-white flex-1 min-w-[150px] shadow-sm rounded-sm cursor-pointer"
                 onClick={() =>openExternalLink(book?.book_link)}
             >
                 قراءة الكتاب
             </Button>
             <button 
-                className="text-[#007bff] text-[14px] font-bold font-expo bg-transparent border-none hover:underline whitespace-nowrap flex-1"
+                className="text-[#007bff] text-[14px] font-bold font-expo bg-transparent border-none hover:underline whitespace-nowrap flex-1 cursor-pointer"
                onClick={() => navigate(`/book/${book.book_id}`)}
             >
                 معلومات الكتاب

@@ -67,7 +67,7 @@ const Articles: React.FC = () => {
           />
           <button 
             type="submit"
-            className="bg-[#007FFF] text-white w-full md:w-[150px] xxl:w-[186px] h-[48px] xxl:h-[56px] rounded-[5px] font-bold flex items-center justify-center gap-2 hover:bg-[#0066CC] transition-all"
+            className="bg-[#007FFF] text-white w-full md:w-[150px] xxl:w-[186px] h-[48px] xxl:h-[56px] rounded-[5px] font-bold flex items-center justify-center gap-2 hover:bg-[#0066CC] transition-all cursor-pointer"
           >
             <span>بحث</span>
           </button>
