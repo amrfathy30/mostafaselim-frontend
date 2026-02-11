@@ -24,7 +24,7 @@ const generatePages = (current: number, total: number): (number | string)[] => {
 };
 
 const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages, onPageChange }) => {
-  const buttonClass = "w-10 h-10 md:w-12 md:h-12 rounded-[5px] font-bold text-[16px] md:text-[18px] transition-colors flex items-center justify-center";
+  const buttonClass = "w-10 h-10 md:w-12 md:h-12 rounded-[5px] font-bold text-[16px] md:text-[18px] transition-colors flex items-center justify-center cursor-pointer";
   
   return (
     <div className="flex justify-center items-center gap-2 md:gap-3 py-8 md:py-12">

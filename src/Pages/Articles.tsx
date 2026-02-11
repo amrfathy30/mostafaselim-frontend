@@ -89,7 +89,7 @@ const Articles: React.FC = () => {
             <button
               className="w-full md:w-auto bg-[#007bff] hover:bg-blue-600 text-white h-[52px] px-10 
                        flex items-center justify-center gap-2 transition-colors font-expo 
-                       rounded-md md:rounded-r-none md:rounded-l-md shadow-md shrink-0"
+                       rounded-md md:rounded-r-none md:rounded-l-md shadow-md shrink-0 cursor-pointer"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"

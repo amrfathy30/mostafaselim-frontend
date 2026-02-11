@@ -60,7 +60,7 @@ const SingleBookPage = () => {
                 </div>
                 <Button
                     type="primary"
-                    className="!h-[48px] px-20 !text-[16px] font-bold rounded-md !bg-[#007bff] !border-none !text-white shadow-md hover:!bg-blue-600 active:scale-95 transition-all"
+                    className="!h-[48px] px-20 !text-[16px] font-bold rounded-md !bg-[#007bff] !border-none !text-white shadow-md hover:!bg-blue-600 active:scale-95 transition-all cursor-pointer"
                     onClick={() => openExternalLink(book?.book_link)}
                 >
                     قراءة الكتاب
