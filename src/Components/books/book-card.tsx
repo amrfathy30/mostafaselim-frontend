@@ -46,30 +46,27 @@ export default function BookCard({ book, variant = "detailed" }: Props) {
         {book.publishing_house}
       </p>
 
-      <div
-        className="mt-auto flex items-center justify-center w-full gap-4 px-2 pb-2"
-        dir="rtl"
-      >
-        {variant === "simple" ? (
-          <Button
-            type="primary"
-            className="!h-[45px] w-[145px] !text-[14px]"
-            onClick={() => openExternalLink(book?.book_link)}
-          >
+<div className="mt-auto flex items-center justify-center w-full gap-4 px-2 pb-2" dir="rtl">
+    {variant === 'simple' ? (
+        <Button 
+            type="primary" 
+            className="!h-[45px] w-[145px] !text-[14px] cursor-pointer"
+            onClick={() =>openExternalLink(book?.book_link)}   
+        >
             قراءة الكتاب
-          </Button>
-        ) : (
-          <>
-            <Button
-              type="primary"
-              className="!h-[44px] !text-[14px] !md:text-[16px] font-expo rounded-md !border-none !text-white flex-1 min-w-[150px] shadow-sm rounded-sm"
-              onClick={() => openExternalLink(book?.book_link)}
+        </Button>
+    ) : (
+        <>
+            <Button 
+                type="primary" 
+                className="!h-[44px] !text-[14px] !md:text-[16px] font-expo rounded-md !border-none !text-white flex-1 min-w-[150px] shadow-sm rounded-sm cursor-pointer"
+                onClick={() =>openExternalLink(book?.book_link)}
             >
               قراءة الكتاب
             </Button>
-            <button
-              className="text-[#007bff] text-[14px] font-bold font-expo bg-transparent border-none hover:underline whitespace-nowrap flex-1"
-              onClick={() => navigate(`/book/${book.book_id}`)}
+            <button 
+                className="text-[#007bff] text-[14px] font-bold font-expo bg-transparent border-none hover:underline whitespace-nowrap flex-1 cursor-pointer"
+               onClick={() => navigate(`/book/${book.book_id}`)}
             >
               معلومات الكتاب
             </button>

@@ -57,7 +57,7 @@ const BlogCard: React.FC<Props> = ({ item }) => {
         
         <div className="w-full flex justify-start mt-auto">
           <button  onClick={() => navigate(`/blogs/${item.id}`)}
-           className="w-[186px] h-[52px] bg-[#007BFF] text-white text-center rounded-[5px] text-[16px] font-bold hover:bg-[#0069D9] transition-colors shadow-sm">
+           className="w-[186px] h-[52px] bg-[#007BFF] text-white text-center rounded-[5px] text-[16px] font-bold hover:bg-[#0069D9] transition-colors shadow-sm cursor-pointer">
             قراءة المنشور
           </button>
         </div>

@@ -32,7 +32,7 @@ const ArticleCard: React.FC<Props> = ({ item }) => {
 
       <div className="mt-auto w-full flex justify-start">
         <Link to={`/articles/${articleId}`}>
-          <button className="bg-[#007FFF] text-white rounded-[5px] font-bold transition-all hover:bg-blue-600 w-[186px] h-[45px] xxl:h-[52px] text-[14px] xxl:text-[16px]">
+          <button className="bg-[#007FFF] text-white rounded-[5px] font-bold transition-all hover:bg-blue-600 w-[186px] h-[45px] xxl:h-[52px] text-[14px] xxl:text-[16px] cursor-pointer">
             قراءة المقالة
           </button>
         </Link>

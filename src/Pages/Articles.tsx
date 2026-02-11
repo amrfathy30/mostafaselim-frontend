@@ -58,34 +58,31 @@ const Articles: React.FC = () => {
       dir="rtl"
     >
       <div className="container mx-auto px-4 md:max-w-[768px] lg:max-w-[1280px] xl:max-w-[1440px] xxl:max-w-[1600px]">
-        <div className="flex justify-center items-center mb-8 xxl:mb-[50px]">
-          <div className="flex items-center gap-2 relative">
-            <img
-              src={quoteIcon}
-              alt="quote"
-              className="w-5 xl:w-8 xxl:w-[35px] h-auto -translate-y-2"
-            />
-            <h1 className="text-xl md:text-2xl xl:text-3xl xxl:text-[40px] font-bold text-[#3A5F7D]">
-              المقالات
-            </h1>
-            <img
-              src={quoteIcon}
-              alt="quote"
-              className="w-5 xl:w-8 xxl:w-[35px] h-auto translate-y-2 transform scale-[-1]"
-            />
+        <div className="flex flex-col items-center mb-8 md:mb-12 xxl:mb-16">
+          <div className="flex justify-center items-center mb-8 xxl:mb-[50px]">
+            <div className="flex items-center gap-2 relative">
+              <img
+                src={quoteIcon}
+                alt="quote"
+                className="w-5 xl:w-8 xxl:w-[35px] h-auto -translate-y-2"
+              />
+              <h1 className="text-xl md:text-2xl xl:text-3xl xxl:text-[40px] font-bold text-[#3A5F7D]">
+                المقالات
+              </h1>
+              <img
+                src={quoteIcon}
+                alt="quote"
+                className="w-5 xl:w-8 xxl:w-[35px] h-auto translate-y-2 transform scale-[-1]"
+              />
+            </div>
           </div>
-        </div>
 
-        <div className="flex justify-center mb-12 px-4" dir="rtl">
-          <div className="w-full max-w-2xl flex flex-col md:flex-row items-center gap-2 md:gap-0">
+          <div className="w-full max-w-2xl flex flex-col md:flex-row  items-center gap-2 md:gap-0">
             <input
               type="text"
               placeholder="ابحث عن المقاله التي تريدها"
               value={search}
-              onChange={(e) => {
-                setSearch(e.target.value);
-                setCurrentPage(1);
-              }}
+              onChange={(e) => setSearch(e.target.value)}
               className="w-full h-[52px] px-6 text-right outline-none text-gray-600 font-expo bg-white 
   rounded-md md:rounded-l-none md:rounded-r-md border border-gray-200 shadow-sm"
             />

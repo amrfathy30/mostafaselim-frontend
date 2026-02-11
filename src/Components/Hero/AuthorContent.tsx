@@ -25,11 +25,11 @@ export function AuthorContent({data}) {
           <Button 
             type="primary" 
             onClick={() => openExternalLink(data?.user_cv)} 
-            className="w-full sm:w-[180px] md:w-[200px] lg:w-[232px] font-expo"
+            className="w-full sm:w-[180px] md:w-[200px] lg:w-[232px] font-expo cursor-pointer"
           >
             السيرة الذاتية
           </Button>
-          <Button type="secondary"  onClick={()=>handleNavigateToSection('work_history')} className="w-full sm:w-[180px] md:w-[200px] lg:w-[232px]">
+          <Button type="secondary"  onClick={()=>handleNavigateToSection('work_history')} className="w-full sm:w-[180px] md:w-[200px] lg:w-[232px] cursor-pointer">
             الأعمال السابقة
           </Button>
         </div>
