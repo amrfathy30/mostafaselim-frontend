@@ -79,6 +79,8 @@ const Footer = ({ settings }) => {
           dir="ltr"
         >
           <a href="#" className="hover:opacity-80 transition-opacity">
+        <div className="flex lg:hidden items-center justify-center gap-6 mb-10" dir="ltr">
+          <a href={settings?.linkedin || "#"} target="_blank" rel="noreferrer" className="hover:opacity-80 transition-opacity">
             <TikTokIcon size={32} />
           </a>
           <a
@@ -118,7 +120,7 @@ const Footer = ({ settings }) => {
             ))}
           </nav>
           <div className="flex items-center gap-3" dir="ltr">
-            <a href="#" className="hover:opacity-80 transition-opacity">
+          <a href={settings?.linkedin || "#"} target="_blank" rel="noreferrer" className="hover:opacity-80 transition-opacity">
               <TikTokIcon size={32} />
             </a>
             <a
