@@ -93,7 +93,7 @@ const Articles: React.FC = () => {
                 </div>
                 <div className="flex gap-3">
                   <Button
-                    className="w-1/2"
+                    className="w-1/2 hover:bg-primary"
                     onClick={() =>
                       navigate(`/admin/articles/edit/${article.article_id}`)
                     }
@@ -102,7 +102,7 @@ const Articles: React.FC = () => {
                     تعديل
                   </Button>
                   <Button
-                    className="w-1/2"
+                    className="w-1/2 hover:bg-red-500"
                     onClick={() => {
                       setSelectedArticle(article);
                       setIsModalOpen(true);

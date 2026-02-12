@@ -127,7 +127,7 @@ const AddArticle: React.FC = () => {
     <div className="font-expo pb-10 px-6" dir="rtl">
       <div className="mb-8 flex items-center justify-between">
         <h1 className="text-[32px] font-bold text-[#3A5F7D]">{isEditMode ? 'تعديل مقالة' : 'أضف مقالة'}</h1>
-        <button onClick={() => navigate('/admin/articles')} className="text-lg text-[#3A5F7D] font-bold">عودة</button>
+        <button onClick={() => navigate('/admin/articles')} className="text-lg text-[#3A5F7D] cursor-pointer hover:underline font-bold">عودة</button>
       </div>
 
       <div className="space-y-6">
@@ -156,8 +156,8 @@ const AddArticle: React.FC = () => {
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-[18px] text-primary font-bold">الفقرة {index + 1}</h3>
                   <div className="flex gap-2">
-                    <Button className='w-[140px] h-10' type='primary' onClick={()=>console.log('add video')}>أضف فيديو</Button>
-                    <Button className='w-[140px] h-10' type='primary' onClick={()=>console.log('add img')}>أضف صورة</Button>
+                    <Button className='w-[140px] h-10 hover:bg-primary' type='primary' onClick={()=>console.log('add video')}>أضف فيديو</Button>
+                    <Button className='w-[140px] h-10 hover:bg-primary' type='primary' onClick={()=>console.log('add img')}>أضف صورة</Button>
                   </div>
                 </div>
                 <div className="space-y-4">
@@ -170,8 +170,8 @@ const AddArticle: React.FC = () => {
         </div>
 
         <div className="flex items-center justify-center gap-4 py-4">
-          <Button className='w-[273px] h-[52px]' type='primary' onClick={addParagraph}>أضف فقرة</Button>
-          <Button className='w-[273px] h-[52px]' type='primary' onClick={handlePublish} loading={loading}>
+          <Button className='w-[273px] h-[52px] hover:bg-primary' type='primary' onClick={addParagraph}>أضف فقرة</Button>
+          <Button className='w-[273px] h-[52px] hover:bg-primary' type='primary' onClick={handlePublish} loading={loading}>
             {isEditMode ? 'تحديث المقالة' : 'نشر المقالة'}
           </Button>
         </div>

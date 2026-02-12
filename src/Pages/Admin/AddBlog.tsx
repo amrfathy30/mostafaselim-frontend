@@ -129,7 +129,7 @@ const AddBlog: React.FC = () => {
         <h1 className="text-[24px] font-extrabold text-[#3A5F7D]">
           {isEditMode ? 'تعديل مدونة' : 'أضف مدونة'}
         </h1>
-        <button onClick={() => navigate('/admin/blog')} className="text-[#3A5F7D] text-xl hover:text-primary transition-colors">
+        <button onClick={() => navigate('/admin/blog')} className="text-[#3A5F7D] text-xl hover:text-primary transition-colors cursor-pointer hover:underline">
           عودة
         </button>
       </div>
@@ -188,8 +188,8 @@ const AddBlog: React.FC = () => {
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-[18px] font-bold text-[#2B2B2B]">محتوي المنشور</h2>
             <div className="flex items-center gap-2">
-              <button className="bg-[#007FFF] text-white px-4 py-2 rounded-md text-[14px] font-bold shadow-sm">أضف فيديو</button>
-              <button className="bg-[#007FFF] text-white px-4 py-2 rounded-md text-[14px] font-bold shadow-sm">أضف صورة</button>
+              <button className="bg-[#007FFF] text-white px-4 py-2 rounded-md text-[14px] font-bold shadow-sm cursor-pointer hover:bg-primary">أضف فيديو</button>
+              <button className="bg-[#007FFF] text-white px-4 py-2 rounded-md text-[14px] font-bold shadow-sm cursor-pointer hover:bg-primary">أضف صورة</button>
             </div>
           </div>
           <div className="space-y-4">
@@ -214,7 +214,7 @@ const AddBlog: React.FC = () => {
           <button
             onClick={handlePublish}
             disabled={loading}
-            className="bg-[#007FFF] text-white px-20 py-4 rounded-xl font-bold hover:bg-[#2d4a62] transition-all shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
+            className="bg-[#007FFF] cursor-pointer text-white px-20 py-4 rounded-xl font-bold hover:bg-[#2d4a62] transition-all shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {loading ? 'جاري المعالجة...' : isEditMode ? 'تحديث المنشور' : 'نشر المنشور'}
           </button>

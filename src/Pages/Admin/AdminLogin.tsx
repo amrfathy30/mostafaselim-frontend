@@ -154,7 +154,7 @@ const AdminLogin: React.FC = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-primary hover:bg-primary/90 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full bg-primary hover:bg-[#2d4a62] cursor-pointer text-white font-bold py-3 px-6 rounded-lg transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {loading ? 'جاري التحميل...' : 'تسجيل الدخول'}
           </button>

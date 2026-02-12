@@ -37,7 +37,7 @@ const AdminPageHeader = (data: HeaderInfo) => {
         />
    
         <Button
-          className='w-full flex flex-col md:flex-row items-center justify-center space-x-2'
+          className='w-full flex flex-col md:flex-row items-center justify-center space-x-2  hover:bg-[#2d4a62]'
           onClick={() => data.setStartSearch(true)} 
           type={'tertiary'}
           loading={data?.btnLoading}
@@ -50,7 +50,7 @@ const AdminPageHeader = (data: HeaderInfo) => {
       </div>
 
       <Button
-        className='w-[230px] md:w-[221px] m-px'
+        className='w-[230px] md:w-[221px] m-px hover:bg-[#2d4a62]'
         type='tertiary'
         onClick={data.onClick ? data.onClick : () => navigate(`/admin/${data?.type}/add`)}
       >

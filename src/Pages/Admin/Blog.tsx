@@ -119,10 +119,10 @@ const Blog: React.FC = () => {
                   </div>
 
                   <div className="flex items-center justify-center gap-3">
-                    <Button className='w-1/2' onClick={() => navigate(`/admin/blog/edit/${blog.blog_id}`)} type="primary">
+                    <Button className='w-1/2 hover:bg-[#2d4a62]' onClick={() => navigate(`/admin/blog/edit/${blog.blog_id}`)} type="primary">
                       تعديل المنشور
                     </Button>
-                    <Button className='w-1/2' onClick={() => openDeleteModal(blog.blog_id, blog.blog_title)} type="danger">
+                    <Button className='w-1/2 hover:bg-red-500' onClick={() => openDeleteModal(blog.blog_id, blog.blog_title)} type="danger">
                       حذف المنشور
                     </Button>
                   </div>

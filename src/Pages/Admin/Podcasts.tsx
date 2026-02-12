@@ -278,7 +278,7 @@ const Podcasts: React.FC = () => {
           <div className="p-4 bg-white border-t border-gray-50">
             <button
               onClick={openAddProject}
-              className="w-full bg-[#007BFF] text-white py-3 rounded font-bold hover:bg-blue-600 transition-all shadow-sm"
+              className="w-full bg-[#007BFF] cursor-pointer text-white py-3 rounded font-bold hover:bg-primary transition-all shadow-sm"
             >
               إضافة مشروع
             </button>
@@ -294,7 +294,7 @@ const Podcasts: React.FC = () => {
               <div className="flex gap-3">
                 <button
                   onClick={openEditProject}
-                  className="bg-[#007BFF] text-white px-6 py-2 rounded-[5px] text-[15px] font-bold hover:bg-blue-600"
+                  className="bg-[#007BFF] cursor-pointer text-white px-6 py-2 rounded-[5px] text-[15px] font-bold hover:bg-primary"
                 >
                   تعديل المشروع
                 </button>
@@ -307,7 +307,7 @@ const Podcasts: React.FC = () => {
                       type: "مشروع",
                     })
                   }
-                  className="bg-[#DB3D3D] text-white px-6 py-2 rounded-[5px] text-[15px] font-bold hover:bg-red-700"
+                  className="bg-red-700 cursor-pointer text-white px-6 py-2 rounded-[5px] text-[15px] font-bold hover:bg-red-500"
                 >
                   حذف المشروع
                 </button>
@@ -339,7 +339,7 @@ const Podcasts: React.FC = () => {
                     <div className="flex flex-col gap-2 w-full">
                       <button
                         onClick={() => openEditAudio(segment)}
-                        className="bg-[#007BFF] text-white py-2 rounded-[5px] text-[15px] font-bold hover:bg-blue-600"
+                        className="bg-[#007BFF] cursor-pointer text-white py-2 rounded-[5px] text-[15px] font-bold hover:bg-primary"
                       >
                         تعديل المقطع
                       </button>
@@ -352,7 +352,7 @@ const Podcasts: React.FC = () => {
                             type: "مقطع",
                           })
                         }
-                        className="bg-[#DB3D3D] text-white py-2 rounded-[5px] text-[15px] font-bold hover:bg-red-700"
+                        className="bg-red-700 cursor-pointer text-white py-2 rounded-[5px] text-[15px] font-bold hover:bg-red-500"
                       >
                         حذف المقطع
                       </button>
@@ -365,7 +365,7 @@ const Podcasts: React.FC = () => {
                 <p className="text-gray-400">لا توجد مقاطع حالياً</p>
                 <button
                   onClick={openAddAudio}
-                  className="mt-4 text-blue-600 font-bold underline"
+                  className="mt-4 text-blue-600 cursor-pointer font-bold underline"
                 >
                   إضافة مقطع جديد
                 </button>
@@ -409,7 +409,7 @@ const Podcasts: React.FC = () => {
                 />
                 <label
                   htmlFor="proj-img-up"
-                  className="w-full flex items-center justify-center gap-3 px-6 py-4 bg-[#4A6D8C] text-white rounded-[15px] cursor-pointer hover:bg-opacity-90 font-bold"
+                  className="w-full flex items-center justify-center gap-3 px-6 py-4 bg-[#4A6D8C] hover:bg-[#2d4a62] text-white rounded-[15px] cursor-pointer hover:bg-opacity-90 font-bold"
                 >
                   {projectFormData.image
                     ? projectFormData.image.name
@@ -419,7 +419,7 @@ const Podcasts: React.FC = () => {
               <button
                 onClick={handleSubmitProject}
                 disabled={submitLoading}
-                className="w-full bg-[#007BFF] text-white py-4 rounded-[15px] font-bold shadow-lg text-[20px] mt-4"
+                className="w-full bg-[#007BFF] hover:bg-primary cursor-pointer text-white py-4 rounded-[15px] font-bold shadow-lg text-[20px] mt-4"
               >
                 {submitLoading
                   ? "جاري الحفظ..."
@@ -430,7 +430,7 @@ const Podcasts: React.FC = () => {
             </div>
             <button
               onClick={() => setShowProjectModal(false)}
-              className="absolute top-6 left-6 text-gray-400 text-2xl"
+              className="absolute top-6 left-6 cursor-pointer hover:text-red-500 text-gray-400 text-2xl"
             >
               ✕
             </button>
@@ -498,7 +498,7 @@ const Podcasts: React.FC = () => {
                 />
                 <label
                   htmlFor="aud-file-up"
-                  className="w-full flex items-center justify-center gap-3 px-6 py-4 bg-[#4A6D8C] text-white rounded-[15px] cursor-pointer font-bold"
+                  className="w-full flex items-center justify-center gap-3 px-6 py-4 bg-primary hover:bg-[#2d4a62] text-white rounded-[15px] cursor-pointer font-bold"
                 >
                   {audioFormData.file ? audioFormData.file.name : "ارفع المقطع"}
                 </label>
@@ -506,7 +506,7 @@ const Podcasts: React.FC = () => {
               <button
                 onClick={handleSubmitAudio}
                 disabled={submitLoading}
-                className="w-full bg-[#007BFF] text-white py-4 rounded-[15px] font-bold shadow-lg text-[20px] mt-4"
+                className="w-full bg-[#007BFF] hover:bg-primary cursor-pointer text-white py-4 rounded-[15px] font-bold shadow-lg text-[20px] mt-4"
               >
                 {submitLoading
                   ? "جاري الحفظ..."
@@ -517,7 +517,7 @@ const Podcasts: React.FC = () => {
             </div>
             <button
               onClick={() => setShowAudioModal(false)}
-              className="absolute top-6 left-6 text-gray-400 text-2xl"
+              className="absolute top-6 left-6 cursor-pointer hover:text-red-500 text-gray-400 text-2xl"
             >
               ✕
             </button>

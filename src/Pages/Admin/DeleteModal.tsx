@@ -26,13 +26,13 @@ const DeleteModal: React.FC<Props> = ({ isOpen, onClose, onConfirm, itemTitle, i
         <div className="flex gap-4">
           <button
             onClick={onConfirm}
-            className="flex-1 bg-red-500 text-white py-3 rounded-xl font-bold hover:bg-red-600 transition-all"
+            className="flex-1 bg-red-500 text-white py-3 rounded-xl font-bold cursor-pointer hover:bg-red-600 transition-all"
           >
             نعم، احذف الآن
           </button>
           <button
             onClick={onClose}
-            className="flex-1 bg-gray-100 text-gray-700 py-3 rounded-xl font-bold hover:bg-gray-200 transition-all"
+            className="flex-1 bg-gray-100 text-gray-700 py-3 rounded-xl cursor-pointer font-bold hover:bg-gray-200 transition-all"
           >
             إلغاء
           </button>

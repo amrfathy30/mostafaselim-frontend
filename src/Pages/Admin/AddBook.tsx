@@ -150,7 +150,7 @@ const AddBook: React.FC = () => {
         </h1>
         <button
           onClick={() => navigate("/admin/books")}
-          className="text-[#2B2B2B] hover:text-primary transition-colors"
+          className="text-[#2B2B2B] hover:text-primary cursor-pointer hover:underline transition-colors"
         >
           عودة
         </button>
@@ -343,7 +343,7 @@ const AddBook: React.FC = () => {
           <button
             onClick={handlePublish}
             disabled={loading}
-            className="bg-[#007FFF] text-white px-20 py-4 rounded-xl font-bold hover:bg-[#2d4a62] transition-all shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
+            className="bg-[#007FFF] cursor-pointer text-white px-20 py-4 rounded-xl font-bold hover:bg-[#2d4a62] transition-all shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {loading
               ? "جاري التحميل..."

@@ -187,20 +187,20 @@ const Settings: React.FC = () => {
       <div className="flex gap-4 mb-6 border-b border-gray-200">
         <button
           onClick={() => setActiveTab("user")}
-          className={`pb-3 px-4 text-[16px] font-medium transition-colors ${
+          className={`pb-3 px-4 text-[16px] font-medium hover:text-blue-500 hover:border-blue-500 cursor-pointer transition-colors ${
             activeTab === "user"
               ? "text-primary border-b-2 border-primary"
-              : "text-[#6B7280] hover:text-primary"
+              : "text-[#6B7280] hover:text-primary "
           }`}
         >
           معلومات المستخدم
         </button>
         <button
           onClick={() => setActiveTab("website")}
-          className={`pb-3 px-4 text-[16px] font-medium transition-colors ${
+          className={`pb-3 px-4 text-[16px] font-medium cursor-pointer hover:text-blue-500 hover:border-blue-500 transition-colors ${
             activeTab === "website"
               ? "text-primary border-b-2 border-primary"
-              : "text-[#6B7280] hover:text-primary"
+              : "text-[#6B7280] hover:text-primary "
           }`}
         >
           معلومات الموقع
@@ -426,7 +426,7 @@ const Settings: React.FC = () => {
                             key={`new-${idx}`}
                             src={URL.createObjectURL(file)}
                             alt={`ملف جديد ${idx + 1}`}
-                      className="w-full h-40 object-contain rounded-lg border-white border-4"
+                            className="w-full h-40 object-contain rounded-lg border-white border-4"
                           />
                         ))
                       : userInfo?.user_images_urls?.map((url, idx) => (
@@ -434,7 +434,7 @@ const Settings: React.FC = () => {
                             key={`server-${idx}`}
                             src={url}
                             alt={`صورة ${idx + 1}`}
-                      className="w-full h-40 object-contain rounded-lg border-white border-4"
+                            className="w-full h-40 object-contain rounded-lg border-white border-4"
                           />
                         ))}
                   </div>{" "}
@@ -445,7 +445,7 @@ const Settings: React.FC = () => {
             <button
               onClick={handleSaveUserInfo}
               disabled={isLoadingUser}
-              className="mt-6 bg-primary text-white px-8 py-3 rounded-lg hover:bg-primary/90 transition-colors flex items-center justify-center gap-2"
+              className="mt-6 bg-primary text-white px-8 py-3 rounded-lg hover:bg-[#2d4a62] cursor-pointer transition-colors flex items-center justify-center gap-2"
             >
               {isLoadingUser && (
                 <svg
@@ -698,7 +698,7 @@ const Settings: React.FC = () => {
               <button
                 onClick={handleSaveWebsiteInfo}
                 disabled={isLoadingWebsite}
-                className="bg-primary text-white px-8 py-3 rounded-lg hover:bg-primary/90 transition-colors flex items-center justify-center gap-2"
+                className="bg-primary text-white px-8 py-3 rounded-lg hover:bg-[#2d4a62] cursor-pointer transition-colors flex items-center justify-center gap-2"
               >
                 {isLoadingWebsite && (
                   <svg

@@ -113,10 +113,10 @@ const Books: React.FC = () => {
                     {book.book_date} - {book.publishing_house}
                   </div>
                   <div className="flex flex-col gap-2 items-center">
-                    <Button className='w-full max-w-[180px]' onClick={() => navigate(`/admin/book/edit/${book.book_id}`)} type="primary">
+                    <Button className='w-full max-w-[180px] hover:bg-[#2d4a62]' onClick={() => navigate(`/admin/book/edit/${book.book_id}`)} type="primary">
                       تعديل الكتاب
                     </Button>
-                    <Button className='w-full max-w-[180px]' onClick={() => openDeleteModal(book.book_id, book.book_name)} type="danger">
+                    <Button className='w-full max-w-[180px] hover:bg-red-500' onClick={() => openDeleteModal(book.book_id, book.book_name)} type="danger">
                       حذف الكتاب
                     </Button>
                   </div>
