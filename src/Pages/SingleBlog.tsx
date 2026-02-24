@@ -9,7 +9,7 @@ export interface SingleBlog {
   views: string; image: string; publisher: string; classification: string; year: string;
 }
 
-const SingleBlogPage: React.FC = () => {
+const   SingleBlogPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [blog, setBlog] = useState<SingleBlog | null>(null);
   const [loading, setLoading] = useState(true);
@@ -23,7 +23,7 @@ const SingleBlogPage: React.FC = () => {
           id: data.blog_id, title: data.blog_title, content: data.blog_content,
           date: data.blog_date, time: data.blog_time, views: data.blog_views,
           image: data.blog_image_cover, publisher: "د. مصطفى سليم",
-          classification: data.blog_classification, year: data.blog_date.split('/')[2] || "2026"
+          classification: data.blog_classification, year: data.blog_date || "2026"
         });
       } catch (error) { console.error(error); } finally { setLoading(false); }
     })();

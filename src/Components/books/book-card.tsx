@@ -7,6 +7,7 @@ interface Props {
     book_id?: number;
     book_name: string;
     book_date: string;
+    book_edition_number?: string;
     publishing_house: string;
     image: string;
     book_link?: string;
@@ -39,7 +40,7 @@ export default function BookCard({ book, variant = "detailed" }: Props) {
       </h3>
 
       <p className="text-sm md:text-lg font-semibold text-primary mb-1">
-        {`${book.book_date} - الطبعة الثانية`}
+        {`${book.book_date} - الطبعة ${book?.book_edition_number}`}
       </p>
 
       <p className="text-xs md:text-xl text-primary mb-4">

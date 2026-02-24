@@ -3,6 +3,7 @@ import { Outlet, Link, useNavigate, useLocation } from "react-router-dom";
 import { Logo } from "../../Components/Icons";
 import { getAdminProfile } from "../../services/authService";
 import { Toaster } from "react-hot-toast";
+import { MdCategory } from "react-icons/md";
 
 const AdminLayout: React.FC = () => {
   const navigate = useNavigate();
@@ -57,6 +58,7 @@ const AdminLayout: React.FC = () => {
     { title: "المدونة", path: "/admin/blog", icon: <BlogMenuIcon /> },
     { title: "الكتب", path: "/admin/books", icon: <BooksMenuIcon /> },
     { title: "المسموعات", path: "/admin/podcasts", icon: <AudioMenuIcon /> },
+    { title: "التصنيفات", path: "/admin/categories", icon: <MdCategory /> },
     { title: "الاعدادات", path: "/admin/settings", icon: <SettingsMenuIcon /> },
   ];
 
@@ -93,14 +95,14 @@ const AdminLayout: React.FC = () => {
 
         <div className="p-3 md:p-6 flex flex-col flex-1 overflow-y-auto">
           {/* Logo - hidden on mobile */}
-          <div className="mb-12 hidden md:flex justify-center flex-shrink-0">
+          <div className="mb-4 hidden md:flex justify-center flex-shrink-0">
             <a href="/">
               <Logo variant="dark" />
             </a>
           </div>
 
           {/* Menu */}
-          <nav className="space-y-4 flex-1">
+          <nav className="space-y-1 flex-1">
             {menuItems.map((item) => {
               const isActive =
                 location.pathname === item.path ||
@@ -129,7 +131,7 @@ const AdminLayout: React.FC = () => {
           {/* Logout */}
           <button
             onClick={handleLogout}
-            className="flex items-center justify-center justify-center  hover:text-red-500 cursor-pointer gap-2 px-3 md:px-6 py-3 rounded-[8px] hover:bg-gray-50 transition-colors text-red-700 mt-2 flex-shrink-0"
+            className="flex items-center justify-start hover:text-red-500 cursor-pointer gap-2 px-3 py-3 rounded-lg hover:bg-gray-50 transition-colors text-red-700 mt-2 shrink-0"
           >
             <LogoutIcon />
             <span className="hidden md:inline text-base font-normal">

@@ -30,7 +30,14 @@ export const Button = (props: Props) => {
       disabled={disabled}
       onClick={onClick}
     >
-      {loading ? <SpinnerLoader /> : children}
+      {loading ? (
+        <div className="flex justify-center items-center gap-2">
+          <SpinnerLoader />
+          <span>{children}</span>
+        </div>
+      ) : (
+        children
+      )}{" "}
     </button>
   );
 };

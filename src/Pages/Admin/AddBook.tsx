@@ -6,6 +6,7 @@ import {
   adminUpdateBook,
 } from "../../services/bookService";
 import { adminGetCategories } from "../../services/categoryService";
+import toast from "react-hot-toast";
 
 const AddBook: React.FC = () => {
   const navigate = useNavigate();
@@ -72,14 +73,9 @@ const AddBook: React.FC = () => {
 
           if (book.image) setExistingCover(book.image);
 
-          if (
-            book.images &&
-            Array.isArray(book.images) &&
-            book.images.length > 0
-          ) {
-            setExistingSecondImage(book.images[0]);
-          } else if (book.second_image) {
-            setExistingSecondImage(book.second_image);
+          if (book.image && Array.isArray(book.image)) {
+            setExistingCover(book.image[0] || null);
+            setExistingSecondImage(book.image[1] || null);
           }
         }
       } catch (err) {
@@ -93,7 +89,7 @@ const AddBook: React.FC = () => {
 
   const handlePublish = async () => {
     if (!bookInfo.bookName.trim()) {
-      alert("يجب إدخال اسم الكتاب");
+      toast.error("يجب إدخال اسم الكتاب");
       return;
     }
 
@@ -127,15 +123,15 @@ const AddBook: React.FC = () => {
         await adminAddBook(formData);
       }
 
-      alert("تم الحفظ بنجاح");
+      toast.success("تم الحفظ بنجاح");
       navigate("/admin/books");
     } catch (error: any) {
       console.error("Error saving book:", error);
       if (error.response?.data?.errors) {
         const errors = error.response.data.errors;
-        alert(Object.values(errors).flat().join("\n"));
+        toast.error(Object.values(errors).flat().join("\n"));
       } else {
-        alert(error.response?.data?.message || "حدث خطأ أثناء الحفظ");
+        toast.error(error.response?.data?.message || "حدث خطأ أثناء الحفظ");
       }
     } finally {
       setLoading(false);
@@ -144,7 +140,7 @@ const AddBook: React.FC = () => {
 
   return (
     <>
-      <div className="mb-8 flex items-center justify-between p-6">
+      <div className="mb-8 flex items-center justify-between p-2 md:p-6">
         <h1 className="text-[24px] font-bold text-textPrimary">
           {isEdit ? "تعديل كتاب" : "أضف كتاب"}
         </h1>
@@ -156,8 +152,8 @@ const AddBook: React.FC = () => {
         </button>
       </div>
 
-      <div className="space-y-6 px-6 pb-10">
-        <div className="bg-[#F3F4F6] rounded-[12px] p-6">
+      <div className="space-y-6 px-2 md:px-6 pb-10">
+        <div className="bg-[#F3F4F6] rounded-[12px] p-2 md:p-6">
           <h2 className="text-[18px] font-bold text-[#2B2B2B] text-center mb-6">
             معلومات الكتاب
           </h2>

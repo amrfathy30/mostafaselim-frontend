@@ -50,11 +50,11 @@ const AdminLogin: React.FC = () => {
       setLoading(false)
       return;
     }
-    if (password.length < 6) {
-      setError('كلمة المرور يجب أن لا تقل عن 6 أحرف');
-      setLoading(false);
-      return;
-    }
+    // if (password.length < 6) {
+    //   setError('كلمة المرور يجب أن لا تقل عن 6 أحرف');
+    //   setLoading(false);
+    //   return;
+    // }
  
     // if (!passwordRegex.test(password)) {
     //   setError('كلمة المرور يجب أن لا تقل عن ٨ احرف وتحتوي على حرف كبير، حرف صغير، رقم، ورمز خاص');
@@ -207,17 +207,17 @@ const ForgetPasswordModal = ({
     e.preventDefault();
     setLoading(true);
     setError('');
-    if (password.length < 6) {
-      setError('كلمة المرور الجديدة يجب أن تكون 6 أحرف على الأقل');
-      setLoading(false);
-      return;
-    }
+    // if (password.length < 6) {
+    //   setError('كلمة المرور الجديدة يجب أن تكون 6 أحرف على الأقل');
+    //   setLoading(false);
+    //   return;
+    // }
 
-    if (!passwordRegex.test(password)) {
-      setError('كلمة المرور يجب أن لا تقل عن ٨ احرف وتحتوي على حرف كبير، حرف صغير، رقم، ورمز خاص');
-      setLoading(false);
-      return;
-    }
+    // if (!passwordRegex.test(password)) {
+    //   setError('كلمة المرور يجب أن لا تقل عن ٨ احرف وتحتوي على حرف كبير، حرف صغير، رقم، ورمز خاص');
+    //   setLoading(false);
+    //   return;
+    // }
     if (password !== passwordConfirmation) {
       setError('كلمات المرور غير متطابقة');
       setLoading(false);

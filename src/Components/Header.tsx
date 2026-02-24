@@ -26,7 +26,12 @@ const Header = ({ settings }) => {
       <div className="w-full px-4 sm:px-6 md:px-12 lg:px-[100px] xxl:px-[154px] flex items-center justify-between">
         {/* Logo Section */}
         <a href="/" className="flex-shrink-0">
-          <Logo variant="dark" />
+          {/* <Logo variant="dark" /> */}
+          <img
+            src={settings?.logo}
+            alt="logo"
+            className="w-40 h-full object-cover"
+          />
         </a>
 
         {/* Desktop Navigation - Hidden on Tablet & Mobile (lg breakpoint) */}
@@ -50,9 +55,17 @@ const Header = ({ settings }) => {
 
         {/* Social Icons - Visible on Desktop AND Tablet (md breakpoint and up) */}
         {/* dir="ltr" ensures the order is TikTok -> Facebook -> Instagram from Left to Right */}
-        <div className="hidden md:flex items-center gap-3 text-secondary" dir="ltr">
-          <a href={settings?.linkedin || "#"} target="_blank" rel="noreferrer" className="hover:opacity-80 transition-opacity">
-            <TikTokIcon color='#3A5F7D' className="w-8 h-8" />
+        <div
+          className="hidden md:flex items-center gap-3 text-secondary"
+          dir="ltr"
+        >
+          <a
+            href={settings?.linkedin || "#"}
+            target="_blank"
+            rel="noreferrer"
+            className="hover:opacity-80 transition-opacity"
+          >
+            <TikTokIcon color="#3A5F7D" className="w-8 h-8" />
           </a>
           <a
             href={settings?.facebook || "#"}
@@ -106,9 +119,17 @@ const Header = ({ settings }) => {
           </nav>
 
           {/* Social Icons in Dropdown - Only visible on Mobile (< md) */}
-          <div className="flex md:hidden items-center justify-center gap-6 pt-4 border-t border-gray-100 text-secondary" dir="ltr">
-            <a href={settings?.linkedin || "#"} target="_blank" rel="noreferrer" className="hover:opacity-80 transition-opacity">
-              <TikTokIcon color='#3A5F7D' className="w-10 h-10" />
+          <div
+            className="flex md:hidden items-center justify-center gap-6 pt-4 border-t border-gray-100 text-secondary"
+            dir="ltr"
+          >
+            <a
+              href={settings?.linkedin || "#"}
+              target="_blank"
+              rel="noreferrer"
+              className="hover:opacity-80 transition-opacity"
+            >
+              <TikTokIcon color="#3A5F7D" className="w-10 h-10" />
             </a>
             <a
               href={settings?.facebook || "#"}

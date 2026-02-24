@@ -16,7 +16,7 @@ export default function PodcastSection({ data }: PodcastSectionProps) {
       })),
     ) || [];
   return (
-    <section dir="rtl" className="px-4 sm:px-6 lg:px-8">
+    <section dir="rtl" className="px-2 sm:px-6 lg:px-8">
       <div className="max-w-6xl mx-auto px-4 mt-10">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
           {allAudios.length > 0 ? (

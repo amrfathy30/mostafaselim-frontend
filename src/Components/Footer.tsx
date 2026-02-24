@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { Facebook, Instagram, TikTokIcon, Logo } from "./Icons";
+import { useState } from "react";
+import { Facebook, Instagram, TikTokIcon } from "./Icons";
 import { subscribe } from "../services/homeService";
 import { Button } from "../Components/Common/button";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 
 const Footer = ({ settings }) => {
   const [email, setEmail] = useState("");
@@ -110,8 +110,13 @@ const Footer = ({ settings }) => {
         </div>
 
         <div className="hidden lg:flex items-center justify-between pt-8 border-t border-white/20">
-          <a href="/" className="flex-shrink-0">
-            <Logo variant="light" />
+          <a href="/" className="shrink-0 bg-white p-2">
+            {/* <Logo variant="light" /> */}
+            <img
+              src={settings?.logo}
+              alt="logo"
+              className="w-40 h-full object-cover"
+            />
           </a>
 
           <nav className="flex items-center gap-8 xl:gap-[34px]">
@@ -156,15 +161,15 @@ const Footer = ({ settings }) => {
         </div>
 
         <div className="text-center text-white/80 text-sm font-bold mt-12">
-          <p>جميع حقوق النشر محفوظة لدي دكتور مصطفى سليم 2025</p>
-          <div className="mt-2">
+          <p>{settings?.footer}</p>
+          {/* <div className="mt-2">
             <a
               href="/admin"
               className="text-white/50 hover:text-white text-xs transition-colors"
             >
               لوحة التحكم
             </a>
-          </div>
+          </div> */}
         </div>
       </div>
     </footer>

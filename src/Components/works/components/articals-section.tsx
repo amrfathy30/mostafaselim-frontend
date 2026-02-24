@@ -1,6 +1,5 @@
 import { useState } from "react";
 import ArticleCard from "../ArticleCard";
-import LoadMoreButton from "../../load-more-button";
 import { Link } from "react-router-dom";
 
 const ArticlesSection = ({ data }) => {

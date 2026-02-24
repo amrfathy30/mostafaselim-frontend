@@ -4,6 +4,7 @@ import {
   getAdminProfile,
   updateAdminProfile,
 } from "../../services/authService";
+import toast from "react-hot-toast";
 
 type TabType = "user" | "website";
 
@@ -22,9 +23,9 @@ const Settings: React.FC = () => {
     personal_aspect: "",
     educational_aspect: "",
     phone: "",
-    user_cv_url: "", // 🔹 رابط السيرة الذاتية
-    user_image_cover_url: "", // 🔹 رابط صورة الغلاف
-    user_images_urls: [] as string[], // 🔹 روابط الصور
+    user_cv_url: "",
+    user_image_cover_url: "",
+    user_images_urls: [] as string[],
   });
   const [passwordData, setPasswordData] = useState({
     oldPassword: "",
@@ -51,7 +52,7 @@ const Settings: React.FC = () => {
 
   const [websiteFiles, setWebsiteFiles] = useState({
     logo: null as File | null,
-    favicon: null as File | null,
+    // favicon: null as File | null,
   });
 
   useEffect(() => {
@@ -64,10 +65,10 @@ const Settings: React.FC = () => {
             name: data.user_name || "",
             email: data.email || "",
             full_name: data.user_full_name || "",
-            bio: data.user_bio || "",
+            bio: data.bio || "",
             personal_aspect: data.user_personal || "",
             educational_aspect: data.user_educational || "",
-            phone: data.user_phone || "",
+            phone: data.phone || "",
             user_cv_url: data.user_cv || "",
             user_image_cover_url: data.user_image_cover || "",
             user_images_urls: data.user_images || [],
@@ -115,18 +116,27 @@ const Settings: React.FC = () => {
     if (websiteFiles.logo) {
       formData.append("logo", websiteFiles.logo);
     }
-    if (websiteFiles.favicon) {
-      formData.append("favicon", websiteFiles.favicon);
-    }
+    // if (websiteFiles.favicon) {
+    //   formData.append("favicon", websiteFiles.favicon);
+    // }
 
     try {
       const res = await updateSetting(formData);
       if (res.status === 200) {
-        alert("تم تحديث إعدادات الموقع بنجاح");
+        toast.success("تم تحديث إعدادات الموقع بنجاح");
       }
     } catch (error: any) {
-      console.error("خطأ في التحديث:", error.response?.data);
-      alert(error.response?.data?.message || "حدث خطأ أثناء الحفظ");
+      const errors = error.response?.data?.errors;
+
+      if (errors) {
+        const firstKey = Object.keys(errors)[0];
+
+        const firstError = errors[firstKey]?.[0];
+
+        toast.error(firstError);
+      } else {
+        toast.error("حدث خطأ أثناء الحفظ");
+      }
     } finally {
       setIsLoadingWebsite(false);
     }
@@ -163,14 +173,14 @@ const Settings: React.FC = () => {
 
     try {
       const res = await updateAdminProfile(formData);
-      alert("تم تحديث معلومات المستخدم بنجاح");
+      toast.success("تم تحديث معلومات المستخدم بنجاح");
     } catch (error: any) {
       const errors = error.response?.data?.errors;
       if (errors) {
         const firstKey = Object.keys(errors)[0];
-        alert(`خطأ في ${firstKey}: ${errors[firstKey][0]}`);
+        toast.error(`خطأ في ${firstKey}: ${errors[firstKey][0]}`);
       } else {
-        alert("حدث خطأ غير متوقع");
+        toast.error("حدث خطأ غير متوقع");
       }
     } finally {
       setIsLoadingUser(false);
@@ -373,7 +383,7 @@ const Settings: React.FC = () => {
                   />
                   <label
                     htmlFor="cover-upload"
-                    className="flex items-center justify-between w-full px-4 py-3 bg-white border border-gray-200 rounded-lg cursor-pointer hover:border-primary"
+                    className="flex items-center -mt-1 justify-between w-full px-4 py-3 bg-white border border-gray-200 rounded-lg cursor-pointer hover:border-primary"
                   >
                     {"اختر صورة الغلاف"}
                   </label>
@@ -536,10 +546,6 @@ const Settings: React.FC = () => {
                   className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg text-right outline-none focus:border-primary"
                 />
               </div>
-            </div>
-
-            {/* File Uploads */}
-            <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-[14px] text-[#6B7280] mb-2 text-right">
                   logo
@@ -569,7 +575,11 @@ const Settings: React.FC = () => {
                   </label>
                 </div>
               </div>
-              <div>
+            </div>
+
+            {/* File Uploads */}
+            {/* <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4"> */}
+            {/* <div>
                 <label className="block text-[14px] text-[#6B7280] mb-2 text-right">
                   favicon
                 </label>
@@ -597,8 +607,8 @@ const Settings: React.FC = () => {
                     </span>
                   </label>
                 </div>
-              </div>
-            </div>
+              </div> */}
+            {/* </div>   */}
 
             {/* Social Media Links */}
             <div className="mt-6">

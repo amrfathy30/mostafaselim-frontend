@@ -1,18 +1,19 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Button } from '../../Components/Common/button';
-import { SearchIcon } from '../../icons/admin';
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import { Button } from "../../Components/Common/button";
+import { SearchIcon } from "../../icons/admin";
 
 interface HeaderInfo {
-    total: number;
-    searchQuery: string;
-    setSearchQuery: any;
-    setStartSearch: any;
-    btnLoading: any;
-    title: string;
-    titleSingle: string;
-    type: string;
-    onClick?: () => void;
+  total: number;
+  searchQuery: string;
+  setSearchQuery: any;
+  setStartSearch: any;
+  btnLoading: any;
+  title: string;
+  titleSingle: string;
+  type: string;
+  onSearchClick?: () => void;
+  onAddClick?: () => void;
 }
 
 const AdminPageHeader = (data: HeaderInfo) => {
@@ -20,10 +21,12 @@ const AdminPageHeader = (data: HeaderInfo) => {
 
   return (
     <div className="mb-8 flex flex-col md:flex-row justify-between items-center gap-6">
-      <div className='flex flex-col text-center md:text-right w-full md:w-auto'>
+      <div className="flex flex-col text-center md:text-right w-full md:w-auto">
         <h1 className="text-[32px] font-bold text-primary">{data?.title}</h1>
         <div>
-          <p className="text-[#6B7280] text-[24px]">عدد {data?.title} : {data?.total}</p>
+          <p className="text-[#6B7280] text-[24px]">
+            عدد {data?.title} : {data?.total}
+          </p>
         </div>
       </div>
 
@@ -35,11 +38,11 @@ const AdminPageHeader = (data: HeaderInfo) => {
           placeholder={`ابحث في ${data?.title} التي تريدها`}
           className="bg-white px-4 py-3 border border-gray-300 rounded-lg text-right w-full outline-none focus:border-primary"
         />
-   
+
         <Button
-          className='w-full flex flex-col md:flex-row items-center justify-center space-x-2  hover:bg-[#2d4a62]'
-          onClick={() => data.setStartSearch(true)} 
-          type={'tertiary'}
+          className="w-full flex flex-col md:flex-row items-center justify-center space-x-2  hover:bg-[#2d4a62]"
+          onClick={data.onSearchClick}
+          type={"tertiary"}
           loading={data?.btnLoading}
         >
           <>
@@ -50,11 +53,15 @@ const AdminPageHeader = (data: HeaderInfo) => {
       </div>
 
       <Button
-        className='w-[230px] md:w-[221px] m-px hover:bg-[#2d4a62]'
-        type='tertiary'
-        onClick={data.onClick ? data.onClick : () => navigate(`/admin/${data?.type}/add`)}
+        className="w-[230px] md:w-[221px] m-px hover:bg-[#2d4a62]"
+        type="tertiary"
+        onClick={
+          data.onAddClick
+            ? data.onAddClick
+            : () => navigate(`/admin/${data.type}/add`)
+        }
       >
-        إضافة {data?.titleSingle}
+        إضافة {data.titleSingle}
       </Button>
     </div>
   );

@@ -22,6 +22,7 @@ const Articles: React.FC = () => {
   const [startSearch, setStartSearch] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedArticle, setSelectedArticle] = useState<any>(null);
+  const [error, setError] = useState<string | null>(null);
 
   const fetchArticles = async (page: number, keyword: string = "") => {
     try {
@@ -29,8 +30,15 @@ const Articles: React.FC = () => {
       const res = await getAdminArticles(page, 12, keyword);
       setArticles(res.data.articles || []);
       setPagination(res.data.pagination);
-    } catch (err) {
-      console.error(err);
+      setError(null); 
+    } catch (err: any) {
+      if (err.response?.status === 404) {
+        setArticles([]);
+        setPagination(null);
+        setError("لا توجد مقالات");
+      } else {
+        setError("فشل في تحميل المقالات");
+      }
     } finally {
       setLoading(false);
     }
@@ -39,6 +47,13 @@ const Articles: React.FC = () => {
   useEffect(() => {
     fetchArticles(currentPage, searchQuery);
   }, [currentPage, startSearch]);
+
+  useEffect(() => {
+    if (searchQuery === "") {
+      setCurrentPage(1);
+      fetchArticles(1);
+    }
+  }, [searchQuery]);
 
   const confirmDelete = async () => {
     try {
@@ -69,9 +84,10 @@ const Articles: React.FC = () => {
         title="المقالات"
         titleSingle="مقالة"
         type="articles"
+        onSearchClick={() => fetchArticles(1, searchQuery)}
       />
       <div className="space-y-6 font-expo">
-        {!loading && (
+        {!loading && articles.length > 0 && (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {articles.map((article) => (
               <div
@@ -116,14 +132,22 @@ const Articles: React.FC = () => {
             ))}
           </div>
         )}
-        {loading && <AdminPageLoading />}
-        {pagination?.last_page > 1 && (
-          <Pagination
-            currentPage={currentPage}
-            totalPages={pagination.last_page}
-            onPageChange={setCurrentPage}
-          />
+        {!loading && (articles.length === 0 || error) && (
+          <div className="text-center text-[#6B7280] py-8">
+            {error || "لا توجد مقالات"}
+          </div>
         )}
+        {loading && <AdminPageLoading />}
+        {!loading &&
+          articles.length > 0 &&
+          pagination?.last_page &&
+          pagination.last_page > 1 && (
+            <Pagination
+              currentPage={currentPage}
+              totalPages={pagination.last_page}
+              onPageChange={setCurrentPage}
+            />
+          )}
       </div>
     </>
   );

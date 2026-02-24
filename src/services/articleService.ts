@@ -1,8 +1,8 @@
-import axiosInstance from '../api/axiosInstance';
+import axiosInstance from "../api/axiosInstance";
 
-export const getArticles = async (page = 1, perPage = 9, keyword = '') => {
-  const response = await axiosInstance.get('/articles', {
-    params: { page, per_page: perPage, keyword }
+export const getArticles = async (page = 1, perPage = 9, keyword = "") => {
+  const response = await axiosInstance.get("/articles", {
+    params: { page, per_page: perPage, keyword },
   });
   return response.data;
 };
@@ -12,9 +12,13 @@ export const getArticleById = async (id: number | string) => {
   return response.data;
 };
 
-export const getAdminArticles = async (page = 1, perPage = 12, keyword = '') => {
-  const response = await axiosInstance.get('/admin/articles', {
-    params: { page, per_page: perPage, keyword }
+export const getAdminArticles = async (
+  page = 1,
+  perPage = 12,
+  keyword = "",
+) => {
+  const response = await axiosInstance.get("/admin/articles", {
+    params: { page, per_page: perPage, keyword },
   });
   return response.data;
 };
@@ -25,12 +29,26 @@ export const adminGetArticle = async (id: number | string) => {
 };
 
 export const adminAddArticle = async (data: FormData) => {
-  const response = await axiosInstance.post('/admin/article/store', data);
-  return response.data;
+  return axiosInstance.post("/admin/article/store", data, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
 };
 
-export const adminUpdateArticle = async (id: number | string, data: FormData) => {
-  const response = await axiosInstance.post(`/admin/article/update/${id}`, data);
+export const adminUpdateArticle = async (
+  id: number | string,
+  data: FormData,
+) => {
+  const response = await axiosInstance.post(
+    `/admin/article/update/${id}`,
+    data,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    },
+  );
   return response.data;
 };
 

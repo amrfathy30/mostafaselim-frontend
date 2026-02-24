@@ -11,12 +11,22 @@ import {
   adminAddProject,
   adminUpdateProject,
 } from "../../services/audioService";
+import toast from "react-hot-toast";
+import Pagination from "../../Components/Pagination";
 
 interface Project {
   project_id: number;
   project_title: string;
   project_image_cover: string;
+  category: string;
   audios_count: number;
+}
+
+interface PaginationData {
+  total: number;
+  current_page: number;
+  last_page: number;
+  per_page: number;
 }
 
 const Podcasts: React.FC = () => {
@@ -28,6 +38,9 @@ const Podcasts: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [activeKeyword, setActiveKeyword] = useState("");
   const [startSearch, setStartSearch] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pagination, setPagination] = useState<PaginationData | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   const [showAudioModal, setShowAudioModal] = useState(false);
   const [showProjectModal, setShowProjectModal] = useState(false);
@@ -53,12 +66,15 @@ const Podcasts: React.FC = () => {
     type: "" as "مقطع" | "مشروع",
   });
 
-  const loadProjects = async (keyword: string = "") => {
+  const loadProjects = async (page: number, keyword: string = "") => {
     setLoading(true);
     try {
       const response = await adminGetAudios(keyword);
       const fetchedProjects = response.data || [];
       setProjects(fetchedProjects);
+      setPagination(fetchedProjects.pagination || null);
+      setError(null);
+
       setActiveKeyword(keyword);
 
       if (fetchedProjects.length > 0 && !selectedProject) {
@@ -66,6 +82,8 @@ const Podcasts: React.FC = () => {
       }
     } catch (error) {
       console.error(error);
+      setPagination(null);
+      setError("لا يوجد بودكاست");
     } finally {
       setLoading(false);
       setStartSearch(false);
@@ -73,8 +91,20 @@ const Podcasts: React.FC = () => {
   };
 
   useEffect(() => {
-    loadProjects(searchQuery);
+    loadProjects(currentPage, searchQuery);
   }, [startSearch]);
+
+  useEffect(() => {
+    if (searchQuery === "") {
+      setCurrentPage(1);
+      loadProjects(1);
+    }
+  }, [searchQuery]);
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    window.scrollTo(0, 0);
+  };
 
   const handleSelectProject = async (id: number) => {
     try {
@@ -150,9 +180,10 @@ const Podcasts: React.FC = () => {
         await adminAddProject(data);
       }
       setShowProjectModal(false);
-      loadProjects(searchQuery);
-    } catch (error) {
+      loadProjects(currentPage, searchQuery);
+    } catch (error: any) {
       console.error(error);
+      toast.error(error?.response?.data?.message || error?.message || "حدث خطأ ما");
     } finally {
       setSubmitLoading(false);
     }
@@ -160,7 +191,7 @@ const Podcasts: React.FC = () => {
 
   const handleSubmitAudio = async () => {
     if (!isEditMode && !audioFormData.file) {
-      alert("برجاء رفع الملف الصوتي أولاً");
+      toast.error("برجاء رفع الملف الصوتي أولاً");
       return;
     }
     const data = new FormData();
@@ -179,9 +210,9 @@ const Podcasts: React.FC = () => {
       }
       setShowAudioModal(false);
       if (selectedProject) handleSelectProject(selectedProject.project_id);
-      loadProjects(searchQuery);
-    } catch (error) {
-      console.error(error);
+      loadProjects(currentPage, searchQuery);
+    } catch (error: any) {
+      toast.error(error?.response?.data?.message || error?.message || "حدث خطأ ما");
     } finally {
       setSubmitLoading(false);
     }
@@ -191,19 +222,54 @@ const Podcasts: React.FC = () => {
     try {
       if (deleteModalConfig.type === "مقطع") {
         await adminDeleteAudio(deleteModalConfig.id);
-        if (selectedProject) handleSelectProject(selectedProject.project_id);
+
+        if (selectedProject) {
+          const updatedProjectResponse = await adminGetAudio(
+            selectedProject.project_id,
+          );
+          const updatedProject = updatedProjectResponse?.data;
+
+          if (updatedProject) {
+            setSelectedProject(updatedProject);
+            setAudioSegments(updatedProject.project_audio || []);
+
+            setProjects((prevProjects) =>
+              prevProjects.map((p) =>
+                p.project_id === updatedProject.project_id
+                  ? {
+                      ...p,
+                      audios_count: updatedProject.project_audio?.length || 0,
+                    }
+                  : p,
+              ),
+            );
+          }
+        }
       } else {
         await adminDeleteProject(deleteModalConfig.id);
-        setSelectedProject(null);
-        setAudioSegments([]);
-        loadProjects(searchQuery);
+
+        const response = await adminGetAudios(searchQuery);
+        const fetchedProjects = response?.data || [];
+
+        if (Array.isArray(fetchedProjects)) {
+          setProjects(fetchedProjects);
+          setPagination((response as any).pagination || null);
+
+          if (fetchedProjects.length > 0) {
+            handleSelectProject(fetchedProjects[0].project_id);
+          } else {
+            setSelectedProject(null);
+            setAudioSegments([]);
+          }
+        }
       }
+
       setDeleteModalConfig({ ...deleteModalConfig, isOpen: false });
     } catch (error) {
       console.error(error);
+      toast.error("حدث خطأ أثناء الحذف");
     }
   };
-
   return (
     <div className="font-expo min-h-screen" dir="rtl">
       <AdminPageHeader
@@ -215,10 +281,11 @@ const Podcasts: React.FC = () => {
         setSearchQuery={setSearchQuery}
         setStartSearch={setStartSearch}
         btnLoading={loading && startSearch}
-        onClick={() => openAddAudio()}
+        onSearchClick={() => loadProjects(1, searchQuery)}
+        onAddClick={openAddAudio}
       />
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mt-10 px-4">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mt-10 md:px-4">
         <div className="lg:col-span-4 flex flex-col bg-white rounded-[15px] border border-gray-100 shadow-sm overflow-hidden h-[80vh]">
           <h2 className="text-[22px] font-bold text-[#1E4D74] p-5 text-center border-b border-gray-50">
             المشاريع
@@ -253,9 +320,6 @@ const Podcasts: React.FC = () => {
                           <h3 className="font-bold text-[#1E4D74] text-[18px]">
                             {project.project_title}
                           </h3>
-                          <p className="text-[#4B5563] text-[14px]">
-                            النوع : نقد
-                          </p>
                         </div>
                       </div>
                       <div className="text-center text-[#1E4D74] text-[14px] font-medium leading-tight pr-5">
@@ -263,6 +327,7 @@ const Podcasts: React.FC = () => {
                       </div>
                     </div>
                     <div className="text-[#1E4D74] text-[16px] font-medium space-y-1 text-center md:text-right md:pr-16">
+                      <p> التصنيف : {project?.category}</p>
                       <p>تاريخ النشر : 12/2/2025</p>
                       <p>المتحدث : د/ مصطفي سليم</p>
                     </div>
@@ -287,11 +352,11 @@ const Podcasts: React.FC = () => {
 
         <div className="lg:col-span-8 space-y-6">
           {selectedProject && (
-            <div className="bg-white rounded-[15px] p-6 border border-gray-100 flex items-center justify-between shadow-sm">
+            <div className="bg-white rounded-[15px] p-6 border border-gray-100 flex flex-col md:flex-row gap-4 items-center justify-between shadow-sm">
               <h3 className="text-[22px] font-bold text-[#1E4D74]">
                 {selectedProject.project_title}
               </h3>
-              <div className="flex gap-3">
+              <div className="flex flex-col md:flex-row gap-3">
                 <button
                   onClick={openEditProject}
                   className="bg-[#007BFF] cursor-pointer text-white px-6 py-2 rounded-[5px] text-[15px] font-bold hover:bg-primary"
@@ -320,7 +385,7 @@ const Podcasts: React.FC = () => {
               filteredAudios.map((segment, index) => (
                 <div
                   key={segment.audio_id}
-                  className={`p-6 px-8 flex items-center justify-between gap-8 transition-all ${
+                  className={`p-6 px-8 flex flex-col md:flex-row items-center justify-between gap-2 md:gap-8 transition-all ${
                     index % 2 === 0 ? "bg-[#FFFFFF]" : "bg-[#F9F9F9]"
                   } ${index !== filteredAudios.length - 1 ? "border-b border-gray-100" : ""}`}
                 >
@@ -331,10 +396,11 @@ const Podcasts: React.FC = () => {
                     <p className="text-[#6B7280] text-[16px] leading-relaxed line-clamp-2 font-medium">
                       {segment.audio_details}
                     </p>
+                    <p className="text-[#4B5563] text-[14px]">النوع : نقد</p>
                   </div>
                   <div className="flex flex-col gap-3 min-w-[140px] items-center">
                     <span className="text-[#9CA3AF] text-[16px] font-bold tabular-nums">
-                      0:00/12:30
+                      {segment?.duration}
                     </span>
                     <div className="flex flex-col gap-2 w-full">
                       <button
@@ -524,6 +590,17 @@ const Podcasts: React.FC = () => {
           </div>
         </div>
       )}
+
+      {!loading &&
+        filteredAudios.length > 0 &&
+        pagination?.last_page &&
+        pagination.last_page > 1 && (
+          <Pagination
+            currentPage={currentPage}
+            totalPages={pagination.last_page}
+            onPageChange={handlePageChange}
+          />
+        )}
 
       <DeleteModal
         isOpen={deleteModalConfig.isOpen}

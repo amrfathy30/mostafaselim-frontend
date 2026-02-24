@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import AdminPageHeader from '../components/page-header';
-import { getAdminBooks, adminDeleteBook } from '../../services/bookService';
-import { Button } from '../../Components/Common/button';
-import Pagination from '../../Components/Pagination';
-import AdminPageLoading from '../components/loading';
-import DeleteModal from './DeleteModal'; 
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import AdminPageHeader from "../components/page-header";
+import { getAdminBooks, adminDeleteBook } from "../../services/bookService";
+import { Button } from "../../Components/Common/button";
+import Pagination from "../../Components/Pagination";
+import AdminPageLoading from "../components/loading";
+import DeleteModal from "./DeleteModal";
+import toast from "react-hot-toast";
 
 interface PaginationData {
   total: number;
@@ -24,7 +25,7 @@ interface Book {
 
 const Books: React.FC = () => {
   const navigate = useNavigate();
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
   const [startSearch, setStartSearch] = useState(false);
   const [books, setBooks] = useState<Book[]>([]);
   const [pagination, setPagination] = useState<PaginationData | null>(null);
@@ -33,19 +34,28 @@ const Books: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedBook, setSelectedBook] = useState<{id: number, title: string} | null>(null);
+  const [selectedBook, setSelectedBook] = useState<{
+    id: number;
+    title: string;
+  } | null>(null);
 
-  const fetchBooks = async (page: number, keyword: string = '') => {
+  const fetchBooks = async (page: number, keyword: string = "") => {
     try {
       setLoading(true);
       const response = await getAdminBooks(page, 12, keyword);
       const data = response.data;
       setBooks(data.data || []);
-      setPagination(data.pagination);
+      setPagination(data.pagination || null);
       setError(null);
       setStartSearch(false);
-    } catch (err) {
-      setError('فشل في تحميل  الكتب');
+    } catch (err: any) {
+      if (err.response?.status === 404) {
+        setBooks([]);
+        setPagination(null);
+        setError("لا توجد كتب");
+      } else {
+        setError("فشل في تحميل الكتب");
+      }
     } finally {
       setLoading(false);
     }
@@ -54,6 +64,13 @@ const Books: React.FC = () => {
   useEffect(() => {
     fetchBooks(currentPage, searchQuery);
   }, [currentPage, startSearch]);
+
+  useEffect(() => {
+    if (searchQuery === "") {
+      setCurrentPage(1);
+      fetchBooks(1);
+    }
+  }, [searchQuery]);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
@@ -72,18 +89,18 @@ const Books: React.FC = () => {
       setIsModalOpen(false);
       fetchBooks(currentPage, searchQuery);
     } catch (err) {
-      alert("حدث خطأ أثناء الحذف");
+      toast.error("حدث خطأ أثناء الحذف");
     }
   };
 
   return (
     <>
-      <DeleteModal 
+      <DeleteModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onConfirm={confirmDelete}
-        itemTitle={selectedBook?.title || ''}
-        typeTitle="حذف الكتاب"
+        itemTitle={selectedBook?.title || ""}
+        itemType="حذف الكتاب"
       />
 
       <AdminPageHeader
@@ -92,31 +109,49 @@ const Books: React.FC = () => {
         setSearchQuery={setSearchQuery}
         setStartSearch={setStartSearch}
         btnLoading={loading && startSearch}
-        title={'الكتب'}
-        titleSingle={'كتاب'}
-        type='books' 
+        title={"الكتب"}
+        titleSingle={"كتاب"}
+        type="books"
+        onSearchClick={() => fetchBooks(1, searchQuery)}
       />
 
       <div className="space-y-6">
-        {!loading && !error && (
+        {!loading && books.length > 0 && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
             {books.map((book) => (
-              <div key={book.book_id} className="relative bg-white rounded-[12px] overflow-hidden border border-gray-200 p-3">
+              <div
+                key={book.book_id}
+                className="relative bg-white rounded-[12px] overflow-hidden border border-gray-200 p-3"
+              >
                 <img
-                  className='w-full aspect-[1/1.3] rounded-r-[33px] mb-4 border-l-0 border-t-0 border-2 border-black object-cover'
+                  className="w-full aspect-[1/1.3] rounded-r-[33px] mb-4 border-l-0 border-t-0 border-2 border-black object-cover"
                   src={book?.image}
-                  alt={book?.book_name} 
+                  alt={book?.book_name}
                 />
                 <div className="p-4 text-center">
-                  <h3 className="text-primary text-[18px] font-bold mb-2">{book.book_name}</h3>
+                  <h3 className="text-primary text-[18px] font-bold mb-2">
+                    {book.book_name}
+                  </h3>
                   <div className="text-gray-500 mb-4 text-sm">
                     {book.book_date} - {book.publishing_house}
                   </div>
                   <div className="flex flex-col gap-2 items-center">
-                    <Button className='w-full max-w-[180px] hover:bg-[#2d4a62]' onClick={() => navigate(`/admin/book/edit/${book.book_id}`)} type="primary">
+                    <Button
+                      className="w-full max-w-[180px] hover:bg-[#2d4a62]"
+                      onClick={() =>
+                        navigate(`/admin/book/edit/${book.book_id}`)
+                      }
+                      type="primary"
+                    >
                       تعديل الكتاب
                     </Button>
-                    <Button className='w-full max-w-[180px] hover:bg-red-500' onClick={() => openDeleteModal(book.book_id, book.book_name)} type="danger">
+                    <Button
+                      className="w-full max-w-[180px] hover:bg-red-500"
+                      onClick={() =>
+                        openDeleteModal(book.book_id, book.book_name)
+                      }
+                      type="danger"
+                    >
                       حذف الكتاب
                     </Button>
                   </div>
@@ -126,12 +161,23 @@ const Books: React.FC = () => {
           </div>
         )}
 
-        {loading && <AdminPageLoading />}
-        {!loading && !error && books.length === 0 && <div className="text-center py-10">لا توجد كتب</div>}
-        
-        {!loading && pagination && pagination.last_page > 1 && (
-          <Pagination currentPage={currentPage} totalPages={pagination.last_page} onPageChange={handlePageChange} />
+        {!loading && (books.length === 0 || error) && (
+          <div className="text-center text-[#6B7280] py-8">
+            {error || "لا توجد كتب"}
+          </div>
         )}
+
+        {loading && <AdminPageLoading />}
+        {!loading &&
+          books.length > 0 &&
+          pagination?.last_page &&
+          pagination.last_page > 1 && (
+            <Pagination
+              currentPage={currentPage}
+              totalPages={pagination.last_page}
+              onPageChange={handlePageChange}
+            />
+          )}
       </div>
     </>
   );

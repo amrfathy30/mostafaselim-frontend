@@ -11,7 +11,7 @@ export const adminAddCategory = async (data: any) => {
 };
 
 export const adminUpdateCategory = async (id: number | string, data: any) => {
-  const response = await axiosInstance.post(`/admin/category/update/${id}`, data);
+  const response = await axiosInstance.put(`/admin/category/update/${id}`, data);
   return response.data;
 };
 
