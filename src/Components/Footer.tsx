@@ -3,8 +3,9 @@ import { Facebook, Instagram, TikTokIcon } from "./Icons";
 import { subscribe } from "../services/homeService";
 import { Button } from "../Components/Common/button";
 import toast from "react-hot-toast";
+import { Settings } from "../types";
 
-const Footer = ({ settings }) => {
+const Footer = ({ settings }: { settings: Settings }) => {
   const [email, setEmail] = useState("");
   const [emailTarget, setEmailTarget] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(false);
@@ -35,7 +36,7 @@ const Footer = ({ settings }) => {
       } catch (err: any) {
         toast.error(
           err?.response?.data?.message ||
-            "حدث خطأ أثناء الارسال برجاء المحاوله مره اخري",
+          "حدث خطأ أثناء الارسال برجاء المحاوله مره اخري",
         );
         setLoading(false);
       }

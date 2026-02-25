@@ -24,6 +24,7 @@ const PodcastsPage: React.FC = () => {
       const formatted = (data?.audios || []).map((item: any) => ({
         id: item.audio_id,
         title: item.audio_title,
+        views: item.audio_views,
         description: item.audio_details,
         date: item.audio_date,
         duration: item.duration,

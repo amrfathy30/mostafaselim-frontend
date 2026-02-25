@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { CalenderIcon, ClockIcon } from '../../icons/work-icons';
+import { CalenderIcon, ClockIcon, EyeIcon } from '../../icons/work-icons';
 
 interface Props {
   item: any;
@@ -12,21 +12,86 @@ const ArticleCard: React.FC<Props> = ({ item }) => {
   const articleTime = item?.time || item?.article_time;
   const articleDate = item?.date || item?.article_date;
 
+  const formatDateToArabic = (dateString?: string) => {
+    if (!dateString) return "-";
+
+    const parts = dateString.split("/");
+    if (parts.length !== 3) return dateString;
+
+    const [day, monthStr, year] = parts;
+
+    const months: Record<string, number> = {
+      Jan: 0,
+      Feb: 1,
+      Mar: 2,
+      Apr: 3,
+      May: 4,
+      Jun: 5,
+      Jul: 6,
+      Aug: 7,
+      Sep: 8,
+      Oct: 9,
+      Nov: 10,
+      Dec: 11,
+    };
+
+    const month = months[monthStr];
+    if (month === undefined) return dateString;
+
+    const date = new Date(Number(year), month, Number(day));
+
+    return new Intl.DateTimeFormat("ar-EG", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    }).format(date);
+  };
+
+  const formatTimeToArabic = (timeString?: string) => {
+    if (!timeString) return "-";
+
+    const [hourMin, period] = timeString.split(" ");
+    if (!hourMin || !period) return timeString;
+
+    let [hour, minute] = hourMin.split(":").map(Number);
+    if (isNaN(hour) || isNaN(minute)) return timeString;
+
+    if (period.toUpperCase() === "PM" && hour < 12) hour += 12;
+    if (period.toUpperCase() === "AM" && hour === 12) hour = 0;
+
+    const date = new Date();
+    date.setHours(hour, minute);
+
+    return new Intl.DateTimeFormat("ar-EG", {
+      hour: "numeric",
+      minute: "numeric",
+      hour12: true,
+    }).format(date);
+  };
+
   return (
     <div className="bg-white  border border-gray-100 flex flex-col items-start text-start w-full p-4 xl:p6 h-auto xxl:h-[251px] gap-4 xxl:gap-[23px] transition-all hover:shadow-md font-expo">
-      
+
       <h3 className="text-[#3A5F7D] font-normal line-clamp-2 text-lg xl:text-xl xxl:text-[26px] leading-relaxed xxl:leading-[39px]">
         {articleTitle}
       </h3>
-      
+
       <div className="flex items-center gap-3 xxl:gap-[11px] text-[#4D4D4D] text-sm xl:text-sm xxl:text-[16px]">
         <div className="flex items-center gap-2" dir="ltr">
           <ClockIcon className="w-3.5 h-3.5 xxl:w-[18px] xxl:h-[18px]" />
-          <span className="whitespace-nowrap">{articleTime}</span>
+          <span className="whitespace-nowrap">{formatTimeToArabic(articleTime)}</span>
         </div>
         <div className="flex items-center gap-2" dir="ltr">
-          <CalenderIcon className="w-3.5 h-3.5 xxl:w-[18px] xxl:h-[18px]"/>
-          <span className="whitespace-nowrap">{articleDate}</span>
+          <CalenderIcon className="w-3.5 h-3.5 xxl:w-[18px] xxl:h-[18px]" />
+          <span className="whitespace-nowrap">{formatDateToArabic(articleDate)}</span>
+        </div>
+        <div className="flex flex-row-reverse items-center gap-[6px]">
+          <EyeIcon className="w-[18px] h-[18px] text-[#4D4D4D]" />
+          <span className="text-[#4D4D4D] text-[14px] leading-none">
+            {item.views > 999
+              ? (item.views / 1000).toFixed(1) + "K"
+              : item.views || "0"}
+          </span>
         </div>
       </div>
 

@@ -14,7 +14,7 @@ const PodcastSidebar: React.FC<Props> = ({ podcast, isMobile = false }) => {
   const details = [
     { label: 'تاريخ النشر', value: podcast.date, icon: <DateFillIcon/> },
     { label: 'المدة', value: podcast.duration, icon: <TimeIcon/> },
-    // { label: 'النوع', value: 'نقد أدبي / روايات', icon: <TypeIcon/> },
+    { label: 'المشاهدات', value: podcast?.views, icon: <TypeIcon/> },
     { label: 'المتحدث', value: 'د/ مصطفى سليم', icon: <MicIcon/> },
     { label: 'التصنيف', value: podcast.image.project_classfication, icon: <FilterIcon/> },
   ];

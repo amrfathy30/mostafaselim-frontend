@@ -8,8 +8,9 @@ import {
   TikTokIcon,
 } from "./Icons";
 import { Link, useLocation } from "react-router-dom";
+import { Settings } from "../types";
 
-const Header = ({ settings }) => {
+const Header = ({ settings }: { settings: Settings }) => {
   const location = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -40,11 +41,10 @@ const Header = ({ settings }) => {
             <Link
               to={link.to}
               key={link.label}
-              className={`relative text-[20px] transition-colors duration-300 ${
-                location?.pathname === link.to
+              className={`relative text-[20px] transition-colors duration-300 ${location?.pathname === link.to
                   ? "text-primary font-bold"
                   : "text-textPrimary"
-              }`}
+                }`}
             >
               <span className="after:content-[''] after:absolute after:left-0 after:-bottom-1 after:h-[2px] after:w-0 after:bg-primary after:transition-all after:duration-300 hover:after:w-full">
                 {link.label}
@@ -97,11 +97,10 @@ const Header = ({ settings }) => {
 
       {/* Responsive Dropdown Menu */}
       <div
-        className={`lg:hidden absolute top-full left-0 w-full bg-white shadow-xl border-t border-gray-100 overflow-hidden transition-all duration-300 ease-in-out ${
-          isMenuOpen
+        className={`lg:hidden absolute top-full left-0 w-full bg-white shadow-xl border-t border-gray-100 overflow-hidden transition-all duration-300 ease-in-out ${isMenuOpen
             ? "max-h-[600px] opacity-100 visible"
             : "max-h-0 opacity-0 invisible"
-        }`}
+          }`}
       >
         <div className="flex flex-col py-6 px-6">
           {/* Navigation Links - Always visible in dropdown when burger is used */}

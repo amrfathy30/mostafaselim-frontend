@@ -2,8 +2,10 @@ import React from "react";
 import { Button } from "../Common/button";
 import { useNavigate } from "react-router-dom";
 import { openExternalLink } from "../../helper";
+import { EyeIcon } from "../../icons/work-icons";
 interface Props {
   book: {
+    book_views: number;
     book_id?: number;
     book_name: string;
     book_date: string;
@@ -46,28 +48,36 @@ export default function BookCard({ book, variant = "detailed" }: Props) {
       <p className="text-xs md:text-xl text-primary mb-4">
         {book.publishing_house}
       </p>
+      <div className="flex flex-row-reverse items-center gap-[6px]">
+        <EyeIcon className="w-[18px] h-[18px] text-[#4D4D4D]" />
+        <span className="text-[#4D4D4D] text-[14px] leading-none">
+          {book.book_views > 999
+            ? (book.book_views / 1000).toFixed(1) + "K"
+            : book.book_views || "0"}
+        </span>
+      </div>
 
-<div className="mt-auto flex items-center justify-center w-full gap-4 px-2 pb-2" dir="rtl">
-    {variant === 'simple' ? (
-        <Button 
-            type="primary" 
+      <div className="mt-auto flex items-center justify-center w-full gap-4 px-2 pb-2" dir="rtl">
+        {variant === 'simple' ? (
+          <Button
+            type="primary"
             className="!h-[45px] w-[145px] !text-[14px] cursor-pointer"
-            onClick={() =>openExternalLink(book?.book_link)}   
-        >
+            onClick={() => openExternalLink(book?.book_link)}
+          >
             قراءة الكتاب
-        </Button>
-    ) : (
-        <>
-            <Button 
-                type="primary" 
-                className="!h-[44px] !text-[14px] !md:text-[16px] font-expo rounded-md !border-none !text-white flex-1 min-w-[150px] shadow-sm rounded-sm cursor-pointer"
-                onClick={() =>openExternalLink(book?.book_link)}
+          </Button>
+        ) : (
+          <>
+            <Button
+              type="primary"
+              className="!h-[44px] !text-[14px] !md:text-[16px] font-expo rounded-md !border-none !text-white flex-1 min-w-[150px] shadow-sm rounded-sm cursor-pointer"
+              onClick={() => openExternalLink(book?.book_link)}
             >
               قراءة الكتاب
             </Button>
-            <button 
-                className="text-[#007bff] text-[14px] font-bold font-expo bg-transparent border-none hover:underline whitespace-nowrap flex-1 cursor-pointer"
-               onClick={() => navigate(`/book/${book.book_id}`)}
+            <button
+              className="text-[#007bff] text-[14px] font-bold font-expo bg-transparent border-none hover:underline whitespace-nowrap flex-1 cursor-pointer"
+              onClick={() => navigate(`/book/${book.book_id}`)}
             >
               معلومات الكتاب
             </button>

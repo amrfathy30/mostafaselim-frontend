@@ -25,6 +25,7 @@ const Articles: React.FC = () => {
         title: item.article_title,
         time: item.article_time,
         date: item.article_date,
+        views: item.article_views,
         category: "articles",
       }));
 

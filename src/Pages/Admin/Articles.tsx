@@ -11,6 +11,7 @@ import {
 import AdminPageLoading from "../components/loading";
 import DeleteModal from "./DeleteModal";
 import toast from "react-hot-toast";
+import { EyeIcon } from "../../icons/work-icons";
 
 const Articles: React.FC = () => {
   const navigate = useNavigate();
@@ -30,7 +31,7 @@ const Articles: React.FC = () => {
       const res = await getAdminArticles(page, 12, keyword);
       setArticles(res.data.articles || []);
       setPagination(res.data.pagination);
-      setError(null); 
+      setError(null);
     } catch (err: any) {
       if (err.response?.status === 404) {
         setArticles([]);
@@ -66,6 +67,64 @@ const Articles: React.FC = () => {
     }
   };
 
+  const formatDateToArabic = (dateString?: string) => {
+    if (!dateString) return "-";
+
+    const parts = dateString.split("/");
+    if (parts.length !== 3) return dateString;
+
+    const [day, monthStr, year] = parts;
+
+    const months: Record<string, number> = {
+      Jan: 0,
+      Feb: 1,
+      Mar: 2,
+      Apr: 3,
+      May: 4,
+      Jun: 5,
+      Jul: 6,
+      Aug: 7,
+      Sep: 8,
+      Oct: 9,
+      Nov: 10,
+      Dec: 11,
+    };
+
+    const month = months[monthStr];
+    if (month === undefined) return dateString;
+
+    const date = new Date(Number(year), month, Number(day));
+
+    return new Intl.DateTimeFormat("ar-EG", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    }).format(date);
+  };
+
+  const formatTimeToArabic = (timeString?: string) => {
+    if (!timeString) return "-";
+
+    const [hourMin, period] = timeString.split(" ");
+    if (!hourMin || !period) return timeString;
+
+    let [hour, minute] = hourMin.split(":").map(Number);
+    if (isNaN(hour) || isNaN(minute)) return timeString;
+
+    if (period.toUpperCase() === "PM" && hour < 12) hour += 12;
+    if (period.toUpperCase() === "AM" && hour === 12) hour = 0;
+
+    const date = new Date();
+    date.setHours(hour, minute);
+
+    return new Intl.DateTimeFormat("ar-EG", {
+      hour: "numeric",
+      minute: "numeric",
+      hour12: true,
+    }).format(date);
+  };
+
+
   return (
     <>
       <DeleteModal
@@ -98,13 +157,21 @@ const Articles: React.FC = () => {
                   <h3 className="text-primary text-xl font-bold mb-4 text-right">
                     {article.article_title}
                   </h3>
-                  <div className="flex gap-4 text-gray-500 text-sm mb-4">
+                  <div className="flex items-center gap-4 text-gray-500 text-sm mb-4">
                     <span className="flex items-center gap-1">
-                      {article.article_time} <ClockIcon />
+                      {formatTimeToArabic(article.article_time)} <ClockIcon />
                     </span>
                     <span className="flex items-center gap-1">
-                      {article.article_date} <CalendarIcon />
+                      {formatDateToArabic(article.article_date)} <CalendarIcon />
                     </span>
+                    <div className="flex items-center gap-[6px]">
+                      <EyeIcon className="w-[18px] h-[18px] text-[#4D4D4D]" />
+                      <span className="text-[#4D4D4D] text-[14px] leading-none">
+                        {article.article_views > 999
+                          ? (article.article_views / 1000).toFixed(1) + "K"
+                          : article.article_views || "0"}
+                      </span>
+                    </div>
                   </div>
                 </div>
                 <div className="flex gap-3">

@@ -7,6 +7,7 @@ import Pagination from "../../Components/Pagination";
 import AdminPageLoading from "../components/loading";
 import DeleteModal from "./DeleteModal";
 import toast from "react-hot-toast";
+import { EyeIcon } from "../../icons/work-icons";
 
 interface PaginationData {
   total: number;
@@ -16,6 +17,7 @@ interface PaginationData {
 }
 
 interface Book {
+  book_views: number;
   book_id: number;
   book_name: string;
   image: string;
@@ -132,8 +134,16 @@ const Books: React.FC = () => {
                   <h3 className="text-primary text-[18px] font-bold mb-2">
                     {book.book_name}
                   </h3>
-                  <div className="text-gray-500 mb-4 text-sm">
+                  <div className="text-gray-500 text-sm">
                     {book.book_date} - {book.publishing_house}
+                  </div>
+                  <div className="flex items-center justify-center gap-[6px] mb-3">
+                    <EyeIcon className="w-[18px] h-[18px] text-[#4D4D4D]" />
+                    <span className="text-[#4D4D4D] text-[14px] leading-none">
+                      {book.book_views > 999
+                        ? (book.book_views / 1000).toFixed(1) + "K"
+                        : book.book_views || "0"}
+                    </span>
                   </div>
                   <div className="flex flex-col gap-2 items-center">
                     <Button

@@ -13,6 +13,7 @@ import {
 } from "../../services/audioService";
 import toast from "react-hot-toast";
 import Pagination from "../../Components/Pagination";
+import { EyeIcon } from "../../icons/work-icons";
 
 interface Project {
   project_id: number;
@@ -237,9 +238,9 @@ const Podcasts: React.FC = () => {
               prevProjects.map((p) =>
                 p.project_id === updatedProject.project_id
                   ? {
-                      ...p,
-                      audios_count: updatedProject.project_audio?.length || 0,
-                    }
+                    ...p,
+                    audios_count: updatedProject.project_audio?.length || 0,
+                  }
                   : p,
               ),
             );
@@ -301,11 +302,10 @@ const Podcasts: React.FC = () => {
                   <div
                     key={project.project_id}
                     onClick={() => handleSelectProject(project.project_id)}
-                    className={`p-5 border-b border-gray-100 transition-all cursor-pointer hover:bg-gray-50  ${
-                      selectedProject?.project_id === project.project_id
-                        ? "bg-[#E5E7EB]"
-                        : "bg-white"
-                    }`}
+                    className={`p-5 border-b border-gray-100 transition-all cursor-pointer hover:bg-gray-50  ${selectedProject?.project_id === project.project_id
+                      ? "bg-[#E5E7EB]"
+                      : "bg-white"
+                      }`}
                   >
                     <div className="flex justify-between items-start mb-3">
                       <div className="flex gap-3">
@@ -385,9 +385,8 @@ const Podcasts: React.FC = () => {
               filteredAudios.map((segment, index) => (
                 <div
                   key={segment.audio_id}
-                  className={`p-6 px-8 flex flex-col md:flex-row items-center justify-between gap-2 md:gap-8 transition-all ${
-                    index % 2 === 0 ? "bg-[#FFFFFF]" : "bg-[#F9F9F9]"
-                  } ${index !== filteredAudios.length - 1 ? "border-b border-gray-100" : ""}`}
+                  className={`p-6 px-8 flex flex-col md:flex-row items-center justify-between gap-2 md:gap-8 transition-all ${index % 2 === 0 ? "bg-[#FFFFFF]" : "bg-[#F9F9F9]"
+                    } ${index !== filteredAudios.length - 1 ? "border-b border-gray-100" : ""}`}
                 >
                   <div className="flex-1 text-right">
                     <h4 className="text-[20px] font-bold text-[#1E4D74] mb-1">
@@ -396,7 +395,15 @@ const Podcasts: React.FC = () => {
                     <p className="text-[#6B7280] text-[16px] leading-relaxed line-clamp-2 font-medium">
                       {segment.audio_details}
                     </p>
-                    <p className="text-[#4B5563] text-[14px]">النوع : نقد</p>
+                    <div className="flex items-center gap-[6px] mb-3">
+                      <EyeIcon className="w-[18px] h-[18px] text-[#4D4D4D]" />
+                      <span className="text-[#4D4D4D] text-[14px] leading-none">
+                        {segment.audio_views > 999
+                          ? (segment.audio_views / 1000).toFixed(1) + "k"
+                          : segment.audio_views || "0"}
+                      </span>
+                    </div>
+                    <p className="text-[#4B5563] text-[14px]">التصنيف : {segment?.audio_classification}</p>
                   </div>
                   <div className="flex flex-col gap-3 min-w-[140px] items-center">
                     <span className="text-[#9CA3AF] text-[16px] font-bold tabular-nums">
