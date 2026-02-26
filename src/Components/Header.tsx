@@ -18,7 +18,7 @@ const Header = ({ settings }: { settings: Settings }) => {
     { label: "الرئيسية", to: "/" },
     { label: "المقالات", to: "/articles" },
     { label: "الكتب", to: "/books" },
-    { label: "البودكاست", to: "/podcasts" },
+    { label: "البودكاست", to: "/audio-Page" },
     { label: "المدونة", to: "/blogs" },
   ];
 
@@ -42,8 +42,8 @@ const Header = ({ settings }: { settings: Settings }) => {
               to={link.to}
               key={link.label}
               className={`relative text-[20px] transition-colors duration-300 ${location?.pathname === link.to
-                  ? "text-primary font-bold"
-                  : "text-textPrimary"
+                ? "text-primary font-bold"
+                : "text-textPrimary"
                 }`}
             >
               <span className="after:content-[''] after:absolute after:left-0 after:-bottom-1 after:h-[2px] after:w-0 after:bg-primary after:transition-all after:duration-300 hover:after:w-full">
@@ -98,8 +98,8 @@ const Header = ({ settings }: { settings: Settings }) => {
       {/* Responsive Dropdown Menu */}
       <div
         className={`lg:hidden absolute top-full left-0 w-full bg-white shadow-xl border-t border-gray-100 overflow-hidden transition-all duration-300 ease-in-out ${isMenuOpen
-            ? "max-h-[600px] opacity-100 visible"
-            : "max-h-0 opacity-0 invisible"
+          ? "max-h-[600px] opacity-100 visible"
+          : "max-h-0 opacity-0 invisible"
           }`}
       >
         <div className="flex flex-col py-6 px-6">

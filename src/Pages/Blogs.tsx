@@ -9,11 +9,13 @@ const Blogs: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState("");
 
-  const fetchBlogs = async (page: number) => {
+  const fetchBlogs = async () => {
     try {
       setLoading(true);
-      const response = await getBlogs(page, 9);
+      const response = await getBlogs(currentPage, 9, search);
+
       const apiData = response.data?.blogs || [];
 
       const mappedData: BlogItem[] = apiData.map((item: any) => ({
@@ -39,8 +41,16 @@ const Blogs: React.FC = () => {
   };
 
   useEffect(() => {
-    fetchBlogs(currentPage);
-  }, [currentPage]);
+    if (search) {
+      const delay = setTimeout(() => {
+        fetchBlogs();
+      }, 500);
+      return () => clearTimeout(delay);
+    } else {
+      fetchBlogs();
+    }
+  }, [currentPage, search]);
+
 
   return (
     <main
@@ -48,8 +58,8 @@ const Blogs: React.FC = () => {
       dir="rtl"
     >
       <div className="container mx-auto px-6 lg:px-20 max-w-[1423px]">
-        <div className="flex justify-center items-center mb-8 xxl:mb-[50px]">
-          <div className="flex items-center gap-2 relative">
+        <div className="flex flex-col items-center mb-8 md:mb-12 xxl:mb-16">
+          <div className="flex items-center gap-2 relative mb-8 xxl:mb-[50px]">
             <img
               src={quoteIcon}
               alt="quote"
@@ -63,6 +73,38 @@ const Blogs: React.FC = () => {
               alt="quote"
               className="w-5 xl:w-8 xxl:w-[35px] h-auto translate-y-2 transform scale-[-1]"
             />
+          </div>
+
+          <div className="w-full max-w-2xl flex flex-col md:flex-row  items-center gap-2 md:gap-0">
+            <input
+              type="text"
+              placeholder="ابحث عن المدونة التي تريدها"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="w-full h-[52px] px-6 text-right outline-none text-gray-600 font-expo bg-white 
+  rounded-md md:rounded-l-none md:rounded-r-md border border-gray-200 shadow-sm"
+            />
+            <button
+              className="w-full md:w-auto bg-[#007bff] hover:bg-blue-600 text-white h-[52px] px-10 
+                       flex items-center justify-center gap-2 transition-colors font-expo 
+                       rounded-md md:rounded-r-none md:rounded-l-md shadow-md shrink-0 cursor-pointer"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={2.5}
+                stroke="currentColor"
+                className="w-4 h-4"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
+                />
+              </svg>
+              <span className="text-base font-bold">بحث</span>
+            </button>
           </div>
         </div>
 

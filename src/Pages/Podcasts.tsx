@@ -41,6 +41,7 @@ const PodcastsPage: React.FC = () => {
       setLoading(false);
     }
   };
+
   useEffect(() => {
     fetchPodcasts(currentPage, keyword);
   }, [currentPage]);

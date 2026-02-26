@@ -14,7 +14,7 @@ const Footer = ({ settings }: { settings: Settings }) => {
     { label: "الرئيسية", to: "/" },
     { label: "المقالات", to: "/articles" },
     { label: "الكتب", to: "/books" },
-    { label: "البودكاست", to: "/podcasts" },
+    { label: "البودكاست", to: "/audio-Page" },
     { label: "المدونة", to: "/blogs" },
   ];
 
