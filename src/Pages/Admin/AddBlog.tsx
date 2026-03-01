@@ -46,7 +46,7 @@ const AddBlog: React.FC = () => {
           );
 
           setBlogInfo({
-            publisherName: blog.blog_author || "دكتور مصطفى سليم",
+            publisherName: blog.blog_publisher || "دكتور مصطفى سليم",
             categoryId: matchedCat
               ? String(matchedCat.category_id)
               : String(blog.category_id || "")
@@ -126,7 +126,7 @@ const AddBlog: React.FC = () => {
       if (error.response?.data?.errors) {
         const errors = error.response.data.errors;
         const errorMessages = Object.values(errors).flat().join("\n");
-        toast.error(`حدث خطأ في البيانات:\n${errorMessages}`);
+        toast.error(`${errorMessages}`);
       } else {
         const errorMsg = error.response?.data?.message || "حدث خطأ أثناء الحفظ";
         toast.error(errorMsg);

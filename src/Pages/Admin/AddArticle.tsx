@@ -46,6 +46,20 @@ const AddArticle: React.FC = () => {
     },
   ]);
 
+  const formatDateForInput = (dateStr: string) => {
+    const months: Record<string, string> = {
+      Jan: "01", Feb: "02", Mar: "03", Apr: "04",
+      May: "05", Jun: "06", Jul: "07", Aug: "08",
+      Sep: "09", Oct: "10", Nov: "11", Dec: "12",
+    };
+    const parts = dateStr.split("/");
+    if (parts.length !== 3) return "";
+    const day = parts[0].padStart(2, "0");
+    const month = months[parts[1]] || "01";
+    const year = parts[2];
+    return `${year}-${month}-${day}`;
+  };
+
   useEffect(() => {
     const loadInitialData = async () => {
       try {
@@ -70,9 +84,7 @@ const AddArticle: React.FC = () => {
             categoryId: matchedCat
               ? String(matchedCat.id || matchedCat.category_id)
               : String(data.category_id || ""),
-            year: data.article_date
-              ? data.article_date.split("/")[2] || data.article_date
-              : "",
+            year: data.article_date ? formatDateForInput(data.article_date) : "",
             references: data.article_reference
               ? JSON.parse(data.article_reference[0] || "[]")
               : [],
@@ -296,7 +308,7 @@ const AddArticle: React.FC = () => {
               onChange={(e) =>
                 setArticleInfo({ ...articleInfo, year: e.target.value })
               }
-              className="h-[68px] px-4 py-3 bg-white border border-gray-200 rounded-lg text-right outline-none focus:border-[#3A5F7D] font-semibold text-black"
+              className="h-[68px] w-full px-4 py-3 bg-white border border-gray-200 rounded-lg text-right outline-none focus:border-[#3A5F7D] font-semibold text-black"
             />
           </div>
         </div>
@@ -325,15 +337,15 @@ const AddArticle: React.FC = () => {
                             paragraphs.map((para) =>
                               para.id === p.id
                                 ? {
-                                    ...para,
-                                    contents: [
-                                      ...para.contents,
-                                      {
-                                        type: "video",
-                                        content: "",
-                                      },
-                                    ],
-                                  }
+                                  ...para,
+                                  contents: [
+                                    ...para.contents,
+                                    {
+                                      type: "video",
+                                      content: "",
+                                    },
+                                  ],
+                                }
                                 : para,
                             ),
                           );
@@ -360,18 +372,18 @@ const AddArticle: React.FC = () => {
                             prev.map((para) =>
                               para.id === p.id
                                 ? {
-                                    ...para,
-                                    contents: [
-                                      ...para.contents,
-                                      ...files.map(
-                                        (file): SectionContent => ({
-                                          type: "image",
-                                          content: file,
-                                          isNew: true,
-                                        }),
-                                      ),
-                                    ],
-                                  }
+                                  ...para,
+                                  contents: [
+                                    ...para.contents,
+                                    ...files.map(
+                                      (file): SectionContent => ({
+                                        type: "image",
+                                        content: file,
+                                        isNew: true,
+                                      }),
+                                    ),
+                                  ],
+                                }
                                 : para,
                             ),
                           );
@@ -381,6 +393,17 @@ const AddArticle: React.FC = () => {
                     >
                       أضف صورة
                     </Button>
+                    {paragraphs.length > 1 && (
+                      <Button
+                        className="w-[140px] h-10 bg-red-500 hover:bg-red-600"
+                        type="primary"
+                        onClick={() => {
+                          setParagraphs(paragraphs.filter((para) => para.id !== p.id));
+                        }}
+                      >
+                        حذف الفقرة
+                      </Button>
+                    )}
                   </div>
                 </div>
                 <div className="space-y-3">
@@ -406,13 +429,13 @@ const AddArticle: React.FC = () => {
                         paragraphs.map((para) =>
                           para.id === p.id
                             ? {
-                                ...para,
-                                contents: para.contents.map((c) =>
-                                  c.type === "text"
-                                    ? { ...c, content: e.target.value }
-                                    : c,
-                                ),
-                              }
+                              ...para,
+                              contents: para.contents.map((c) =>
+                                c.type === "text"
+                                  ? { ...c, content: e.target.value }
+                                  : c,
+                              ),
+                            }
                             : para,
                         ),
                       )
@@ -431,14 +454,14 @@ const AddArticle: React.FC = () => {
                               paragraphs.map((para) =>
                                 para.id === p.id
                                   ? {
-                                      ...para,
-                                      contents: para.contents.map((c, idx) =>
-                                        c.type === "video" &&
+                                    ...para,
+                                    contents: para.contents.map((c, idx) =>
+                                      c.type === "video" &&
                                         para.contents.indexOf(video) === idx
-                                          ? { ...c, content: e.target.value }
-                                          : c,
-                                      ),
-                                    }
+                                        ? { ...c, content: e.target.value }
+                                        : c,
+                                    ),
+                                  }
                                   : para,
                               ),
                             );
@@ -453,11 +476,11 @@ const AddArticle: React.FC = () => {
                               paragraphs.map((para) =>
                                 para.id === p.id
                                   ? {
-                                      ...para,
-                                      contents: para.contents.filter(
-                                        (c) => c !== video,
-                                      ),
-                                    }
+                                    ...para,
+                                    contents: para.contents.filter(
+                                      (c) => c !== video,
+                                    ),
+                                  }
                                   : para,
                               ),
                             )

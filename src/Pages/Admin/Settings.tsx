@@ -103,6 +103,17 @@ const Settings: React.FC = () => {
   }, []);
 
   const handleSaveWebsiteInfo = async () => {
+    const requiredFields = [
+      { value: websiteInfo.site_name, label: "اسم الموقع" },
+      { value: websiteInfo.site_email, label: "البريد الإلكتروني للموقع" },
+      { value: websiteInfo.site_phone, label: "هاتف الموقع" },
+    ];
+
+    const emptyField = requiredFields.find((field) => !field.value?.trim());
+    if (emptyField) {
+      toast.error(`يرجى إدخال ${emptyField.label}`);
+      return;
+    }
     setIsLoadingWebsite(true);
 
     const formData = new FormData();
@@ -143,6 +154,18 @@ const Settings: React.FC = () => {
   };
 
   const handleSaveUserInfo = async () => {
+    const requiredFields = [
+      { value: userInfo.name, label: "الاسم" },
+      { value: userInfo.full_name, label: "الاسم الكامل" },
+      { value: userInfo.email, label: "البريد الإلكتروني" },
+      { value: userInfo.phone, label: "الهاتف" },
+    ];
+
+    const emptyField = requiredFields.find((field) => !field.value?.trim());
+    if (emptyField) {
+      toast.error(`يرجى إدخال ${emptyField.label}`);
+      return;
+    }
     setIsLoadingUser(true);
     const formData = new FormData();
 
@@ -197,21 +220,19 @@ const Settings: React.FC = () => {
       <div className="flex gap-4 mb-6 border-b border-gray-200">
         <button
           onClick={() => setActiveTab("user")}
-          className={`pb-3 px-4 text-[16px] font-medium hover:text-blue-500 hover:border-blue-500 cursor-pointer transition-colors ${
-            activeTab === "user"
-              ? "text-primary border-b-2 border-primary"
-              : "text-[#6B7280] hover:text-primary "
-          }`}
+          className={`pb-3 px-4 text-[16px] font-medium hover:text-blue-500 hover:border-blue-500 cursor-pointer transition-colors ${activeTab === "user"
+            ? "text-primary border-b-2 border-primary"
+            : "text-[#6B7280] hover:text-primary "
+            }`}
         >
           معلومات المستخدم
         </button>
         <button
           onClick={() => setActiveTab("website")}
-          className={`pb-3 px-4 text-[16px] font-medium cursor-pointer hover:text-blue-500 hover:border-blue-500 transition-colors ${
-            activeTab === "website"
-              ? "text-primary border-b-2 border-primary"
-              : "text-[#6B7280] hover:text-primary "
-          }`}
+          className={`pb-3 px-4 text-[16px] font-medium cursor-pointer hover:text-blue-500 hover:border-blue-500 transition-colors ${activeTab === "website"
+            ? "text-primary border-b-2 border-primary"
+            : "text-[#6B7280] hover:text-primary "
+            }`}
         >
           معلومات الموقع
         </button>
@@ -432,21 +453,21 @@ const Settings: React.FC = () => {
                   <div className="flex flex-wrap gap-2">
                     {files.images.length > 0
                       ? files.images.map((file, idx) => (
-                          <img
-                            key={`new-${idx}`}
-                            src={URL.createObjectURL(file)}
-                            alt={`ملف جديد ${idx + 1}`}
-                            className="w-full h-40 object-contain rounded-lg border-white border-4"
-                          />
-                        ))
+                        <img
+                          key={`new-${idx}`}
+                          src={URL.createObjectURL(file)}
+                          alt={`ملف جديد ${idx + 1}`}
+                          className="w-full h-40 object-contain rounded-lg border-white border-4"
+                        />
+                      ))
                       : userInfo?.user_images_urls?.map((url, idx) => (
-                          <img
-                            key={`server-${idx}`}
-                            src={url}
-                            alt={`صورة ${idx + 1}`}
-                            className="w-full h-40 object-contain rounded-lg border-white border-4"
-                          />
-                        ))}
+                        <img
+                          key={`server-${idx}`}
+                          src={url}
+                          alt={`صورة ${idx + 1}`}
+                          className="w-full h-40 object-contain rounded-lg border-white border-4"
+                        />
+                      ))}
                   </div>{" "}
                 </div>
               </div>{" "}

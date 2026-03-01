@@ -7,7 +7,6 @@ interface BooksSectionProps {
 }
 
 export default function BooksSection({ data }: BooksSectionProps) {
-  console.log("data", data);
 
   return (
     <>

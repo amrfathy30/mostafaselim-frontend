@@ -89,6 +89,7 @@ const Books: React.FC = () => {
     try {
       await adminDeleteBook(selectedBook.id);
       setIsModalOpen(false);
+      toast.success("تم حذف الكتاب بنجاح");
       fetchBooks(currentPage, searchQuery);
     } catch (err) {
       toast.error("حدث خطأ أثناء الحذف");
@@ -102,7 +103,7 @@ const Books: React.FC = () => {
         onClose={() => setIsModalOpen(false)}
         onConfirm={confirmDelete}
         itemTitle={selectedBook?.title || ""}
-        itemType="حذف الكتاب"
+        itemType="الكتاب"
       />
 
       <AdminPageHeader

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { adminForgetPassword, adminLogin, adminResetPassword, getAdminProfile } from '../../services/authService';
+import { adminForgetPassword, adminLogin, adminResetPassword } from '../../services/authService';
 import toast, { Toaster } from 'react-hot-toast';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}$/;
 
@@ -13,6 +14,7 @@ const AdminLogin: React.FC = () => {
   const [checkingAuth, setCheckingAuth] = useState(true);
   const [showForgetPassword, setShowForgetPassword] = useState(false);
   const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
     const checkExistingAuth = async () => {
@@ -45,6 +47,16 @@ const AdminLogin: React.FC = () => {
     e.preventDefault();
     setLoading(true);
     setError('');
+    if (!email) {
+      setError('البريد الإلكتروني مطلوب');
+      setLoading(false)
+      return;
+    }
+    if (!password) {
+      setError('كلمة المرور مطلوبة');
+      setLoading(false)
+      return;
+    }
     if (!validateEmail(email)) {
       setError('البريد الإلكتروني غير صالح');
       setLoading(false)
@@ -55,7 +67,7 @@ const AdminLogin: React.FC = () => {
     //   setLoading(false);
     //   return;
     // }
- 
+
     // if (!passwordRegex.test(password)) {
     //   setError('كلمة المرور يجب أن لا تقل عن ٨ احرف وتحتوي على حرف كبير، حرف صغير، رقم، ورمز خاص');
     //   setLoading(false); return;
@@ -132,7 +144,7 @@ const AdminLogin: React.FC = () => {
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition"
               placeholder="admin@example.com"
               autoComplete="email"
-              required
+            // required
             />
           </div>
 
@@ -140,15 +152,28 @@ const AdminLogin: React.FC = () => {
             <label className="block text-gray-700 font-medium mb-2">
               كلمة المرور
             </label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition"
-              placeholder="••••••••"
-              autoComplete="current-password"
-              required
-            />
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition pr-4"
+                placeholder="••••••••"
+                autoComplete="current-password"
+              // required
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-600"
+              >
+                {showPassword ? (
+                  <FaEye />
+                ) : (
+                  <FaEyeSlash />
+                )}
+              </button>
+            </div>
           </div>
 
           <button
@@ -160,7 +185,7 @@ const AdminLogin: React.FC = () => {
           </button>
         </form>
 
-        <div className="w-full flex mt-6 text-center justify-between">
+        <div className="w-full flex mt-6 text-center justify-between flex-col md:flex-row gap-2">
           <button className="text-primary hover:underline text-sm" onClick={() => setShowForgetPassword(true)}>
             هل نسيت كلمه المرور ؟
           </button>
@@ -178,15 +203,20 @@ export default AdminLogin;
 
 const ForgetPasswordModal = ({
   setShowForgetPassword
+}: {
+  setShowForgetPassword: (show: boolean) => void;
 }) => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [loadingResend, setLoadingResend] = useState(false);
   const [email, setEmail] = useState('');
   const [otp, setOtp] = useState('');
   const [sendOtp, setSendOtp] = useState(false);
   const [password, setPassword] = useState('');
   const [passwordConfirmation, setPasswordConfirmation] = useState('');
   const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
+  const [showPasswordConfirmation, setShowPasswordConfirmation] = useState(false);
 
   const handleForgetPassword = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -203,21 +233,23 @@ const ForgetPasswordModal = ({
       setLoading(false);
     }
   };
+
+
   const handleResetPassword = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError('');
-    // if (password.length < 6) {
-    //   setError('كلمة المرور الجديدة يجب أن تكون 6 أحرف على الأقل');
-    //   setLoading(false);
-    //   return;
-    // }
 
-    // if (!passwordRegex.test(password)) {
-    //   setError('كلمة المرور يجب أن لا تقل عن ٨ احرف وتحتوي على حرف كبير، حرف صغير، رقم، ورمز خاص');
-    //   setLoading(false);
-    //   return;
-    // }
+    const passwordRegex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}$/;
+
+    if (!passwordRegex.test(password)) {
+      setError(
+        "كلمة المرور يجب أن لا تقل عن ٨ أحرف وتحتوي على حرف كبير، حرف صغير، رقم، ورمز خاص"
+      );
+      setLoading(false);
+      return;
+    }
     if (password !== passwordConfirmation) {
       setError('كلمات المرور غير متطابقة');
       setLoading(false);
@@ -230,24 +262,40 @@ const ForgetPasswordModal = ({
       password_confirmation: passwordConfirmation
     }
     try {
-    setError('')
+      setError('')
       const response = await adminResetPassword(data);
       if (response) {
         setLoading(false)
-        if (response.status==200) {
-         setShowForgetPassword(false)
-         toast.success("تم تغيير كلمه المرور بنجاح ");
-        } 
+        if (response.status == 200) {
+          setShowForgetPassword(false)
+          toast.success("تم تغيير كلمه المرور بنجاح ");
+        }
       }
     } catch (err: any) {
-      setError('حدث خطأ أثناء الارسال');
+      setLoading(false);
+
+      const serverErrors = err.response?.data?.errors;
+      if (serverErrors) {
+        const allErrors: string[] = [];
+        Object.values(serverErrors).forEach((errorArray: any) => {
+          if (Array.isArray(errorArray)) allErrors.push(...errorArray);
+          else allErrors.push(String(errorArray));
+        });
+
+        allErrors.forEach((errMsg) => toast.error(errMsg));
+      } else if (err.response?.data?.message) {
+        toast.error(err.response.data.message);
+      } else {
+        toast.error('حدث خطأ أثناء الإرسال');
+      }
+    } finally {
       setLoading(false);
     }
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
-                  <Toaster position="bottom-right"/>
+      <Toaster position="bottom-right" />
       <div className="max-w-md w-full bg-white rounded-xl shadow-lg p-8">
         <div className="text-center mb-8">
           <h1 className="text-2xl font-bold text-primary mb-2">لوحة التحكم</h1>
@@ -293,6 +341,7 @@ const ForgetPasswordModal = ({
                 </label>
                 <input
                   type="token"
+                  maxLength={6}
                   value={otp}
                   onChange={(e) => setOtp(e.target.value)}
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition"
@@ -304,34 +353,61 @@ const ForgetPasswordModal = ({
                 <label className="block text-gray-700 font-medium mb-2">
                   كلمه المرور الجديده
                 </label>
-                <input
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition"
-                  placeholder="••••••••"
-                  autoComplete="current-password"
-                  required
-                />
+                <div className="relative">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition"
+                    placeholder="••••••••"
+                    autoComplete="current-password"
+                    required
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-600"
+                  >
+                    {showPassword ? (
+                      <FaEye />
+                    ) : (
+                      <FaEyeSlash />
+                    )}
+                  </button>
+                </div>
               </div>
               <div>
                 <label className="block text-gray-700 font-medium mb-2">
                   تاكيد كلمة المرور الجديده
                 </label>
-                <input
-                  type="password"
-                  value={passwordConfirmation}
-                  onChange={(e) => setPasswordConfirmation(e.target.value)}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition"
-                  placeholder="••••••••"
-                  autoComplete="current-password"
-                  required
-                />
+                <div className="relative">
+
+                  <input
+                    type={showPasswordConfirmation ? "text" : "password"}
+                    value={passwordConfirmation}
+                    onChange={(e) => setPasswordConfirmation(e.target.value)}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition"
+                    placeholder="••••••••"
+                    autoComplete="current-password"
+                    required
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPasswordConfirmation(!showPasswordConfirmation)}
+                    className="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-600"
+                  >
+                    {showPasswordConfirmation ? (
+                      <FaEye />
+                    ) : (
+                      <FaEyeSlash />
+                    )}
+                  </button>
+                </div>
               </div>
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-primary hover:bg-primary/90 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full cursor-pointer bg-primary hover:bg-primary/90 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {loading ? 'جاري الارسال...' : 'اعاده تعيين كلمه المرور'}
               </button>
@@ -341,7 +417,29 @@ const ForgetPasswordModal = ({
 
         </form>
 
-        <div className="w-full flex mt-6 text-center justify-between">
+        {sendOtp && (
+          <div className="flex justify-between items-center my-4">
+            <button
+              type="button"
+              className="w-full cursor-pointer bg-primary hover:bg-primary/90 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+              onClick={async () => {
+                setLoadingResend(true);
+                try {
+                  await adminForgetPassword({ email });
+                  toast.success("تم إعادة إرسال كود التحقق");
+                } catch (err) {
+                  toast.error("حدث خطأ أثناء إعادة الإرسال");
+                } finally {
+                  setLoadingResend(false);
+                }
+              }}
+            >
+              {loadingResend ? 'جاري الارسال...' : 'إعادة إرسال كود التحقق'}
+            </button>
+          </div>
+        )}
+
+        <div className="w-full flex mt-6 text-center justify-between flex-col md:flex-row gap-2">
           <button className="text-primary hover:underline text-sm" onClick={() => setShowForgetPassword(false)}>
             العوده لتسجيل الدخول
           </button>

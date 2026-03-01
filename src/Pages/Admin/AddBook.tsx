@@ -8,6 +8,17 @@ import {
 import { adminGetCategories } from "../../services/categoryService";
 import toast from "react-hot-toast";
 
+interface BookFormData {
+  name: string;
+  publishing_house: string;
+  language: string;
+  pages: string;
+  edition_number: string;
+  objectives: string;
+  summary: string;
+  link: string;
+}
+
 const AddBook: React.FC = () => {
   const navigate = useNavigate();
   const { id } = useParams();
@@ -87,9 +98,66 @@ const AddBook: React.FC = () => {
     loadData();
   }, [id, isEdit]);
 
+
+
+  const validateBookForm = (data: BookFormData) => {
+    const errors: string[] = [];
+
+    if (!data.name.trim()) errors.push("اسم الكتاب مطلوب");
+    if (!data.publishing_house.trim()) errors.push("دار النشر مطلوبة");
+    if (!/^[\p{L}\s]+$/u.test(data.publishing_house))
+      errors.push("دار النشر تحتوي على رموز غير مسموح بها");
+
+    if (!data.language.trim()) errors.push("لغة الكتاب مطلوبة");
+    if (!/^[\p{L}\s]+$/u.test(data.language))
+      errors.push("لغة الكتاب تحتوي على رموز غير مسموح بها");
+
+    const pages = Number(data.pages);
+    if (!data.pages.trim()) errors.push("عدد الصفحات مطلوب");
+    else if (isNaN(pages) || !Number.isInteger(pages))
+      errors.push("عدد الصفحات يجب أن يكون رقمًا صحيحًا");
+    else if (pages < 1) errors.push("عدد الصفحات يجب أن يكون صفحة واحدة على الأقل");
+
+    if (!data.edition_number.trim()) errors.push("رقم الطبعة مطلوب");
+    else if (data.edition_number.length < 5)
+      errors.push("رقم الطبعة يجب ألا يقل عن 5 أحرف");
+    else if (!/^[\w\s]+$/.test(data.edition_number))
+      errors.push("رقم الطبعة يحتوي على رموز غير مسموح بها");
+
+    if (!data.objectives.trim()) errors.push("أهداف الكتاب مطلوبة");
+    else if (!/^[\p{L}\s]+$/u.test(data.objectives))
+      errors.push("أهداف الكتاب تحتوي على رموز غير مسموح بها");
+
+    if (!data.summary.trim()) errors.push("ملخص الكتاب مطلوب");
+    else if (!/^[\p{L}\s]+$/u.test(data.summary))
+      errors.push("ملخص الكتاب يحتوي على رموز غير مسموح بها");
+
+    if (!data.link.trim()) errors.push("رابط الكتاب مطلوب");
+    else {
+      try {
+        new URL(data.link);
+      } catch {
+        errors.push("رابط الكتاب يجب أن يكون رابطًا صحيحًا");
+      }
+    }
+
+    return errors;
+  };
+
   const handlePublish = async () => {
-    if (!bookInfo.bookName.trim()) {
-      toast.error("يجب إدخال اسم الكتاب");
+    const formData: BookFormData = {
+      name: bookInfo.bookName,
+      publishing_house: bookInfo.publisher,
+      language: bookInfo.language,
+      pages: bookInfo.pages,
+      edition_number: bookInfo.editionNumber,
+      objectives: bookInfo.goals,
+      summary: bookInfo.description,
+      link: bookInfo.link,
+    };
+    const errors = validateBookForm(formData);
+    if (errors.length > 0) {
+      errors.forEach((err) => toast.error(err));
       return;
     }
 

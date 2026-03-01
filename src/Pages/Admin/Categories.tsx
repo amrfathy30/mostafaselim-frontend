@@ -51,10 +51,17 @@ const Categories: React.FC = () => {
 
   const saveCategoryEdit = async () => {
     if (!selectedCategory) return;
+
+    if (!editCategoryName?.trim()) {
+      toast.error("اسم التصنيف مطلوب");
+      return;
+    }
+
     try {
       await adminUpdateCategory(selectedCategory.category_id, {
         title: editCategoryName,
       });
+
       toast.success("تم تعديل التصنيف بنجاح");
       setEditModalOpen(false);
       setCategories((prev) =>
@@ -65,7 +72,14 @@ const Categories: React.FC = () => {
         ),
       );
     } catch (err: any) {
-      toast.error("حدث خطأ أثناء التعديل");
+      const errors = err.response?.data?.errors;
+      if (errors?.title?.length) {
+        toast.error(errors.title[0]);
+      } else if (err.response?.data?.message) {
+        toast.error(err.response.data.message);
+      } else {
+        toast.error("حدث خطأ أثناء التعديل");
+      }
       console.error(err);
     }
   };

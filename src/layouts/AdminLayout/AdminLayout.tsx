@@ -87,7 +87,7 @@ const AdminLayout: React.FC = () => {
       className="min-h-screen bg-[#E8EDEF] p-4 md:p-8 xl:p-10 xxl:p-[74px] "
       dir="rtl"
     >
-      <Toaster position="bottom-right" />
+      <Toaster position="bottom-left" />
       {/* Sidebar */}
       <aside className="w-[60px] md:w-[250px] xxl:w-[375px] bg-white flex flex-col rounded-[16px] overflow-hidden fixed top-4 md:top-8 xl:top-10 xxl:top-[74px] bottom-4 md:bottom-8 xl:bottom-10 xxl:bottom-[74px] right-4 md:right-6 lg:right-8 z-10">
         {/* Top blue border */}
@@ -111,7 +111,7 @@ const AdminLayout: React.FC = () => {
                 <Link
                   key={item.path}
                   to={item.path}
-                  className={`flex items-center justify-center justify-start gap-2 p-3 rounded-[8px] transition-colors ${
+                  className={`flex items-center justify-center md:justify-start gap-2 p-3 rounded-[8px] transition-colors ${
                     isActive
                       ? "bg-primary text-white"
                       : "text-[#007FFF] hover:bg-gray-50"
@@ -131,7 +131,7 @@ const AdminLayout: React.FC = () => {
           {/* Logout */}
           <button
             onClick={handleLogout}
-            className="flex items-center justify-start hover:text-red-500 cursor-pointer gap-2 px-3 py-3 rounded-lg hover:bg-gray-50 transition-colors text-red-700 mt-2 shrink-0"
+            className="flex items-center md:justify-start justify-center hover:text-red-500 cursor-pointer gap-2 md:px-3 py-3 rounded-lg hover:bg-gray-50 transition-colors text-red-700 mt-2 md:shrink-0"
           >
             <LogoutIcon />
             <span className="hidden md:inline text-base font-normal">

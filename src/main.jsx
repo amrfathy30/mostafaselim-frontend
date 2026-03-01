@@ -1,12 +1,26 @@
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import App from './App.tsx'
-import AdminLayout from './layouts/AdminLayout';
-import { AdminLogin, Dashboard, Articles, AddArticle, Books, AddBook, Podcasts, Blog, AddBlog, Settings } from './Pages/Admin';
+import App from "./App.tsx";
+import AdminLayout from "./layouts/AdminLayout";
+import {
+  AdminLogin,
+  Dashboard,
+  Articles,
+  AddArticle,
+  Books,
+  AddBook,
+  Podcasts,
+  Blog,
+  AddBlog,
+  Settings,
+} from "./Pages/Admin";
 import Categories from "./Pages/Admin/Categories.tsx";
+import ScrollToTop from "./Components/works/ScrollToTop.js";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <BrowserRouter>
+    <ScrollToTop />
+
     <Routes>
       <Route path="/admin" element={<AdminLayout />}>
         <Route index element={<AdminLogin />} />
@@ -24,5 +38,5 @@ ReactDOM.createRoot(document.getElementById("root")).render(
       </Route>
       <Route path="/*" element={<App isRTL={true} />} />
     </Routes>
-  </BrowserRouter>
+  </BrowserRouter>,
 );

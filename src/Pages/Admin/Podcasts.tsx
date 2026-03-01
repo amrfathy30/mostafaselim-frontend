@@ -172,6 +172,16 @@ const Podcasts: React.FC = () => {
     if (projectFormData.image)
       data.append("image_cover", projectFormData.image);
 
+    if (!projectFormData.title) {
+      toast.error("برجاء ادخال عنوان المشروع");
+      return;
+    }
+
+    if (!isEditMode && !projectFormData.image) {
+      toast.error("برجاء رفع صورة المشروع أولاً");
+      return;
+    }
+
     setSubmitLoading(true);
     try {
       if (isEditMode && currentId) {
@@ -184,7 +194,19 @@ const Podcasts: React.FC = () => {
       loadProjects(currentPage, searchQuery);
     } catch (error: any) {
       console.error(error);
-      toast.error(error?.response?.data?.message || error?.message || "حدث خطأ ما");
+      const errors = error?.response?.data?.errors;
+
+      if (errors) {
+        Object.keys(errors).forEach((field) => {
+          if (errors[field]?.length) {
+            toast.error(errors[field][0]);
+          }
+        });
+      } else if (error?.response?.data?.message) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error("حدث خطأ أثناء حفظ المشروع");
+      }
     } finally {
       setSubmitLoading(false);
     }
@@ -193,6 +215,16 @@ const Podcasts: React.FC = () => {
   const handleSubmitAudio = async () => {
     if (!isEditMode && !audioFormData.file) {
       toast.error("برجاء رفع الملف الصوتي أولاً");
+      return;
+    }
+
+    if (!isEditMode && !audioFormData.details) {
+      toast.error("برجاء ادخل تفاصيل المشروع");
+      return;
+    }
+
+    if (!isEditMode && !audioFormData.title) {
+      toast.error("برجاء ادخال عنوان المشروع");
       return;
     }
     const data = new FormData();
@@ -213,7 +245,19 @@ const Podcasts: React.FC = () => {
       if (selectedProject) handleSelectProject(selectedProject.project_id);
       loadProjects(currentPage, searchQuery);
     } catch (error: any) {
-      toast.error(error?.response?.data?.message || error?.message || "حدث خطأ ما");
+      const errors = error?.response?.data?.errors;
+
+      if (errors) {
+        Object.keys(errors).forEach((field) => {
+          if (errors[field]?.length) {
+            toast.error(errors[field][0]);
+          }
+        });
+      } else if (error?.response?.data?.message) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error("حدث خطأ أثناء حفظ المشروع");
+      }
     } finally {
       setSubmitLoading(false);
     }
