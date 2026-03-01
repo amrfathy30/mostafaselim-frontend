@@ -17,7 +17,7 @@ export const Button = (props: Props) => {
 
   return (
     <button
-      className={`${className} hover:cursor-pointer py-2 font-bold text-[#F5F5F5] rounded-[5px] disabled:opacity-[0.6] disabled:cursor-not-allowed
+      className={`${className} hover:cursor-pointer py-2 text-[15px] font-bold text-[#F5F5F5] rounded-[5px] disabled:opacity-[0.6] disabled:cursor-not-allowed
       ${
         type == "primary"
           ? "bg-[#007FFF]"

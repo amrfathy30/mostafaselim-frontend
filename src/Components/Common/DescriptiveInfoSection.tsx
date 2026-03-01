@@ -26,18 +26,18 @@ const DescriptiveInfoSection: React.FC<Props> = ({
     <div className="lg:col-span-8 relative mt-20 font-expo mx-5" dir="rtl">
       <div className="absolute inset-x-4 -top-6 -bottom-6 bg-[#007bff] rounded-[48px] z-0 transform rotate-[4deg] opacity-90 shadow-lg" />
       <div className="absolute inset-x-2 -top-3 -bottom-3 bg-[#3d5a7a] rounded-[48px] z-10 transform rotate-[2deg] shadow-md" />
-      <div className="relative z-20 bg-white pt-10 pb-25 px-8 md:px-20 rounded-[48px] shadow-[0_20px_50px_rgba(0,0,0,0.1)] border border-gray-50 w-full min-h-[500px]">
+      <div className="relative z-20 bg-white pt-4 px-5 rounded-[48px] shadow-[0_20px_50px_rgba(0,0,0,0.1)] border border-gray-50 w-full h-full">
         {showTopQuote && (
           <div className="absolute top-0 right-0 md:top-2 md:left-2 text-[#4fa3ff] opacity-90 z-40 transform -translate-x-1 -translate-y-1">
             <TopQuotesIcon />
           </div>
         )}
 
-        <h3 className="text-center text-[#3d5a7a] font-bold text-xl md:text-3xl mt-8 md:mt-12 mb-12 relative z-30">
+        <h3 className="text-center text-[#3d5a7a] font-bold text-xl md:text-3xl mt-8 mb-5 relative z-30">
           {mainTitle}
         </h3>
 
-        <div className="space-y-16 relative z-30 pt-4">
+        <div className="space-y-10 relative z-30 pt-4 pb-20">
           {sections.map((section, index) => (
             <div key={index} className="relative group">
               <div className="absolute -top-5 right-6 md:right-10 z-40">

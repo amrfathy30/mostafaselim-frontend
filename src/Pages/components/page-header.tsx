@@ -22,9 +22,9 @@ const AdminPageHeader = (data: HeaderInfo) => {
   return (
     <div className="mb-8 flex flex-col md:flex-row justify-between items-center gap-6">
       <div className="flex flex-col text-center md:text-right w-full md:w-auto">
-        <h1 className="text-[32px] font-bold text-primary">{data?.title}</h1>
+        <h1 className="text-2xl font-bold text-primary">{data?.title}</h1>
         <div>
-          <p className="text-[#6B7280] text-[24px]">
+          <p className="text-[#6B7280] text-[20px]">
             عدد {data?.title} : {data?.total}
           </p>
         </div>

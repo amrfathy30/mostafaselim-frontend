@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { getAudioDetails, getProjectAudio } from "../services/audioService";
 import React, { useEffect, useState, useRef } from "react";
 import PodcastCard from "../Components/podcast-card";
@@ -155,11 +155,11 @@ const AudioDetails = () => {
 
             <div className="container mx-auto px-4">
                 <div className="flex items-center gap-1 mb-4">
-                    <h2 className="text-[22px] text-[#2B2B2B]">
+                    <Link to='/audio-Page' className="text-[14px] md:text-[18px] font-bold text-[#2B2B2B]">
                         البودكاست
-                    </h2>
+                    </Link>
                     <MdOutlineKeyboardArrowLeft className="text-lg" />
-                    <span className="text-[#3A5F7D] font-bold text-[22px]">
+                    <span className="text-[#3A5F7D] font-bold text-[14px] md:text-[18px]">
                         {projectTitle}
                     </span>
                 </div>

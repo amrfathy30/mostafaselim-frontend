@@ -72,7 +72,7 @@ const Dashboard: React.FC = () => {
     return (
       <>
         <div className="mb-8">
-          <h1 className="text-[32px] font-bold text-primary">ارقام هامة</h1>
+          <h1 className="text-2xl font-bold text-primary">ارقام هامة</h1>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {[...Array(6)].map((_, index) => (
@@ -103,7 +103,7 @@ const Dashboard: React.FC = () => {
   return (
     <>
       <div className="mb-8">
-        <h1 className="text-[32px] font-bold text-primary">ارقام هامة</h1>
+        <h1 className="text-2xl font-bold text-primary">ارقام هامة</h1>
       </div>
 
       {/* Statistics Cards */}

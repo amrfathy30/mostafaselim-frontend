@@ -139,7 +139,7 @@ const AddBlog: React.FC = () => {
   return (
     <div className="md:p-8 w-full font-expo overflow-y-auto" dir="rtl">
       <div className="mb-8 flex items-center justify-between">
-        <h1 className="text-[24px] font-extrabold text-[#3A5F7D]">
+        <h1 className="text-2xl font-extrabold text-[#3A5F7D]">
           {isEditMode ? "تعديل مدونة" : "أضف مدونة"}
         </h1>
         <button

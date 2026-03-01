@@ -47,13 +47,13 @@ const SingleBookPage = () => {
                     { label: book.book_name }
                 ]}
             />
-            <div className="flex flex-col items-center gap-6 mb-12">
+            <div className="flex flex-col items-center gap-6 mb-4">
                 <div className="flex flex-row flex-wrap lg:flex-nowrap justify-center gap-4 md:gap-6 lg:gap-10 w-full max-w-7xl px-2">
                     {book.image?.map((img: string, i: number) => (
                         <img
                             key={i}
                             src={img}
-                            className="w-[46%] md:w-[42%] lg:w-[450px] h-auto aspect-[3/4] object-cover shadow-2xl rounded-md border border-gray-100"
+                            className="w-[46%] md:w-[42%] lg:w-[450px] h-auto aspect-square object-cover shadow-2xl rounded-md border border-gray-100"
                             alt="Book Page"
                         />
                     ))}

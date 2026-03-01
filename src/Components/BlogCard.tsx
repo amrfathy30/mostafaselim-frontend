@@ -80,7 +80,7 @@ const BlogCard: React.FC<Props> = ({ item }) => {
 
   return (
     <div className="bg-white rounded-[10px] flex flex-col w-full max-w-[453px] p-[13px] font-expo group transition-all duration-300  mx-auto h-full">
-      <div className="w-full h-[309.69px] overflow-hidden rounded-[7px] mb-[11px]">
+      <div className="w-full h-[200px] overflow-hidden rounded-[7px] mb-[11px]">
         <img
           src={item.image}
           alt={item.title}
@@ -89,11 +89,11 @@ const BlogCard: React.FC<Props> = ({ item }) => {
       </div>
 
       <div className="w-full flex flex-col items-center text-right px-[3px]">
-        <h3 className="w-full text-right text-[#3A5F7D] font-bold text-[18px] md:text-[20px] leading-[1.4] h-[56px] line-clamp-2 mb-[5px] mt-[25px]">
+        <h3 className="w-full text-right text-[#3A5F7D] font-bold line-clamp-2 my-2 h-[50px]">
           {item.title}
         </h3>
 
-        <div className="w-full text-right flex items-center justify-left gap-[11px] mb-[25px]">
+        <div className="w-full text-right flex items-center justify-left flex-wrap gap-[11px] mb-4">
           <div className="flex flex-row-reverse items-center gap-[6px]">
             <CalenderIcon className="w-[18px] h-[18px] text-[#4D4D4D]" />
             <span className="text-[#4D4D4D] text-[14px] leading-none">
@@ -116,10 +116,10 @@ const BlogCard: React.FC<Props> = ({ item }) => {
           </div>
         </div>
 
-        <div className="w-full flex justify-start mt-auto">
+        <div className="w-full flex justify-start mt-2">
           <button
             onClick={() => navigate(`/blogs/${item.id}`)}
-            className="w-[186px] h-[52px] bg-[#007BFF] text-white text-center rounded-[5px] text-[16px] font-bold hover:bg-[#0069D9] transition-colors shadow-sm cursor-pointer"
+            className="w-full h-[45px] bg-[#007BFF] text-white text-center rounded-[5px] text-[14px] font-bold hover:bg-[#0069D9] transition-colors shadow-sm cursor-pointer"
           >
             قراءة المنشور
           </button>

@@ -120,7 +120,7 @@ const Blog: React.FC = () => {
 
       <div className="space-y-6">
         {!loading && blogs.length > 0 && (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 font-expo">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 font-expo">
             {blogs.map((blog) => (
               <div
                 key={blog.blog_id}
@@ -130,16 +130,16 @@ const Blog: React.FC = () => {
                   {blog?.blog_classification}
                 </div>
                 <img
-                  className="w-full h-[310px] rounded-[12px] object-cover"
+                  className="w-full h-[180px] rounded-[12px] object-cover"
                   src={blog?.blog_image_cover}
                   alt={blog?.blog_title}
                 />
 
-                <div className="p-6">
-                  <h3 className="text-primary text-[18px] font-bold mb-4 text-right">
+                <div className="p-4">
+                  <h3 className="text-primary text-[18px] font-bold mb-4 text-right line-clamp-1">
                     {blog.blog_title}
                   </h3>
-                  <div className="flex items-center justify-start gap-4 mb-4 text-[#4D4D4D] text-[14px]">
+                  <div className="flex items-center justify-start gap-2 mb-4 text-[#4D4D4D] text-[14px]">
                     <div className="flex items-center gap-1">
                       <span>{blog.blog_time}</span>
                       <ClockIcon />

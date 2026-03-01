@@ -74,10 +74,10 @@ const SingleArticlePage = () => {
 
   return (
     <main
-      className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-12 font-expo"
+      className="max-w-7xl mx-auto px-4 py-6 md:py-8 font-expo"
       dir="rtl"
     >
-      <div className="mb-10">
+      <div className="mb-4">
         <Breadcrumbs
           items={[
             { label: "المقالات", path: "/articles" },
@@ -85,7 +85,7 @@ const SingleArticlePage = () => {
           ]}
         />
       </div>
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-15 items-start">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-10 items-start">
         <div className="lg:col-span-8 gap-10">
           <DescriptiveInfoSection
             mainTitle={article.article_title}

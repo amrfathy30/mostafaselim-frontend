@@ -98,8 +98,6 @@ const AddBook: React.FC = () => {
     loadData();
   }, [id, isEdit]);
 
-
-
   const validateBookForm = (data: BookFormData) => {
     const errors: string[] = [];
 
@@ -208,8 +206,8 @@ const AddBook: React.FC = () => {
 
   return (
     <>
-      <div className="mb-8 flex items-center justify-between p-2 md:p-6">
-        <h1 className="text-[24px] font-bold text-textPrimary">
+      <div className="flex items-center justify-between p-2 md:p-6">
+        <h1 className="text-2xl font-bold text-textPrimary">
           {isEdit ? "تعديل كتاب" : "أضف كتاب"}
         </h1>
         <button

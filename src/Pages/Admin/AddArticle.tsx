@@ -232,7 +232,7 @@ const AddArticle: React.FC = () => {
   return (
     <div className="font-expo pb-10 md:px-6" dir="rtl">
       <div className="mb-8 flex items-center justify-between">
-        <h1 className="text-[32px] font-bold text-[#3A5F7D]">
+        <h1 className="text-2xl font-bold text-[#3A5F7D]">
           {isEditMode ? "تعديل مقالة" : "أضف مقالة"}
         </h1>
         <button

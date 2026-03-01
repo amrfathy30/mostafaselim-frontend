@@ -330,7 +330,7 @@ const Podcasts: React.FC = () => {
         onAddClick={openAddAudio}
       />
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mt-10 md:px-4">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 md:px-4">
         <div className="lg:col-span-4 flex flex-col bg-white rounded-[15px] border border-gray-100 shadow-sm overflow-hidden h-[80vh]">
           <h2 className="text-[22px] font-bold text-[#1E4D74] p-5 text-center border-b border-gray-50">
             المشاريع
@@ -361,7 +361,7 @@ const Podcasts: React.FC = () => {
                           />
                         </div>
                         <div className="text-right">
-                          <h3 className="font-bold text-[#1E4D74] text-[18px]">
+                          <h3 className="font-bold text-[#1E4D74]">
                             {project.project_title}
                           </h3>
                         </div>
@@ -397,7 +397,7 @@ const Podcasts: React.FC = () => {
         <div className="lg:col-span-8 space-y-6">
           {selectedProject && (
             <div className="bg-white rounded-[15px] p-6 border border-gray-100 flex flex-col md:flex-row gap-4 items-center justify-between shadow-sm">
-              <h3 className="text-[22px] font-bold text-[#1E4D74]">
+              <h3 className="text-base font-bold text-[#1E4D74]">
                 {selectedProject.project_title}
               </h3>
               <div className="flex flex-col md:flex-row gap-3">
@@ -433,10 +433,10 @@ const Podcasts: React.FC = () => {
                     } ${index !== filteredAudios.length - 1 ? "border-b border-gray-100" : ""}`}
                 >
                   <div className="flex-1 text-right">
-                    <h4 className="text-[20px] font-bold text-[#1E4D74] mb-1">
+                    <h4 className="text-base font-bold text-[#1E4D74] mb-1">
                       {segment.audio_title}
                     </h4>
-                    <p className="text-[#6B7280] text-[16px] leading-relaxed line-clamp-2 font-medium">
+                    <p className="text-[#6B7280] text-base leading-relaxed line-clamp-2 font-medium">
                       {segment.audio_details}
                     </p>
                     <div className="flex items-center gap-[6px] mb-3">
@@ -495,7 +495,7 @@ const Podcasts: React.FC = () => {
       {showProjectModal && (
         <div className="fixed inset-0 bg-black/40 backdrop-blur-[2px] flex items-center justify-center z-[150] p-4">
           <div className="bg-white rounded-[25px] p-10 w-full max-w-lg shadow-2xl relative">
-            <h2 className="text-[26px] font-bold text-[#1E4D74] text-center mb-10">
+            <h2 className="text-2xl font-bold text-[#1E4D74] text-center mb-4">
               {isEditMode ? "تعديل مشروع" : "إضافة مشروع"}
             </h2>
             <div className="space-y-6">
@@ -536,7 +536,7 @@ const Podcasts: React.FC = () => {
               <button
                 onClick={handleSubmitProject}
                 disabled={submitLoading}
-                className="w-full bg-[#007BFF] hover:bg-primary cursor-pointer text-white py-4 rounded-[15px] font-bold shadow-lg text-[20px] mt-4"
+                className="w-full bg-[#007BFF] hover:bg-primary cursor-pointer text-white py-4 rounded-[15px] font-bold shadow-lg text-base"
               >
                 {submitLoading
                   ? "جاري الحفظ..."
@@ -558,7 +558,7 @@ const Podcasts: React.FC = () => {
       {showAudioModal && (
         <div className="fixed inset-0 bg-black/40 backdrop-blur-[2px] flex items-center justify-center z-[150] p-4">
           <div className="bg-white rounded-[25px] p-10 w-full max-w-lg shadow-2xl relative">
-            <h2 className="text-[26px] font-bold text-[#1E4D74] text-center mb-10">
+            <h2 className="text-2xl font-bold text-[#1E4D74] text-center mb-4">
               {isEditMode ? "تعديل مقطع" : "إضافة مقطع"}
             </h2>
             <div className="space-y-6">
@@ -623,7 +623,7 @@ const Podcasts: React.FC = () => {
               <button
                 onClick={handleSubmitAudio}
                 disabled={submitLoading}
-                className="w-full bg-[#007BFF] hover:bg-primary cursor-pointer text-white py-4 rounded-[15px] font-bold shadow-lg text-[20px] mt-4"
+                className="w-full bg-[#007BFF] hover:bg-primary cursor-pointer text-white py-4 rounded-[15px] font-bold shadow-lg text-base"
               >
                 {submitLoading
                   ? "جاري الحفظ..."

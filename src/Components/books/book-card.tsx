@@ -26,38 +26,39 @@ export default function BookCard({ book, variant = "detailed" }: Props) {
     e.currentTarget.src = fallbackImage;
   };
   return (
-    <div className="bg-white flex flex-col text-center border border-gray-100 h-full p-4 md:p-6 rounded-[24px] md:rounded-[33px] transition-all hover:shadow-md">
+    <div className="bg-white flex flex-col text-center border border-gray-100 h-fit p-4 md:p-6 rounded-[24px] md:rounded-[33px] transition-all hover:shadow-md">
       <img
         src={book.image || fallbackImage}
         alt={book.book_name}
         onError={handleImageError}
-        className="w-full aspect-[1/1.3] rounded-r-[33px] mb-4 border-l-0 border-t-0 border-2 border-black"
+        className="w-full md:h-[200px] object-cover rounded-r-[33px] mb-4 border-l-0 border-t-0 border-2 border-black"
       />
+      <div className="flex justify-center items-center gap-2 mb-4 h-[40px] flex-wrap">
+        <h3
+          className="text-[14px] font-bold text-primary cursor-pointer line-clamp-1"
+          title={book.book_name}
+        >
+          {book.book_name}
+        </h3>
+        <div className="flex flex-row-reverse items-center gap-[6px]">
+          <EyeIcon className="w-[18px] h-[18px] text-[#4D4D4D]" />
+          <span className="text-[#4D4D4D] text-[14px] leading-none">
+            {book.book_views > 999
+              ? (book.book_views / 1000).toFixed(1) + "K"
+              : book.book_views || "0"}
+          </span>
+        </div>
+      </div>
 
-      <h3
-        className="text-lg md:text-[20px] font-expo font-bold text-primary mb-1 cursor-pointer"
-        title={book.book_name}
-      >
-        {book.book_name}
-      </h3>
-
-      <p className="text-sm md:text-lg font-semibold text-primary mb-1">
+      <p className="text-sm md:text-[14px]  font-semibold text-primary mb-1">
         {`${book.book_date} - الطبعة ${book?.book_edition_number}`}
       </p>
 
-      <p className="text-xs md:text-xl text-primary mb-4">
+      <p className="text-xs md:md:text-[14px]  text-primary mb-4">
         {book.publishing_house}
       </p>
-      <div className="flex flex-row-reverse items-center gap-[6px]">
-        <EyeIcon className="w-[18px] h-[18px] text-[#4D4D4D]" />
-        <span className="text-[#4D4D4D] text-[14px] leading-none">
-          {book.book_views > 999
-            ? (book.book_views / 1000).toFixed(1) + "K"
-            : book.book_views || "0"}
-        </span>
-      </div>
 
-      <div className="mt-auto flex items-center justify-center w-full gap-4 px-2 pb-2" dir="rtl">
+      <div className="mt-2 flex items-center flex-wrap justify-center w-full gap-4 px-2 pb-2" dir="rtl">
         {variant === 'simple' ? (
           <Button
             type="primary"

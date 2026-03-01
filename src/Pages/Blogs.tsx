@@ -116,7 +116,7 @@ const Blogs: React.FC = () => {
           </div>
         ) : (
           <>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-[31px]">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-4">
               {blogs.map((blog, index) => (
                 <BlogCard key={`${blog.id}-${index}`} item={blog} />
               ))}

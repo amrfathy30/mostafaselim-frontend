@@ -160,7 +160,7 @@ const Categories: React.FC = () => {
 
       <div className="space-y-6 font-expo">
         {loading ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {[...Array(4)].map((_, idx) => (
               <div
                 key={idx}
@@ -175,14 +175,14 @@ const Categories: React.FC = () => {
             ))}
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {filteredCategories.map((category) => (
               <div
                 key={category.category_id}
                 className="bg-white rounded-lg p-6 border border-gray-200 flex flex-col justify-between shadow-sm"
               >
                 <div>
-                  <h3 className="text-primary text-xl font-bold mb-4 text-right line-clamp-1">
+                  <h3 className="text-primary text-base font-bold mb-4 text-right line-clamp-1">
                     {category.category_title}
                   </h3>
                 </div>

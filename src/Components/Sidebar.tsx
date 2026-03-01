@@ -20,7 +20,7 @@ const Sidebar: React.FC<SidebarProps> = ({title, titleIcon, items, showShareButt
       <div className="flex items-center justify-start gap-3 mb-8 border-b border-white/20 pb-4 ">
         <div className="w-[2px] h-8 bg-white opacity-60 rounded-full ml-1"></div>
         <span className="text-2xl font-light opacity-80">{titleIcon}</span> 
-        <h2 className="text-xl font-bold">{title}</h2>
+        <h2 className="text-lg font-bold">{title}</h2>
       </div>
 
       <div className="flex flex-col gap-1">
@@ -34,7 +34,7 @@ const Sidebar: React.FC<SidebarProps> = ({title, titleIcon, items, showShareButt
             </div>
 
             <div className="flex flex-col text-right">
-              <span className="text-[20px] font-bold mb-1">
+              <span className="font-bold mb-1">
                 {item.label}
               </span>
               <span className="text-[18px] text-white/70">

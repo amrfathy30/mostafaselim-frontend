@@ -103,13 +103,13 @@ export default function PodcastCard({
 
             {/* Title & Description - Right on Desktop, Bottom on Mobile */}
             <div className="flex-1 text-right w-full md:px-6 lg:px-10 order-2 md:order-2">
-              <h3 className="font-bold text-[18px] md:text-[22px] lg:text-[24px] mb-1 md:mb-2 leading-tight">
+              <h3 className="font-bold text-[18px] md:text-[18px] lg:text-[20px] mb-1 md:mb-2 leading-tight">
                 {title}
               </h3>
 
               <p
                 className={`
-                text-[14px] md:text-[15px] lg:text-[16px] 
+                text-[12px] md:text-[12px] lg:text-[14px] 
                 leading-relaxed line-clamp-2
                 ${isActive ? "text-white/80" : "text-[#555]"}
               `}

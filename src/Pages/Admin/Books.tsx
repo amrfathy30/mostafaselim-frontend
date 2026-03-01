@@ -120,14 +120,14 @@ const Books: React.FC = () => {
 
       <div className="space-y-6">
         {!loading && books.length > 0 && (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 p-4">
             {books.map((book) => (
               <div
                 key={book.book_id}
                 className="relative bg-white rounded-[12px] overflow-hidden border border-gray-200 p-3"
               >
                 <img
-                  className="w-full aspect-[1/1.3] rounded-r-[33px] mb-4 border-l-0 border-t-0 border-2 border-black object-cover"
+                  className="w-full md:h-[200px] rounded-r-[33px] border-l-0 border-t-0 border-2 border-black object-cover"
                   src={book?.image}
                   alt={book?.book_name}
                 />
@@ -146,7 +146,7 @@ const Books: React.FC = () => {
                         : book.book_views || "0"}
                     </span>
                   </div>
-                  <div className="flex flex-col gap-2 items-center">
+                  <div className="flex flex-col md:flex-row justify-between gap-2 items-center">
                     <Button
                       className="w-full max-w-[180px] hover:bg-[#2d4a62]"
                       onClick={() =>

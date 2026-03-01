@@ -9,7 +9,7 @@ export interface SingleBlog {
   views: string; image: string; publisher: string; classification: string; year: string;
 }
 
-const   SingleBlogPage: React.FC = () => {
+const SingleBlogPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [blog, setBlog] = useState<SingleBlog | null>(null);
   const [loading, setLoading] = useState(true);
@@ -47,31 +47,32 @@ const   SingleBlogPage: React.FC = () => {
 
   return (
     <main className="min-h-screen bg-white font-expo overflow-hidden" dir="rtl">
-      <section className="relative w-full py-12 md:py-40 flex flex-col items-center">
-        <div className="absolute top-0 left-0 w-full h-[400px] md:h-[500px] z-0 overflow-hidden">
+      <section className="relative w-full py-12 md:py-32 flex flex-col items-center">
+        <div className="absolute top-0 left-0 w-full h-[350px] md:h-[450px] z-0 overflow-hidden">
           <img src="/images/blog-bg.png" className="w-full h-full object-cover" alt="" />
         </div>
-        
+
         <div className="container mx-auto px-4 relative z-10 max-w-5xl">
           <div className="relative group">
             <Shape className="-top-14 right-8" src="/images/light-shape.png" />
             <Shape className="-top-7 right-8" src="/images/dark-shape.png" />
 
-            <div className="relative bg-white rounded-[20px] md:rounded-[30px] shadow-2xl p-6 md:p-16 border border-gray-50 z-10">
-              <h1 className="text-xl md:text-3xl lg:text-4xl font-bold text-[#3A5F7D] text-center leading-tight mb-8 md:mb-12">
+            <div className="relative bg-white rounded-[20px] md:rounded-[30px] shadow-2xl p-6 md:px-16 md:py-4 border border-gray-50 z-10">
+              <h1 className="text-xl md:text-2xl lg:text-3xl font-bold text-[#3A5F7D] text-center leading-tight mb-8 md:mb-12">
                 "{blog.title}"
               </h1>
 
-              <QuoteIcon className="w-8 md:w-12 h-auto -mt-10 mb-10 text-[#3A5F7D]" />
-              <img src={blog.image} className="w-full h-auto object-cover max-h-[550px] rounded-xl md:rounded-2xl mb-8 shadow-md" alt="" />
+              <QuoteIcon className="w-6 md:w-8 h-auto -mt-10 mb-4 text-[#3A5F7D]" />
+              <img src={blog.image} className="w-full h-auto object-cover max-h-[300px] rounded-xl md:rounded-2xl mb-4 shadow-md" alt="" />
 
               <div className="text-[#4D4D4D] text-right leading-[1.8] md:leading-[2] text-sm md:text-lg space-y-6">
                 {blog.content.split('\n').map((para, i) => <p key={i}>{para.trim()}</p>)}
               </div>
 
-              <div className="flex justify-end mt-10"><QuoteIcon className="w-8 md:w-12 h-auto transform scale-[-1] text-[#3A5F7D]" /></div>
+              <div className="flex justify-end mt-4">
+                <QuoteIcon className="w-6 md:w-8 h-auto transform scale-[-1] text-[#3A5F7D]" /></div>
             </div>
-            
+
             <Shape className="bottom-11 left-6" src="/images/light-shape.png" />
             <Shape className="-bottom-13 left-6" src="/images/dark-shape.png" />
           </div>

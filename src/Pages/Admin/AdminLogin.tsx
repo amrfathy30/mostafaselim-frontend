@@ -185,7 +185,7 @@ const AdminLogin: React.FC = () => {
           </button>
         </form>
 
-        <div className="w-full flex mt-6 text-center justify-between flex-col md:flex-row gap-2">
+        <div className="w-full flex text-center justify-between flex-col md:flex-row gap-2 mt-4">
           <button className="text-primary hover:underline text-sm" onClick={() => setShowForgetPassword(true)}>
             هل نسيت كلمه المرور ؟
           </button>
@@ -296,13 +296,13 @@ const ForgetPasswordModal = ({
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
       <Toaster position="bottom-right" />
-      <div className="max-w-md w-full bg-white rounded-xl shadow-lg p-8">
-        <div className="text-center mb-8">
-          <h1 className="text-2xl font-bold text-primary mb-2">لوحة التحكم</h1>
+      <div className="max-w-md w-full bg-white rounded-xl shadow-lg p-4">
+        <div className="text-center mb-4">
+          <h1 className="text-xl font-bold text-primary">لوحة التحكم</h1>
           <p className="text-gray-600">اعاده تعيين كلمه المرور </p>
         </div>
 
-        <form onSubmit={sendOtp ? handleResetPassword : handleForgetPassword} className="space-y-6">
+        <form onSubmit={sendOtp ? handleResetPassword : handleForgetPassword} className="space-y-4">
           {error && (
             <div className="bg-red-50 text-red-600 p-3 rounded-lg text-center text-sm">
               {error}

@@ -213,7 +213,7 @@ const Settings: React.FC = () => {
   return (
     <>
       <div className="mb-8">
-        <h1 className="text-[32px] font-bold text-primary">الاعدادات</h1>
+        <h1 className="text-2xl font-bold text-primary">الاعدادات</h1>
       </div>
 
       {/* Tabs */}

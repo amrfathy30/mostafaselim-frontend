@@ -49,7 +49,7 @@ const Footer = ({ settings }: { settings: Settings }) => {
     <footer className="flex items-center justify-center bg-gradient-to-b from-[#3A5F7D] to-[#153957] text-white py-12 border-t-8 border-white w-full">
       <div className="w-full px-4 sm:px-6 md:px-12 lg:px-[100px] xxl:px-[154px]">
         <div className="flex flex-col items-center mb-12">
-          <h2 className="text-xl lg:text-3xl font-bold mb-6 text-center">
+          <h2 className="text-base lg:text-xl font-bold mb-6 text-center">
             اشترك الان ليصلك كل ما هو جديد
           </h2>
           <div className="flex flex-col w-full max-w-lg gap-3 lg:flex-row lg:gap-4">

@@ -63,20 +63,20 @@ export default function BooksPage() {
             className="w-full md:w-auto bg-[#007bff] hover:bg-blue-600 text-white h-[52px] px-10 
                        flex items-center justify-center gap-2 transition-colors font-expo 
                        rounded-md md:rounded-r-none md:rounded-l-md shadow-md shrink-0 cursor-pointer">
-        <svg 
-            xmlns="http://www.w3.org/2000/svg" 
-            fill="none" 
-            viewBox="0 0 24 24" 
-            strokeWidth={2.5} 
-            stroke="currentColor" 
-            className="w-4 h-4"
-        >
-            <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
-        </svg>                
-        <span className="text-base font-bold">بحث</span>
-    </button>
-  </div>
-</div>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={2.5}
+              stroke="currentColor"
+              className="w-4 h-4"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+            </svg>
+            <span className="text-base font-bold">بحث</span>
+          </button>
+        </div>
+      </div>
 
       {loading ? (
         <p className="text-center py-20 text-gray-500">جاري تحميل الكتب...</p>
@@ -86,7 +86,7 @@ export default function BooksPage() {
         </div>
       ) : (
         <>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-8">
             {books.map((book: any) => (
               <BookCard key={book.book_id} book={book} variant="detailed" />
             ))}
