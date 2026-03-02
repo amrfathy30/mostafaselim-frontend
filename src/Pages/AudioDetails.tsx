@@ -4,8 +4,9 @@ import React, { useEffect, useState, useRef } from "react";
 import PodcastCard from "../Components/podcast-card";
 import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
-import { DateFillIcon, DateIcon, FilterIcon, MicIcon, SpeakerIcon, TypeIcon } from "../icons/work-icons";
+// import { DateFillIcon, DateIcon, FilterIcon, MicIcon, SpeakerIcon, TypeIcon } from "../icons/work-icons";
 import { MdOutlineKeyboardArrowLeft } from "react-icons/md";
+import PodcastSidebar from "../Components/PodcastSidebar";
 
 const AudioDetails = () => {
     const { id } = useParams();
@@ -15,6 +16,8 @@ const AudioDetails = () => {
     const playerRef = useRef<any>(null);
     const [activePodcast, setActivePodcast] = useState<any>(null);
     const [projectTitle, setProjectTitle] = useState("");
+    const [currentTime, setCurrentTime] = useState(0);
+    const [totalDuration, setTotalDuration] = useState(0);
 
     useEffect(() => {
         const fetchDetails = async () => {
@@ -150,6 +153,16 @@ const AudioDetails = () => {
                         getAudioDetails(activePodcast.id).catch(err => console.error(err));
                     }}
                     onPause={() => setIsPlaying(false)}
+                    onListen={(e: any) => {
+                        if (e.target) {
+                            setCurrentTime(e.target.currentTime);
+                        }
+                    }}
+                    onLoadedMetaData={(e: any) => {
+                        if (e.target) {
+                            setTotalDuration(e.target.duration);
+                        }
+                    }}
                 />
             </div>
 
@@ -163,18 +176,28 @@ const AudioDetails = () => {
                         {projectTitle}
                     </span>
                 </div>
-                <div className="flex flex-col gap-">
-                    {audios.map((item, index) => (
-                        <React.Fragment key={item.id}>
-                            <PodcastCard
-                                {...item}
-                                isFullPage
-                                isActive={activePodcast?.id === item.id}
-                                isPlaying={isPlaying}
-                                isEvenRow={index % 2 !== 0}
-                                onToggle={() => togglePlay(item)}
-                            />
-                            {activePodcast?.id === item.id && (
+                <div className="flex lg:flex-row gap-6 xl:gap-8 xxl:gap-[31px] items-start justify-center">
+
+                    {/* <div className="flex flex-col gap-3"> */}
+                    <div className="flex flex-col gap-0 overflow-hidden rounded-[10px] shadow-sm border border-gray-100">
+                        {audios.map((item, index) => (
+                            <React.Fragment key={item.id}>
+                                <PodcastCard
+                                    {...item}
+                                    isFullPage
+                                    isActive={activePodcast?.id === item.id}
+                                    isPlaying={isPlaying}
+                                    isEvenRow={index % 2 !== 0}
+                                    onToggle={() => togglePlay(item)}
+                                    currentTime={activePodcast?.id === item.id ? currentTime : 0}
+                                    totalDuration={activePodcast?.id === item.id ? totalDuration : 0}
+                                    onSeek={(time) => {
+                                        if (playerRef.current?.audio.current) {
+                                            playerRef.current.audio.current.currentTime = time;
+                                        }
+                                    }}
+                                />
+                                {/* {activePodcast?.id === item.id && (
                                 <div className="text-right p-8 bg-[#3A5F7D] text-white text-sm md:text-base flex justify-between flex-wrap gap-3">
                                     <div className="flex items-center gap-3">
                                         <TypeIcon />
@@ -210,9 +233,21 @@ const AudioDetails = () => {
                                         </div>
                                     </div>
                                 </div>
-                            )}
-                        </React.Fragment>
-                    ))}
+                            )} */}
+                                {activePodcast?.id === item.id && (
+                                    <div className="lg:hidden">
+                                        <PodcastSidebar podcast={activePodcast} isMobile />
+                                    </div>
+                                )}
+                            </React.Fragment>
+                        ))}
+                    </div>
+
+                    {!loading && audios.length > 0 && (
+                        <aside className="hidden lg:block lg:w-[320px] xl:w-[350px] xxl:w-[389px] order-1 lg:order-2 shrink-0">
+                            <PodcastSidebar podcast={activePodcast} />
+                        </aside>
+                    )}{" "}
                 </div>
             </div>
         </main>

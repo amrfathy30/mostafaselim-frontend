@@ -16,6 +16,9 @@ interface PodcastProps {
   isFullPage?: boolean;
   isPlaying?: boolean;
   onToggle?: () => void;
+  currentTime?: number;
+  onSeek?: (time: number) => void;
+  totalDuration?: number;
 }
 
 export default function PodcastCard({
@@ -31,6 +34,9 @@ export default function PodcastCard({
   isFullPage = false,
   isPlaying = false,
   onToggle,
+  currentTime = 0,
+  onSeek,
+  totalDuration = 0,
 }: PodcastProps) {
   if (isFullPage) {
     const bgColor = isActive
@@ -42,9 +48,8 @@ export default function PodcastCard({
 
     return (
       <div
-        onClick={onToggle}
         className={`
-          transition-all cursor-pointer flex flex-col relative
+          transition-all flex flex-col relative
           p-4 md:p-6 lg:p-8
           ${bgColor} ${textColor}
         `}
@@ -54,6 +59,10 @@ export default function PodcastCard({
             {/* Play Button & Timer - Left on Desktop, Top on Mobile */}
             <div className="flex items-center gap-3 md:gap-6 w-full md:w-auto order-1 md:order-1">
               <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  if (onToggle) onToggle();
+                }}
                 className={`
                 w-[50px] h-[50px] md:w-[60px] md:h-[60px] 
                 rounded-full flex items-center justify-center 
@@ -97,7 +106,11 @@ export default function PodcastCard({
               </button>
 
               <div className="text-[16px] md:text-[20px] font-bold min-w-[100px] md:min-w-[120px] text-left">
-                {isActive ? "0:00" : "0:00"} / {duration}
+                {isActive ? (() => {
+                  const m = Math.floor(currentTime / 60);
+                  const s = Math.floor(currentTime % 60);
+                  return `${m}:${s.toString().padStart(2, '0')}`;
+                })() : "0:00"} / {duration}
               </div>
             </div>
 
@@ -133,17 +146,28 @@ export default function PodcastCard({
 
         {/* Audio Waveform - Only on Active */}
         {isActive && (
-          <div className="mt-6 md:mt-8 lg:mt-10 flex items-end justify-center gap-1 md:gap-1.5 h-12 md:h-14 lg:h-16 w-full">
-            {[...Array(60)].map((_, i) => (
-              <div
-                key={i}
-                className="w-1 md:w-1.5 rounded-full bg-white animate-pulse"
-                style={{
-                  height: `${20 + Math.random() * 80}%`,
-                  animationDelay: `${i * 0.02}s`,
-                }}
-              />
-            ))}
+          <div className="mt-6 md:mt-8 lg:mt-10 flex items-end justify-center gap-1 md:gap-1.5 h-12 md:h-14 lg:h-16 w-full px-2">
+            {[...Array(60)].map((_, i) => {
+              const progress = (currentTime / totalDuration) * 60;
+              const isPlayed = i <= progress;
+              return (
+                <div
+                  key={i}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (onSeek && totalDuration) {
+                      const newTime = (i / 60) * totalDuration;
+                      onSeek(newTime);
+                    }
+                  }}
+                  className={`w-1 md:w-1.5 rounded-full cursor-pointer transition-all duration-300 ${isPlayed ? "bg-white opacity-100" : "bg-white/30"
+                    } ${isActive && isPlaying ? "animate-pulse" : ""}`}
+                  style={{
+                    height: `${15 + (Math.abs(Math.sin(i * 0.9) * 40) + Math.abs(Math.sin(i * 0.4) * 30) + (i % 5 === 0 ? 20 : 0))}%`,
+                  }}
+                />
+              );
+            })}
           </div>
         )}
 
@@ -168,19 +192,19 @@ export default function PodcastCard({
             <h3 className="text-[18px] font-normal text-primary" data-aos="fade-up">
               {title}
             </h3>
-            <p className="mt-1 text-[13px] text-[#4D4D4D]" data-aos="fade-up">
+            <p className="mt-1 text-[13px] text-[#4D4D4D]">
               {description}
             </p>
           </div>
-          <div className="flex flex-row items-center gap-1 mt-2 text-[#4D4D4D]" data-aos="fade-up">
-            <div className="flex items-center gap-1" data-aos="fade-up">
+          <div className="flex flex-row items-center gap-1 mt-2 text-[#4D4D4D]">
+            <div className="flex items-center gap-1">
               <span className="text-[12px] md:text-[13px]">
                 {duration}
               </span>
               <FaClock className="size-3" />
             </div>
             <span className="text-[#D9D9D9]">•</span>
-            <div className="flex items-center gap-1" data-aos="fade-up">
+            <div className="flex items-center gap-1">
               <span className="text-[12px] md:text-[13px]">
                 {date}
               </span>
@@ -190,7 +214,7 @@ export default function PodcastCard({
         </div>
       </div>
 
-      <div className="mt-auto" data-aos="fade-up">
+      <div className="mt-auto">
         <div className="flex mt-3 w-full items-center justify-center" dir="ltr">
           <AudioPlayer
             src={audioUrl}

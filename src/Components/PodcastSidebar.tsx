@@ -8,16 +8,49 @@ interface Props {
 
 const PodcastSidebar: React.FC<Props> = ({ podcast, isMobile = false }) => {
   if (!podcast) return null;
-  console.log("podcast",podcast);
-  
+  const formatDateToArabic = (dateString?: string) => {
+    if (!dateString) return "-";
+
+    const parts = dateString.split("/");
+    if (parts.length !== 3) return dateString;
+
+    const [day, monthStr, year] = parts;
+
+    const months: Record<string, number> = {
+      Jan: 0,
+      Feb: 1,
+      Mar: 2,
+      Apr: 3,
+      May: 4,
+      Jun: 5,
+      Jul: 6,
+      Aug: 7,
+      Sep: 8,
+      Oct: 9,
+      Nov: 10,
+      Dec: 11,
+    };
+
+    const month = months[monthStr];
+    if (month === undefined) return dateString;
+
+    const date = new Date(Number(year), month, Number(day));
+
+    return new Intl.DateTimeFormat("ar-EG", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    }).format(date);
+  };
 
   const details = [
-    { label: 'تاريخ النشر', value: podcast.date, icon: <DateFillIcon/> },
-    { label: 'المدة', value: podcast.duration, icon: <TimeIcon/> },
-    { label: 'المشاهدات', value: podcast?.views, icon: <TypeIcon/> },
-    { label: 'المتحدث', value: 'د/ مصطفى سليم', icon: <MicIcon/> },
-    { label: 'التصنيف', value: podcast.image.project_classfication, icon: <FilterIcon/> },
+    { label: 'تاريخ النشر', value: formatDateToArabic(podcast.date), icon: <DateFillIcon /> },
+    { label: 'المدة', value: podcast.duration, icon: <TimeIcon /> },
+    { label: 'المشاهدات', value: podcast?.views, icon: <TypeIcon /> },
+    { label: 'المتحدث', value: 'د/ مصطفى سليم', icon: <MicIcon /> },
+    { label: 'التصنيف', value: podcast.category, icon: <FilterIcon /> },
   ];
+
 
   return (
     <div className={`bg-[#3A5F7D] text-white shadow-lg font-expo flex flex-col shrink-0 transition-all duration-500 overflow-hidden
@@ -42,7 +75,7 @@ const PodcastSidebar: React.FC<Props> = ({ podcast, isMobile = false }) => {
             `}
           >
             <div className="w-8 h-8 xxl:w-10 xxl:h-10 flex justify-center items- shrink-0">
-               <div className="w-6 h-6 xxl:w-8 xxl:h-8 text-white">{item.icon}</div>
+              <div className="w-6 h-6 xxl:w-8 xxl:h-8 text-white">{item.icon}</div>
             </div>
 
             <div className="flex-1 flex flex-col pr-3 text-right justify-center">
