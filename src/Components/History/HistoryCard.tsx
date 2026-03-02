@@ -1,8 +1,7 @@
-import React from 'react';
 import HistoryNode from './HistoryNode';
+import { HistoryItem } from '../../types/history';
 
-
-const HistoryCard = ({ data, index }) => {
+const HistoryCard = ({ data, index }: { data: HistoryItem, index: number }) => {
   const isEven = index % 2 === 0;
   return (
     <div className="relative w-full h-auto ">
@@ -34,7 +33,7 @@ const HistoryCard = ({ data, index }) => {
             </div>
             <div className="hidden md:flex absolute left-1/2 -translate-x-[calc(100%-3px)] flex w-[85px] h-[calc(100%+19px)] bg-transparent rounded-l-full shrink-0  border-r-0 border-3  border-primary "></div>
             <div className="flex items-center justify-center absolute left-1/2 -translate-x-1/2">
-              <HistoryNode  startYear={data?.start_date} endYear={data?.end_date}  />
+              <HistoryNode startYear={data?.start_date} endYear={data?.end_date} />
             </div>
             <div className="w-1/2"></div>
           </>
@@ -43,7 +42,7 @@ const HistoryCard = ({ data, index }) => {
             <div className="w-1/2"></div>
             <div className="hidden md:flex absolute left-1/2 -translate-x-[calc(-3px)] flex w-[85px] h-[calc(100%+19px)] bg-transparent rounded-r-full shrink-0  border-l-0 border-3  border-primary "></div>
             <div className="flex items-center justify-center absolute left-1/2 -translate-x-1/2">
-              <HistoryNode startYear={data?.start_date} endYear={data?.end_date}  />
+              <HistoryNode startYear={data?.start_date} endYear={data?.end_date} />
             </div>
             <div className="flex items-center justify-start w-1/2 ">
               <div className="bg-white p-8 w-full pr-[80px] overflow-hidden">

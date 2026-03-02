@@ -29,6 +29,12 @@ export const adminForgetPassword = async (data: any) => {
     const response = await axiosInstance.post('/forget-password', data);
     return response.data;
 };
+
+export const adminResendOtp = async (data: any) => {
+    const response = await axiosInstance.post('/resend-otp', data);
+    return response.data;
+};
+
 export const adminResetPassword = async (data: any) => {
     const response = await axiosInstance.post('/reset-password', data);
     return response.data;

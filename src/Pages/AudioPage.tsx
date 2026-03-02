@@ -55,23 +55,32 @@ const AudioPage: React.FC = () => {
 
   return (
     <main
-      className="min-h-screen bg-[#F5F5F5] py-8 xl:py-16 font-expo"
+      className="min-h-screen bg-[#F5F5F5] py-8 xl:py-16 font-expo overflow-hidden"
       dir="rtl"
     >
       <div className="container mx-auto px-4 md:px-8 xxl:max-w-[1423px]">
 
-        <div className="flex flex-col items-center mb-8 md:mb-12 xxl:mb-16">
+        <div
+          data-aos="fade-up"
+          data-aos-duration="800"
+          className="flex flex-col items-center mb-8 md:mb-12 xxl:mb-16">
           <div className="flex justify-center items-center mb-8 xxl:mb-[50px]">
             <div className="flex items-center gap-2 relative">
               <img
+                data-aos="fade-right"
                 src={quoteIcon}
                 alt="quote"
                 className="w-5 xl:w-8 xxl:w-[35px] h-auto -translate-y-2"
               />
-              <h1 className="text-xl md:text-2xl xl:text-3xl xxl:text-[40px] font-bold text-[#3A5F7D]">
+              <h1
+                data-aos="zoom-in"
+                data-aos-delay="150"
+                className="text-xl md:text-2xl xl:text-3xl xxl:text-[40px] font-bold text-[#3A5F7D]">
                 البودكاست
               </h1>
               <img
+                data-aos="fade-left"
+                data-aos-delay="300"
                 src={quoteIcon}
                 alt="quote"
                 className="w-5 xl:w-8 xxl:w-[35px] h-auto translate-y-2 transform scale-[-1]"
@@ -79,7 +88,10 @@ const AudioPage: React.FC = () => {
             </div>
           </div>
 
-          <div className="w-full max-w-2xl flex flex-col md:flex-row items-center gap-2 md:gap-0">
+          <div
+            data-aos="fade-up"
+            data-aos-delay="350"
+            className="w-full max-w-2xl flex flex-col md:flex-row items-center gap-2 md:gap-0">
             <input
               type="text"
               placeholder="ابحث عن البودكاست التي تريدها"
@@ -116,24 +128,34 @@ const AudioPage: React.FC = () => {
         </div>
 
         {loading ? (
-          <div className="text-center py-20 bg-white rounded-[10px] text-[#3A5F7D] font-bold text-xl shadow-sm">
+          <div
+            data-aos="fade-up"
+            className="text-center py-20 bg-white rounded-[10px] text-[#3A5F7D] font-bold text-xl shadow-sm">
             جاري تحميل البودكاست...
           </div>
         ) : podcasts.length === 0 ? (
-          <div className="text-center py-20 bg-white rounded-[10px] text-[#3A5F7D] font-bold text-xl shadow-sm">
+          <div
+            data-aos="fade-up"
+            className="text-center py-20 bg-white rounded-[10px] text-[#3A5F7D] font-bold text-xl shadow-sm">
             لا يوجد بودكاست متاح
           </div>
         ) : (
 
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3">
-            {podcasts.map((item) => (
+            {podcasts.map((item, index) => (
               <div
                 key={item.id}
+                data-aos="fade-up"
+                data-aos-delay={index * 120}
+                data-aos-duration="800"
                 onClick={() => navigate(`/audio/${item.id}`)}
                 className="bg-[#F3F4F6] rounded-2xl cursor-pointer"
               >
                 <div className="bg-white rounded-2xl p-5 grid grid-cols-1 md:grid-cols-[auto_1fr_auto] gap-4">
-                  <div className="w-full md:w-24 md:h-24 rounded-xl overflow-hidden shrink-0">
+                  <div
+                    data-aos="zoom-in"
+                    data-aos-delay={index * 120 + 150}
+                    className="w-full md:w-24 md:h-24 rounded-xl overflow-hidden shrink-0">
                     <img
                       src={item.image_cover || "/images/podcast-image.png"}
                       alt={item.projectTitle}
@@ -141,7 +163,10 @@ const AudioPage: React.FC = () => {
                     />
                   </div>
 
-                  <div className="text-right">
+                  <div
+                    data-aos="fade-up"
+                    data-aos-delay={index * 120 + 300}
+                    className="text-right">
 
                     <div className="flex justify-between flex-col md:flex-row gap-3 mb-3">
                       <div>
@@ -196,7 +221,11 @@ const AudioPage: React.FC = () => {
         )}
 
         {!loading && podcasts.length > 0 && (
-          <div className="mt-10 md:mt-16">
+          <div
+            className="mt-10"
+            data-aos="fade-up"
+            data-aos-delay="200"
+          >
             <Pagination
               currentPage={currentPage}
               totalPages={totalPages}

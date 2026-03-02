@@ -12,8 +12,8 @@ export default function BooksSection({ data }: BooksSectionProps) {
     <>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-          {data?.books?.map((book) => (
-            <BookCard key={book.book_id} book={book} variant="simple" />
+          {data?.books?.map((book, index) => (
+            <BookCard key={book.book_id} book={book} variant="simple" index={index} />
           ))}
         </div>
       </div>

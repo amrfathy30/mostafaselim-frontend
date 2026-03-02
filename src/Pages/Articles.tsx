@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { getArticles } from "../services/articleService";
-import { WorkItem } from "../types/works";
+import { ArticleItem } from "../types/home";
 import ArticleCard from "../Components/works/ArticleCard";
 import quoteIcon from "../assets/historyAssets/quote.svg";
 import Pagination from "../Components/Pagination";
 
 const Articles: React.FC = () => {
-  const [articles, setArticles] = useState<WorkItem[]>([]);
+  const [articles, setArticles] = useState<ArticleItem[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [lastPage, setLastPage] = useState(1);
   const [loading, setLoading] = useState(true);
@@ -20,13 +20,17 @@ const Articles: React.FC = () => {
 
       const apiArticles = response.data?.articles || [];
 
-      const mappedData: WorkItem[] = apiArticles.map((item: any) => ({
+      const mappedData: ArticleItem[] = apiArticles.map((item: any) => ({
         id: item.article_id,
+        article_id: item.article_id,
         title: item.article_title,
+        article_title: item.article_title,
         time: item.article_time,
+        article_time: item.article_time,
         date: item.article_date,
-        views: item.article_views,
-        category: "articles",
+        article_date: item.article_date,
+        article_views: item.article_views || 0,
+        views: item.article_views || 0,
       }));
 
       setArticles(mappedData);
@@ -55,22 +59,32 @@ const Articles: React.FC = () => {
 
   return (
     <main
-      className="min-h-screen bg-[#F5F5F5] py-8 xl:py-16 font-expo"
+      className="min-h-screen bg-[#F5F5F5] py-8 xl:py-16 font-expo overflow-hidden"
       dir="rtl"
+
     >
       <div className="container mx-auto px-4 md:max-w-[768px] lg:max-w-[1280px] xl:max-w-[1440px] xxl:max-w-[1600px]">
-        <div className="flex flex-col items-center mb-8 md:mb-12 xxl:mb-16">
+        <div
+          data-aos="fade-up"
+          data-aos-duration="800"
+          className="flex flex-col items-center mb-8 md:mb-12 xxl:mb-16">
           <div className="flex justify-center items-center mb-8 xxl:mb-[50px]">
             <div className="flex items-center gap-2 relative">
               <img
+                data-aos="fade-right"
                 src={quoteIcon}
                 alt="quote"
                 className="w-5 xl:w-8 xxl:w-[35px] h-auto -translate-y-2"
               />
-              <h1 className="text-xl md:text-2xl xl:text-3xl xxl:text-[40px] font-bold text-[#3A5F7D]">
+              <h1
+                data-aos="zoom-in"
+                data-aos-delay="150"
+                className="text-xl md:text-2xl xl:text-3xl xxl:text-[40px] font-bold text-[#3A5F7D]">
                 المقالات
               </h1>
               <img
+                data-aos="fade-left"
+                data-aos-delay="300"
                 src={quoteIcon}
                 alt="quote"
                 className="w-5 xl:w-8 xxl:w-[35px] h-auto translate-y-2 transform scale-[-1]"
@@ -78,7 +92,10 @@ const Articles: React.FC = () => {
             </div>
           </div>
 
-          <div className="w-full max-w-2xl flex flex-col md:flex-row  items-center gap-2 md:gap-0">
+          <div
+            data-aos="fade-up"
+            data-aos-delay="350"
+            className="w-full max-w-2xl flex flex-col md:flex-row  items-center gap-2 md:gap-0">
             <input
               type="text"
               placeholder="ابحث عن المقاله التي تريدها"

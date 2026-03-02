@@ -13,6 +13,7 @@ export default function PodcastSection({ data }: PodcastSectionProps) {
         ...audio,
         project_title: project.project_title,
         project_image_cover: project.project_image_cover,
+        audio_views: audio.audio_views,
       })),
     ) || [];
   return (
@@ -29,7 +30,7 @@ export default function PodcastSection({ data }: PodcastSectionProps) {
                 duration={podcast.duration}
                 image={podcast.project_image_cover}
                 audioUrl={podcast.audio_content}
-              />
+                views={podcast.audio_views} />
             ))
           ) : (
             <div className="col-span-full text-center py-10 text-gray-400">

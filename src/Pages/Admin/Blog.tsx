@@ -120,7 +120,7 @@ const Blog: React.FC = () => {
 
       <div className="space-y-6">
         {!loading && blogs.length > 0 && (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 font-expo">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 font-expo">
             {blogs.map((blog) => (
               <div
                 key={blog.blog_id}
@@ -139,18 +139,18 @@ const Blog: React.FC = () => {
                   <h3 className="text-primary text-[18px] font-bold mb-4 text-right line-clamp-1">
                     {blog.blog_title}
                   </h3>
-                  <div className="flex items-center justify-start gap-2 mb-4 text-[#4D4D4D] text-[14px]">
+                  <div className="flex items-center flex-wrap justify-start gap-2 mb-4 text-[#4D4D4D] text-[14px]">
                     <div className="flex items-center gap-1">
-                      <span>{blog.blog_time}</span>
-                      <ClockIcon />
+                      <span className="text-xs">{blog.blog_time}</span>
+                      <ClockIcon className="w-3 h-3" />
                     </div>
                     <div className="flex items-center gap-1">
-                      <span>{blog.blog_date}</span>
-                      <CalendarIcon />
+                      <span className="text-xs">{blog.blog_date}</span>
+                      <CalendarIcon className="w-3 h-3" />
                     </div>
                     <div className="flex items-center gap-1">
-                      <span>{blog.blog_views}</span>
-                      <ViewsIcon />
+                      <span className="text-xs">{blog.blog_views}</span>
+                      <ViewsIcon className="w-3 h-3" />
                     </div>
                   </div>
 

@@ -1,8 +1,9 @@
 import { useState } from "react";
+import { HomeData } from "../../../types/home";
 import ArticleCard from "../ArticleCard";
 import { Link } from "react-router-dom";
 
-const ArticlesSection = ({ data }) => {
+const ArticlesSection = ({ data }: { data: HomeData | null }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   return (
@@ -13,7 +14,7 @@ const ArticlesSection = ({ data }) => {
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-          {data?.articles?.length > 0 ? (
+          {(data?.articles?.length ?? 0) > 0 ? (
             data?.articles?.map((item) => (
               <ArticleCard key={item.id} item={item} />
             ))

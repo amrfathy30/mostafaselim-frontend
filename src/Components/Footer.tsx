@@ -46,13 +46,13 @@ const Footer = ({ settings }: { settings: Settings }) => {
   };
 
   return (
-    <footer className="flex items-center justify-center bg-gradient-to-b from-[#3A5F7D] to-[#153957] text-white py-12 border-t-8 border-white w-full">
+    <footer className="flex items-center justify-center bg-gradient-to-b from-[#3A5F7D] to-[#153957] text-white py-6 border-t-8 border-white w-full">
       <div className="w-full px-4 sm:px-6 md:px-12 lg:px-[100px] xxl:px-[154px]">
-        <div className="flex flex-col items-center mb-12">
-          <h2 className="text-base lg:text-xl font-bold mb-6 text-center">
+        <div className="flex flex-col items-center mb-4">
+          <h2 className="text-base lg:text-lg font-bold mb-4 text-center">
             اشترك الان ليصلك كل ما هو جديد
           </h2>
-          <div className="flex flex-col w-full max-w-lg gap-3 lg:flex-row lg:gap-4">
+          <div className="flex flex-col w-full max-w-lg gap-3 lg:flex-row lg:gap-3">
             <input
               value={email}
               onChange={(e) => {
@@ -64,7 +64,7 @@ const Footer = ({ settings }: { settings: Settings }) => {
               className="w-full lg:w-[454px] lg:flex-1 bg-white text-gray-800 placeholder-gray-400 px-6 py-3 rounded-lg shadow-inner focus:outline-none focus:ring-2 focus:ring-primary text-right h-[56px]"
             />
             <Button
-              className="h-[56px] w-full lg:w-[186px] flex items-center justify-center"
+              className="h-[56px] w-full lg:w-[140px] flex items-center justify-center"
               onClick={() => handleSubmit()}
               type={"primary"}
               disabled={!email}
@@ -76,11 +76,11 @@ const Footer = ({ settings }: { settings: Settings }) => {
         </div>
 
         <div
-          className="flex lg:hidden items-center justify-center gap-6 mb-10"
+          className="flex lg:hidden items-center justify-center gap-4 mb-4"
           dir="ltr"
         >
           <div
-            className="flex lg:hidden items-center justify-center gap-6 mb-10"
+            className="flex lg:hidden items-center justify-center gap-4 mb-4"
             dir="ltr"
           >
             <a
@@ -89,7 +89,7 @@ const Footer = ({ settings }: { settings: Settings }) => {
               rel="noreferrer"
               className="hover:opacity-80 transition-opacity"
             >
-              <TikTokIcon size={32} />
+              <TikTokIcon size={26} />
             </a>
             <a
               href={settings?.facebook || "#"}
@@ -97,7 +97,7 @@ const Footer = ({ settings }: { settings: Settings }) => {
               rel="noreferrer"
               className="hover:opacity-80 transition-opacity"
             >
-              <Facebook size={32} />
+              <Facebook size={26} />
             </a>
             <a
               href={settings?.instagram || "#"}
@@ -105,27 +105,27 @@ const Footer = ({ settings }: { settings: Settings }) => {
               rel="noreferrer"
               className="hover:opacity-80 transition-opacity"
             >
-              <Instagram size={32} />
+              <Instagram size={26} />
             </a>
           </div>
         </div>
 
-        <div className="hidden lg:flex items-center justify-between pt-8 border-t border-white/20">
+        <div className="hidden lg:flex items-center justify-between pt-4 border-t border-white/20">
           <a href="/" className="shrink-0 bg-white p-2">
             {/* <Logo variant="light" /> */}
             <img
               src={settings?.logo}
               alt="logo"
-              className="w-40 h-full object-cover"
+              className="w-32 h-full object-cover"
             />
           </a>
 
-          <nav className="flex items-center gap-8 xl:gap-[34px]">
+          <nav className="flex items-center gap-4 xl:gap-6">
             {footerLinks.map((link) => (
               <a
                 key={link.to}
                 href={link.to}
-                className="relative text-[20px] text-white/90 font-normal transition-colors duration-300 hover:text-white"
+                className="relative text-base text-white/90 font-normal transition-colors duration-300 hover:text-white"
               >
                 <span className="after:content-[''] after:absolute after:left-0 after:-bottom-1 after:h-[2px] after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full">
                   {link.label}
@@ -133,14 +133,14 @@ const Footer = ({ settings }: { settings: Settings }) => {
               </a>
             ))}
           </nav>
-          <div className="flex items-center gap-3" dir="ltr">
+          <div className="flex items-center gap-2" dir="ltr">
             <a
               href={settings?.linkedin || "#"}
               target="_blank"
               rel="noreferrer"
               className="hover:opacity-80 transition-opacity"
             >
-              <TikTokIcon size={32} />
+              <TikTokIcon size={26} />
             </a>
             <a
               href={settings?.facebook || "#"}
@@ -148,7 +148,7 @@ const Footer = ({ settings }: { settings: Settings }) => {
               rel="noreferrer"
               className="hover:opacity-80 transition-opacity"
             >
-              <Facebook size={32} />
+              <Facebook size={26} />
             </a>
             <a
               href={settings?.instagram || "#"}
@@ -156,12 +156,12 @@ const Footer = ({ settings }: { settings: Settings }) => {
               rel="noreferrer"
               className="hover:opacity-80 transition-opacity"
             >
-              <Instagram size={32} />
+              <Instagram size={26} />
             </a>
           </div>
         </div>
 
-        <div className="text-center text-white/80 text-sm font-bold mt-12">
+        <div className="text-center text-white/80 text-sm font-bold mt-4">
           <p>{settings?.footer}</p>
           {/* <div className="mt-2">
             <a

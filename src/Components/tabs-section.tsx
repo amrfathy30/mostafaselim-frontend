@@ -18,10 +18,10 @@ export default function TabsSection({
           key={item}
           onClick={() => setActiveItem(index)}
           type={activeItem === index ? "primary" : "secondary"}
-          className={`cursor-pointer  px-4 md:px-8 h-[45px]! text-[18px]! rounded-sm! transition-all ${
+          className={`cursor-pointer px-4 md:px-8 h-[45px]! text-[16px]! rounded-sm! transition-all ${
             activeItem !== index
-              ? "bg-white! text-primary! hover:bg-primary! hover:text-white! border-none"
-              : "bg-primary! text-white  "
+              ? "bg-white! text-primary! hover:bg-primary! hover:text-white! border-none font-normal"
+              : "bg-primary! text-white"
           }`}
         >
           {item}

@@ -54,28 +54,40 @@ const Blogs: React.FC = () => {
 
   return (
     <main
-      className="min-h-screen bg-[#F5F5F5] py-8 xl:py-16 font-expo"
+      className="min-h-screen bg-[#F5F5F5] py-8 xl:py-16 font-expo overflow-hidden"
       dir="rtl"
     >
       <div className="container mx-auto px-6 lg:px-20 max-w-[1423px]">
-        <div className="flex flex-col items-center mb-8 md:mb-12 xxl:mb-16">
+        <div
+          data-aos="fade-up"
+          data-aos-duration="800"
+          className="flex flex-col items-center mb-8 md:mb-12 xxl:mb-16">
           <div className="flex items-center gap-2 relative mb-8 xxl:mb-[50px]">
             <img
+              data-aos="fade-right"
               src={quoteIcon}
               alt="quote"
               className="w-5 xl:w-8 xxl:w-[35px] h-auto -translate-y-2"
             />
-            <h1 className="text-xl md:text-2xl xl:text-3xl xxl:text-[40px] font-bold text-[#3A5F7D]">
+            <h1
+              data-aos="zoom-in"
+              data-aos-delay="150"
+              className="text-xl md:text-2xl xl:text-3xl xxl:text-[40px] font-bold text-[#3A5F7D]">
               المدونة
             </h1>
             <img
+              data-aos="fade-left"
+              data-aos-delay="300"
               src={quoteIcon}
               alt="quote"
               className="w-5 xl:w-8 xxl:w-[35px] h-auto translate-y-2 transform scale-[-1]"
             />
           </div>
 
-          <div className="w-full max-w-2xl flex flex-col md:flex-row  items-center gap-2 md:gap-0">
+          <div
+            data-aos="fade-up"
+            data-aos-delay="350"
+            className="w-full max-w-2xl flex flex-col md:flex-row  items-center gap-2 md:gap-0">
             <input
               type="text"
               placeholder="ابحث عن المدونة التي تريدها"
@@ -129,7 +141,7 @@ const Blogs: React.FC = () => {
             )}
 
             {totalPages > 1 && (
-              <div className="mt-12 md:mt-16 lg:mt-20">
+              <div className="mt-8">
                 <Pagination
                   currentPage={currentPage}
                   totalPages={totalPages}

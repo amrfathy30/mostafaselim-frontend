@@ -43,7 +43,7 @@ const AboutSection: React.FC<SectionProps> = ({ data }) => {
         </div>
         <div className="mx-auto container grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {numbersData.map((item, index) => {
-            return <NumbersCard key={index} item={item} />;
+            return <NumbersCard key={index} item={item} index={index} />;
           })}
         </div>
       </div>

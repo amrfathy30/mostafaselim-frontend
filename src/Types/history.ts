@@ -1,5 +1,6 @@
 export interface HistoryItem {
-    id: number;
-    years: string;
-    content: Array<String>;
+  id: number;
+  start_date: string;
+  end_date: string;
+  content: string[];
 }

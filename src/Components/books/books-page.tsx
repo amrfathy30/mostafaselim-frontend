@@ -28,18 +28,27 @@ export default function BooksPage() {
   }, [currentPage, search]);
 
   return (
-    <div className="max-w-7xl mx-auto py-8 xl:py-16 bg-[#F5F5F5]" dir="rtl">
-      <div className="flex justify-center items-center mb-8 xxl:mb-[50px]">
+    <div className="max-w-7xl mx-auto py-8 xl:py-16 bg-[#F5F5F5] overflow-hidden" dir="rtl">
+      <div
+        data-aos="fade-up"
+        data-aos-duration="800"
+        className="flex justify-center items-center mb-8 xxl:mb-[50px]">
         <div className="flex items-center gap-2 relative">
           <img
+            data-aos="fade-right"
             src={quoteIcon}
             alt="quote"
             className="w-5 xl:w-8 xxl:w-[35px] h-auto -translate-y-2"
           />
-          <h1 className="text-xl md:text-2xl xl:text-3xl xxl:text-[40px] font-bold text-[#3A5F7D]">
+          <h1
+            data-aos="zoom-in"
+            data-aos-delay="150"
+            className="text-xl md:text-2xl xl:text-3xl xxl:text-[40px] font-bold text-[#3A5F7D]">
             الكتب
           </h1>
           <img
+            data-aos="fade-left"
+            data-aos-delay="300"
             src={quoteIcon}
             alt="quote"
             className="w-5 xl:w-8 xxl:w-[35px] h-auto translate-y-2 transform scale-[-1]"
@@ -47,7 +56,10 @@ export default function BooksPage() {
         </div>
       </div>
       <div className="flex justify-center mb-12 px-4" dir="rtl">
-        <div className="w-full max-w-2xl flex flex-col md:flex-row items-center gap-2 md:gap-0">
+        <div
+          data-aos="fade-up"
+          data-aos-delay="350"
+          className="w-full max-w-2xl flex flex-col md:flex-row items-center gap-2 md:gap-0">
           <input
             type="text"
             placeholder="ابحث عن الكتب التي تريدها"

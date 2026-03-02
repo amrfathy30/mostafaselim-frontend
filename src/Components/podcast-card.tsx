@@ -159,28 +159,29 @@ export default function PodcastCard({
           <img
             src={image}
             alt={title}
-            className="aspect-square rounded-[18px] w-[130px] sm:w-[150px] md:w-[140px] lg:w-[185px] h-[140px] object-cover border border-gray-100"
+            data-aos="fade-up"
+            className="aspect-square rounded-[18px] w-[120px] sm:w-[130px] md:w-[130px] lg:w-[150px] h-[100px] object-cover border border-gray-100"
           />
         </div>
         <div>
           <div className="flex-1 text-center md:text-right w-full">
-            <h3 className="text-[18px] md:text-[20px] lg:text-[24px] font-semibold font-expo text-primary">
+            <h3 className="text-[18px] font-normal text-primary" data-aos="fade-up">
               {title}
             </h3>
-            <p className="mt-1  text-[14px] sm:text-[15px] md:text-[16px] text-[#4D4D4D]">
+            <p className="mt-1 text-[13px] text-[#4D4D4D]" data-aos="fade-up">
               {description}
             </p>
           </div>
-          <div className="flex flex-row items-center gap-1 mt-2 text-[#4D4D4D]">
-            <div className="flex items-center gap-1">
-              <span className="text-[12px] sm:text-[14px] md:text-[16px]">
+          <div className="flex flex-row items-center gap-1 mt-2 text-[#4D4D4D]" data-aos="fade-up">
+            <div className="flex items-center gap-1" data-aos="fade-up">
+              <span className="text-[12px] md:text-[13px]">
                 {duration}
               </span>
               <FaClock className="size-3" />
             </div>
             <span className="text-[#D9D9D9]">•</span>
-            <div className="flex items-center gap-1">
-              <span className="text-[12px] sm:text-[14px] md:text-[16px]">
+            <div className="flex items-center gap-1" data-aos="fade-up">
+              <span className="text-[12px] md:text-[13px]">
                 {date}
               </span>
               <FaCalendarAlt className="size-3" />
@@ -189,7 +190,7 @@ export default function PodcastCard({
         </div>
       </div>
 
-      <div className="mt-auto">
+      <div className="mt-auto" data-aos="fade-up">
         <div className="flex mt-3 w-full items-center justify-center" dir="ltr">
           <AudioPlayer
             src={audioUrl}

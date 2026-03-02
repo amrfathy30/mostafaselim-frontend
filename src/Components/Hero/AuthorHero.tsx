@@ -1,11 +1,11 @@
-import * as React from "react";
 import { AuthorImage } from "./AuthorImage";
 import { AuthorContent } from "./AuthorContent";
+import { AuthorData } from "../../types/home";
 
-export default function AuthorHero({ data }) {
+export default function AuthorHero({ data }: { data: AuthorData | undefined }) {
   return (
     <section
-      className="flex overflow-hidden relative flex-col items-center w-full min-h-[600px] md:min-h-[700px] lg:h-[calc(100vh-100px)] xxl:h-[calc(100vh-138px)] pt-8 md:pt-[40px] lg:pt-[60px] pb-0 bg-cover bg-no-repeat"
+      className="flex overflow-hidden relative flex-col items-center w-full min-h-[450px] md:min-h-[480px] lg:h-[calc(100vh-120px)] xxl:h-[calc(100vh-160px)] pt-8 md:pt-[40px] lg:pt-[30px] pb-0 bg-cover bg-no-repeat"
       style={{
         backgroundImage: "url(/images/hero-bg.png)",
       }}

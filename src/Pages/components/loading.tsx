@@ -5,7 +5,7 @@ import React from 'react';
 const AdminPageLoading = () => {
 
   return (
-<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
+<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
 {[...Array(10)].map((_, index) => (
   <div key={index} className="bg-white rounded-[12px] p-6 border border-gray-200">
     <div className="h-6 bg-gray-200 rounded w-3/4 mb-4 animate-pulse"></div>

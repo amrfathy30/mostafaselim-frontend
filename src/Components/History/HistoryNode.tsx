@@ -1,7 +1,7 @@
 import React from 'react';
 
 
-const HistoryNode = ({ startYear, endYear }) => {
+const HistoryNode = ({ startYear, endYear }: { startYear: string, endYear: string }) => {
 
 
   return (

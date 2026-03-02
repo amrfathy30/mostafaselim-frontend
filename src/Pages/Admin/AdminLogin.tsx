@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { adminForgetPassword, adminLogin, adminResetPassword } from '../../services/authService';
+import { adminForgetPassword, adminLogin, adminResendOtp, adminResetPassword } from '../../services/authService';
 import toast, { Toaster } from 'react-hot-toast';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
@@ -82,7 +82,7 @@ const AdminLogin: React.FC = () => {
         localStorage.setItem('adminToken', response.data.token);
         navigate('/admin/dashboard');
       } else {
-        setError('لم يتم استلام رمز المصادقة');
+        toast.error('لم يتم استلام رمز المصادقة');
       }
     } catch (err: any) {
       if (err.response?.data?.message) {
@@ -214,12 +214,16 @@ const ForgetPasswordModal = ({
   const [sendOtp, setSendOtp] = useState(false);
   const [password, setPassword] = useState('');
   const [passwordConfirmation, setPasswordConfirmation] = useState('');
-  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordConfirmation, setShowPasswordConfirmation] = useState(false);
 
   const handleForgetPassword = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!email) {
+      toast.error('البريد الإلكتروني مطلوب');
+      setLoading(false);
+      return;
+    }
     setLoading(true);
     setError('');
     try {
@@ -229,7 +233,7 @@ const ForgetPasswordModal = ({
         setLoading(false)
       }
     } catch (err: any) {
-      setError('حدث خطأ أثناء الارسال');
+      toast.error(err.response.data.message || 'حدث خطأ أثناء الارسال');
       setLoading(false);
     }
   };
@@ -240,21 +244,40 @@ const ForgetPasswordModal = ({
     setLoading(true);
     setError('');
 
+    if (!otp) {
+      toast.error('رمز التحقق مطلوب');
+      setLoading(false);
+      return;
+    }
+
+    if (!password) {
+      toast.error('كلمه المرور مطلوبة');
+      setLoading(false);
+      return;
+    }
+
+    if (!passwordConfirmation) {
+      toast.error('تاكيد كلمه المرور مطلوبة');
+      setLoading(false);
+      return;
+    }
+
     const passwordRegex =
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}$/;
 
     if (!passwordRegex.test(password)) {
-      setError(
+      toast.error(
         "كلمة المرور يجب أن لا تقل عن ٨ أحرف وتحتوي على حرف كبير، حرف صغير، رقم، ورمز خاص"
       );
       setLoading(false);
       return;
     }
     if (password !== passwordConfirmation) {
-      setError('كلمات المرور غير متطابقة');
+      toast.error('كلمات المرور غير متطابقة');
       setLoading(false);
       return;
     }
+
     const data = {
       email: email,
       token: otp,
@@ -321,7 +344,7 @@ const ForgetPasswordModal = ({
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition"
                   placeholder="admin@example.com"
                   autoComplete="email"
-                  required
+                // required
                 />
               </div>
               <button
@@ -346,7 +369,7 @@ const ForgetPasswordModal = ({
                   onChange={(e) => setOtp(e.target.value)}
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition"
                   placeholder="123456"
-                  required
+                // required
                 />
               </div>
               <div>
@@ -361,7 +384,7 @@ const ForgetPasswordModal = ({
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition"
                     placeholder="••••••••"
                     autoComplete="current-password"
-                    required
+                  // required
                   />
                   <button
                     type="button"
@@ -389,7 +412,7 @@ const ForgetPasswordModal = ({
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition"
                     placeholder="••••••••"
                     autoComplete="current-password"
-                    required
+                  // required
                   />
                   <button
                     type="button"
@@ -425,10 +448,10 @@ const ForgetPasswordModal = ({
               onClick={async () => {
                 setLoadingResend(true);
                 try {
-                  await adminForgetPassword({ email });
-                  toast.success("تم إعادة إرسال كود التحقق");
-                } catch (err) {
-                  toast.error("حدث خطأ أثناء إعادة الإرسال");
+                  const response = await adminResendOtp({ email });
+                  toast.success(response.message || "تم إعادة إرسال كود التحقق");
+                } catch (err: any) {
+                  toast.error(err.response.data.message || "حدث خطأ أثناء إعادة الإرسال");
                 } finally {
                   setLoadingResend(false);
                 }

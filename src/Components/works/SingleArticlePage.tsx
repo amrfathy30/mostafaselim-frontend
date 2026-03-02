@@ -4,6 +4,7 @@ import { getArticleById } from "../../services/articleService";
 import Sidebar from "../Sidebar";
 import Breadcrumbs from "../Common/Breadcrumbs";
 import DescriptiveInfoSection from "../Common/DescriptiveInfoSection";
+import SourcesSection from "../Common/SourcesSection";
 import {
   InfoIcon,
   BookInfoIcon,
@@ -16,7 +17,8 @@ import {
   SectionsCountIcon,
   PagesCountIcon,
 } from "../../icons/single-article-page-icons";
-import SourcesSection from "../Common/SourcesSection";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 const SingleArticlePage = () => {
   const { id } = useParams<{ id: string }>();
@@ -24,11 +26,16 @@ const SingleArticlePage = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    AOS.init({ duration: 800, easing: "ease-in-out", once: true, offset: 100 });
+  }, []);
+
+  useEffect(() => {
     const fetchDetails = async () => {
       if (!id) return;
       try {
         const res = await getArticleById(id);
         setArticle(res.data);
+        AOS.refresh();
       } catch (err) {
         console.error("Error fetching article:", err);
       } finally {
@@ -67,17 +74,23 @@ const SingleArticlePage = () => {
       icon: <CategoryIcon />,
     },
   ];
-  const formattedSources =
-    article.article_reference?.map((ref: string) => ({
-      text: ref,
-    })) || [];
+
+  const formattedSources: { text: string }[] = article.article_reference?.map((ref: string) => {
+    try {
+      const parsed = JSON.parse(ref);
+      if (Array.isArray(parsed)) return { text: parsed[0] };
+      return { text: String(parsed) };
+    } catch {
+      return { text: ref };
+    }
+  }) || [];
 
   return (
     <main
       className="max-w-7xl mx-auto px-4 py-6 md:py-8 font-expo"
       dir="rtl"
     >
-      <div className="mb-4">
+      <div className="mb-4" data-aos="fade-down">
         <Breadcrumbs
           items={[
             { label: "المقالات", path: "/articles" },
@@ -85,8 +98,9 @@ const SingleArticlePage = () => {
           ]}
         />
       </div>
+
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-10 items-start">
-        <div className="lg:col-span-8 gap-10">
+        <div className="lg:col-span-8 gap-10" data-aos="fade-up">
           <DescriptiveInfoSection
             mainTitle={article.article_title}
             showTopQuote={true}
@@ -99,12 +113,12 @@ const SingleArticlePage = () => {
                 .join("\n\n"),
             }))}
           />
-          <div className="mt-12 mb-10">
+          <div className="mt-12 mb-10" data-aos="fade-up" data-aos-delay={100}>
             <SourcesSection sources={formattedSources} />
           </div>
         </div>
 
-        <div className="lg:col-span-4 relative">
+        <div className="lg:col-span-4 relative" data-aos="fade-left">
           <div className="sticky top-10 self-start">
             <Sidebar
               title="معلومات المقالة"

@@ -23,27 +23,27 @@ const Header = ({ settings }: { settings: Settings }) => {
   ];
 
   return (
-    <header className="flex items-center justify-center bg-white py-4 shadow-sm relative z-50 sticky top-0 h-fit lg:h-[100px] xxl:h-[138px]">
+    <header className="flex items-center justify-center bg-white py-4 shadow-sm z-50 sticky top-0 h-fit lg:h-[70px]">
       <div className="w-full px-4 sm:px-6 md:px-12 lg:px-[100px] xxl:px-[154px] flex items-center justify-between">
         {/* Logo Section */}
-        <a href="/" className="flex-shrink-0">
+        <a href="/" className="shrink-0">
           {/* <Logo variant="dark" /> */}
           <img
             src={settings?.logo}
             alt="logo"
-            className="w-40 h-full object-cover"
+            className="w-32 h-full object-cover"
           />
         </a>
 
         {/* Desktop Navigation - Hidden on Tablet & Mobile (lg breakpoint) */}
-        <nav className="hidden lg:flex items-center gap-8 xl:gap-[34px]">
+        <nav className="hidden lg:flex items-center gap-6 xl:gap-[20px]">
           {navLinks.map((link) => (
             <Link
               to={link.to}
               key={link.label}
-              className={`relative text-[20px] transition-colors duration-300 ${location?.pathname === link.to
-                ? "text-primary font-bold"
-                : "text-textPrimary"
+              className={`relative text-base transition-colors duration-300 ${location?.pathname === link.to
+                ? "text-primary font-bold after:content-[''] after:absolute after:left-0 after:-bottom-1 after:h-[2px] after:w-full after:bg-primary after:transition-all after:duration-300"
+                : "text-textPrimary font-medium"
                 }`}
             >
               <span className="after:content-[''] after:absolute after:left-0 after:-bottom-1 after:h-[2px] after:w-0 after:bg-primary after:transition-all after:duration-300 hover:after:w-full">
@@ -65,7 +65,7 @@ const Header = ({ settings }: { settings: Settings }) => {
             rel="noreferrer"
             className="hover:opacity-80 transition-opacity"
           >
-            <TikTokIcon color="#3A5F7D" className="w-8 h-8" />
+            <TikTokIcon color="#3A5F7D" className="w-6 h-6" />
           </a>
           <a
             href={settings?.facebook || "#"}
@@ -73,7 +73,7 @@ const Header = ({ settings }: { settings: Settings }) => {
             rel="noreferrer"
             className="hover:opacity-80 transition-opacity"
           >
-            <Facebook color="#3A5F7D" className="w-8 h-8" />
+            <Facebook color="#3A5F7D" className="w-6 h-6" />
           </a>
           <a
             href={settings?.instagram || "#"}
@@ -81,17 +81,17 @@ const Header = ({ settings }: { settings: Settings }) => {
             rel="noreferrer"
             className="hover:opacity-80 transition-opacity"
           >
-            <Instagram color="#3A5F7D" className="w-8 h-8" />
+            <Instagram color="#3A5F7D" className="w-6 h-6" />
           </a>
         </div>
 
         {/* Burger Button - Visible below lg breakpoint (Mobile & Tablet) */}
         <button
-          className="lg:hidden p-2 focus:outline-none transition-opacity hover:opacity-80"
+          className="lg:hidden cursor-pointer p-2 focus:outline-none transition-opacity hover:opacity-80"
           onClick={() => setIsMenuOpen(!isMenuOpen)}
           aria-label="Toggle Navigation"
         >
-          {isMenuOpen ? <CloseIcon size={32} /> : <MenuIcon size={32} />}
+          {isMenuOpen ? <CloseIcon size={24} /> : <MenuIcon size={24} />}
         </button>
       </div>
 
@@ -109,7 +109,7 @@ const Header = ({ settings }: { settings: Settings }) => {
               <a
                 key={link.label}
                 href={link.to}
-                className={`hover:text-primary hover:bg-gray-50 font-bold text-xl py-3 rounded-lg transition-all ${location?.pathname == link.to ? "text-primary" : "text-gray-700 "}`}
+                className={`hover:text-primary hover:bg-gray-50 text-base py-3 rounded-lg transition-all ${location?.pathname == link.to ? "text-primary font-bold underline" : "text-gray-700 "}`}
                 onClick={() => setIsMenuOpen(false)}
               >
                 {link.label}
@@ -128,7 +128,7 @@ const Header = ({ settings }: { settings: Settings }) => {
               rel="noreferrer"
               className="hover:opacity-80 transition-opacity"
             >
-              <TikTokIcon color="#3A5F7D" className="w-10 h-10" />
+              <TikTokIcon color="#3A5F7D" className="w-6 h-6" />
             </a>
             <a
               href={settings?.facebook || "#"}
@@ -136,7 +136,7 @@ const Header = ({ settings }: { settings: Settings }) => {
               rel="noreferrer"
               className="hover:opacity-80 transition-opacity"
             >
-              <Facebook color="#3A5F7D" className="w-10 h-10" />
+              <Facebook color="#3A5F7D" className="w-6 h-6" />
             </a>
             <a
               href={settings?.instagram || "#"}
@@ -144,7 +144,7 @@ const Header = ({ settings }: { settings: Settings }) => {
               rel="noreferrer"
               className="hover:opacity-80 transition-opacity"
             >
-              <Instagram color="#3A5F7D" className="w-10 h-10" />
+              <Instagram color="#3A5F7D" className="w-6 h-6" />
             </a>
           </div>
         </div>

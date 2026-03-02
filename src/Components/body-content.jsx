@@ -16,6 +16,7 @@ import ArticlesAdmin from "../Pages/Admin/Articles";
 import Dashboard from "../Pages/Admin/Dashboard";
 import AudioPage from "../Pages/AudioPage";
 import AudioDetails from "../Pages/AudioDetails";
+import NotFound from "../Pages/NotFound";
 
 export default function BodyContent() {
   return (
@@ -31,6 +32,7 @@ export default function BodyContent() {
       <Route path="/blogs/:id" element={<SingleBlogPage />} />
       <Route path="/book/:id" element={<SingleBookPage />} />
       <Route path="/articles/:id" element={<SingleArticlePage />} />
+      <Route path="*" element={<NotFound />} />
 
       <Route path="/admin" element={<AdminLayout />}>
         <Route path="dashboard" element={<Dashboard />} />
@@ -40,6 +42,7 @@ export default function BodyContent() {
         <Route path="articles" element={<ArticlesAdmin />} />
         <Route path="articles/add" element={<AddArticle />} />
         <Route path="articles/edit/:id" element={<AddArticle />} />
+        <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>
   );

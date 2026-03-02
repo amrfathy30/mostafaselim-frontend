@@ -1,5 +1,3 @@
-
-
 import React from 'react';
 import { QuoteIcon } from '../../icons/quote';
 
@@ -9,20 +7,25 @@ interface Props {
 
 const SectionTitle: React.FC<Props> = ({ title }) => {
   return (
-    <div className="flex justify-center items-center mb-8 md:mb-10 px-4">
-    <div className="flex items-center gap-2 md:gap-3 h-[82px] space-x-6">
-      <div className='flex items-start h-full'>
-        <QuoteIcon />
-      </div>
+    <div
+      data-aos="fade-up"
+      data-aos-duration="800"
+      data-aos-easing="ease-out-cubic"
+      className="flex justify-center items-center mb-8 md:mb-10 px-4"
+    >
+      <div className="flex items-center gap-2 md:gap-3 h-[82px] space-x-6">
+        <div className="flex items-start h-full">
+          <QuoteIcon />
+        </div>
 
-      <h2 className="text-xl md:text-2xl lg:text-[32px] font-bold text-primary whitespace-nowrap">
-        {title}
-      </h2>
-      <div className='flex items-end h-full'>
-        <QuoteIcon className="rotate-180 " />
-      </div>
+        <h2 className="text-xl md:text-2xl lg:text-[25px] font-bold text-primary whitespace-nowrap">
+          {title}
+        </h2>
 
-    </div>
+        <div className="flex items-end h-full">
+          <QuoteIcon className="rotate-180" />
+        </div>
+      </div>
     </div>
   );
 };

@@ -147,7 +147,7 @@ const Articles: React.FC = () => {
       />
       <div className="space-y-6 font-expo">
         {!loading && articles.length > 0 && (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {articles.map((article) => (
               <div
                 key={article.article_id}
