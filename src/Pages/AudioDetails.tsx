@@ -91,40 +91,9 @@ const AudioDetails = () => {
         }
     };
 
-    const formatDateToArabic = (dateString?: string) => {
-        if (!dateString) return "-";
-
-        const parts = dateString.split("/");
-        if (parts.length !== 3) return dateString;
-
-        const [day, monthStr, year] = parts;
-
-        const months: Record<string, number> = {
-            Jan: 0,
-            Feb: 1,
-            Mar: 2,
-            Apr: 3,
-            May: 4,
-            Jun: 5,
-            Jul: 6,
-            Aug: 7,
-            Sep: 8,
-            Oct: 9,
-            Nov: 10,
-            Dec: 11,
-        };
-
-        const month = months[monthStr];
-        if (month === undefined) return dateString;
-
-        const date = new Date(Number(year), month, Number(day));
-
-        return new Intl.DateTimeFormat("ar-EG", {
-            day: "numeric",
-            month: "long",
-            year: "numeric",
-        }).format(date);
-    };
+    useEffect(() => {
+        document.title = "البودكاست - دكتور مصطفي سليم";
+    }, []);
 
     if (loading)
         return (
@@ -172,7 +141,7 @@ const AudioDetails = () => {
                         البودكاست
                     </Link>
                     <MdOutlineKeyboardArrowLeft className="text-lg" />
-                    <span className="text-[#3A5F7D] font-bold text-[14px] md:text-[18px]">
+                    <span className="text-[#3A5F7D] font-bold text-[14px] md:text-[18px] truncate max-w-[200px] md:max-w-full">
                         {projectTitle}
                     </span>
                 </div>

@@ -139,9 +139,27 @@ const AddArticle: React.FC = () => {
 
   const handlePublish = async () => {
     console.log("PUBLISH CALLED");
-    if (loading) return;
     if (!articleInfo.title.trim() || !articleInfo.categoryId)
       return toast.error("يرجى ملء الحقول المطلوبة");
+
+    const titleRegex = /[<>{}[\\]|]/;
+    const hasInvalidSymbols = [
+      articleInfo.title,
+      articleInfo.type,
+      articleInfo.author,
+      articleInfo.published,
+      ...(articleInfo.references || []),
+      ...paragraphs.map((p) => p.title),
+      ...paragraphs.flatMap((p) =>
+        p.contents
+          .filter((c) => c.type === "text")
+          .map((c) => c.content as string),
+      ),
+    ].some((val) => titleRegex.test(String(val)));
+
+    if (hasInvalidSymbols) {
+      return toast.error("حقول المقالة تحتوي على رموز أو وسوم غير مسموحة.");
+    }
 
     setLoading(true);
     const formData = new FormData();
@@ -197,7 +215,7 @@ const AddArticle: React.FC = () => {
     try {
       if (isEditMode) await adminUpdateArticle(id!, formData);
       else await adminAddArticle(formData);
-      toast.success("تم الحفظ بنجاح");
+      toast.success(isEditMode ? "تم التحديث بنجاح" : "تم الحفظ بنجاح");
       navigate("/admin/articles");
     } catch (error: any) {
       const serverErrors = error.response?.data?.errors as Record<
@@ -229,6 +247,11 @@ const AddArticle: React.FC = () => {
       }),
     );
   };
+
+  useEffect(() => {
+    document.title = isEditMode ? "تعديل مقالة - دكتور مصطفي سليم" : "أضف مقالة - دكتور مصطفي سليم";
+  }, [isEditMode]);
+
   return (
     <div className="font-expo pb-10 md:px-6" dir="rtl">
       <div className="mb-8 flex items-center justify-between">
@@ -251,7 +274,7 @@ const AddArticle: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <input
               type="text"
-              placeholder="عنوان المقالة"
+              placeholder="عنوان المقالة *"
               value={articleInfo.title}
               onChange={(e) =>
                 setArticleInfo({ ...articleInfo, title: e.target.value })
@@ -260,7 +283,7 @@ const AddArticle: React.FC = () => {
             />
             <input
               type="text"
-              placeholder="نوع المقالة"
+              placeholder="نوع المقالة *"
               value={articleInfo.type}
               onChange={(e) =>
                 setArticleInfo({ ...articleInfo, type: e.target.value })
@@ -269,7 +292,7 @@ const AddArticle: React.FC = () => {
             />
             <input
               type="text"
-              placeholder="الكاتب"
+              placeholder="الكاتب *"
               value={articleInfo.author}
               onChange={(e) =>
                 setArticleInfo({ ...articleInfo, author: e.target.value })
@@ -278,7 +301,7 @@ const AddArticle: React.FC = () => {
             />
             <input
               type="text"
-              placeholder="دار النشر"
+              placeholder="دار النشر *"
               value={articleInfo.published}
               onChange={(e) =>
                 setArticleInfo({ ...articleInfo, published: e.target.value })
@@ -292,7 +315,7 @@ const AddArticle: React.FC = () => {
               }
               className="h-[68px] px-4 py-3 bg-white border border-gray-200 rounded-lg text-right outline-none focus:border-[#3A5F7D] font-bold text-black"
             >
-              <option value="">اختر التصنيف</option>
+              <option value="">اختر التصنيف *</option>
               {categories.map((cat) => (
                 <option
                   key={cat.id || cat.category_id}
@@ -409,7 +432,7 @@ const AddArticle: React.FC = () => {
                 <div className="space-y-3">
                   <input
                     type="text"
-                    placeholder="عنوان الفقرة"
+                    placeholder="عنوان الفقرة *"
                     value={p.title}
                     onChange={(e) =>
                       updateParagraph(p.id, "title", e.target.value)
@@ -417,7 +440,7 @@ const AddArticle: React.FC = () => {
                     className="bg-white w-full px-4 py-3 rounded-lg text-right outline-none font-bold text-black"
                   />
                   <textarea
-                    placeholder="تفاصيل الفقرة"
+                    placeholder="تفاصيل الفقرة *"
                     value={
                       (p.contents?.find((c) => c.type === "text")
                         ?.content as string) || ""
@@ -447,7 +470,7 @@ const AddArticle: React.FC = () => {
                       <div key={vIndex} className="flex items-center gap-2">
                         <input
                           type="text"
-                          placeholder="رابط الفيديو"
+                          placeholder="رابط الفيديو *"
                           value={video.content as string}
                           onChange={(e) => {
                             setParagraphs(
@@ -533,13 +556,13 @@ const AddArticle: React.FC = () => {
                 <input
                   type="text"
                   value={ref}
-                  placeholder={`مرجع ${index + 1}`}
+                  placeholder={`مرجع ${index + 1} *`}
                   onChange={(e) => {
                     const newRefs = [...(articleInfo.references || [])];
                     newRefs[index] = e.target.value;
                     setArticleInfo({ ...articleInfo, references: newRefs });
                   }}
-                  className="flex-1 md:px-4 py-3 rounded-lg border border-gray-200 text-right outline-none bg-white font-bold text-black mt-2"
+                  className="w-full md:px-4 py-3 rounded-lg border border-gray-200 text-right outline-none bg-white font-bold text-black mt-2"
                 />
                 {index > 0 && (
                   <button

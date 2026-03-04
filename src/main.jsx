@@ -16,6 +16,7 @@ import {
 } from "./Pages/Admin";
 import Categories from "./Pages/Admin/Categories.tsx";
 import ScrollToTop from "./Components/works/ScrollToTop.js";
+import { Toaster } from "react-hot-toast";
 import AOS from "aos";
 import "aos/dist/aos.css";
 
@@ -29,6 +30,7 @@ AOS.init({
 ReactDOM.createRoot(document.getElementById("root")).render(
   <BrowserRouter>
     <ScrollToTop />
+    <Toaster position="bottom-right" />
 
     <Routes>
       <Route path="/admin" element={<AdminLayout />}>

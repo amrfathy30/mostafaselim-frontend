@@ -1,8 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function NotFound() {
     const navigate = useNavigate();
+
+    useEffect(() => {
+        document.title = "404 - دكتور مصطفي سليم";
+    }, []);
 
     return (
         <div className="flex flex-col items-center justify-center min-h-[calc(100vh-138px)] bg-gray-100 p-4 text-center">            <h1 className="text-9xl font-bold text-primary mb-4">404</h1>

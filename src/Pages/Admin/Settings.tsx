@@ -114,6 +114,16 @@ const Settings: React.FC = () => {
       toast.error(`يرجى إدخال ${emptyField.label}`);
       return;
     }
+
+    const titleRegex = /[<>{}[\\]|]/;
+    const hasInvalidSymbols = Object.values(websiteInfo).some((val) =>
+      titleRegex.test(String(val)),
+    );
+    if (hasInvalidSymbols) {
+      toast.error("حقول معلومات الموقع تحتوي على رموز أو وسوم غير مسموحة.");
+      return;
+    }
+
     setIsLoadingWebsite(true);
 
     const formData = new FormData();
@@ -166,6 +176,21 @@ const Settings: React.FC = () => {
       toast.error(`يرجى إدخال ${emptyField.label}`);
       return;
     }
+
+    const titleRegex = /[<>{}[\\]|]/;
+    const hasInvalidSymbols = [
+      userInfo.name,
+      userInfo.full_name,
+      userInfo.bio,
+      userInfo.personal_aspect,
+      userInfo.educational_aspect,
+      userInfo.phone,
+    ].some((val) => titleRegex.test(String(val)));
+    if (hasInvalidSymbols) {
+      toast.error("حقول معلومات المستخدم تحتوي على رموز أو وسوم غير مسموحة.");
+      return;
+    }
+
     setIsLoadingUser(true);
     const formData = new FormData();
 
@@ -209,6 +234,10 @@ const Settings: React.FC = () => {
       setIsLoadingUser(false);
     }
   };
+
+  useEffect(() => {
+    document.title = "الاعدادات - دكتور مصطفي سليم";
+  }, []);
 
   return (
     <>

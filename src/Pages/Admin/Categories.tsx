@@ -57,6 +57,22 @@ const Categories: React.FC = () => {
       return;
     }
 
+    if (editCategoryName.length < 3) {
+      toast.error("اسم التصنيف يجب ان لا يقل عن 3 حروف");
+      return;
+    }
+
+    if (editCategoryName.length > 50) {
+      toast.error("اسم التصنيف يجب ان لا يتجاوز ال 50 حرفا");
+      return;
+    }
+
+    const titleRegex = /[<>{}[\]\\|]/;
+    if (titleRegex.test(editCategoryName)) {
+      toast.error("حقل عنوان التصنيف يحتوي على رموز أو وسوم غير مسموحة.");
+      return;
+    }
+
     try {
       await adminUpdateCategory(selectedCategory.category_id, {
         title: editCategoryName,
@@ -87,6 +103,19 @@ const Categories: React.FC = () => {
   const saveNewCategory = async () => {
     if (!newCategoryName.trim()) {
       toast.error("أدخل اسم التصنيف أولاً");
+      return;
+    }
+    if (newCategoryName.length > 50) {
+      toast.error("اسم التصنيف يجب ان لا يتجاوز ال 50 حرفا");
+      return;
+    }
+    if (newCategoryName.length < 3) {
+      toast.error("اسم التصنيف يجب ان لا يقل عن 3 حروف");
+      return;
+    }
+    const titleRegex = /[<>{}[\\]|]/;
+    if (titleRegex.test(newCategoryName)) {
+      toast.error("حقل عنوان التصنيف يحتوي على رموز أو وسوم غير مسموحة.");
       return;
     }
     try {
@@ -121,6 +150,10 @@ const Categories: React.FC = () => {
       console.error(err);
     }
   };
+
+  useEffect(() => {
+    document.title = "التصنيفات - دكتور مصطفي سليم";
+  }, []);
 
   useEffect(() => {
     if (!searchQuery.trim()) {
@@ -161,7 +194,7 @@ const Categories: React.FC = () => {
       <div className="space-y-6 font-expo">
         {loading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-            {[...Array(4)].map((_, idx) => (
+            {[...Array(9)].map((_, idx) => (
               <div
                 key={idx}
                 className="bg-white rounded-lg p-6 border border-gray-200 flex flex-col justify-between shadow-sm animate-pulse"
@@ -182,7 +215,7 @@ const Categories: React.FC = () => {
                 className="bg-white rounded-lg p-6 border border-gray-200 flex flex-col justify-between shadow-sm"
               >
                 <div>
-                  <h3 className="text-primary text-base font-bold mb-4 text-right line-clamp-1">
+                  <h3 className="text-primary text-base font-bold mb-4 text-right truncate line-clamp-1">
                     {category.category_title}
                   </h3>
                 </div>
@@ -216,7 +249,7 @@ const Categories: React.FC = () => {
 
       {editModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-          <div className="bg-white rounded-lg p-6 w-5/12 relative">
+          <div className="bg-white rounded-lg p-6 w-[90%] md:w-5/12 relative">
             <button
               onClick={() => setEditModalOpen(false)}
               className="absolute top-3 left-3 text-gray-500 hover:text-red-500 cursor-pointer"
@@ -255,7 +288,7 @@ const Categories: React.FC = () => {
 
       {addModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-          <div className="bg-white rounded-lg p-6 w-5/12 relative">
+          <div className="bg-white rounded-lg p-6 w-[90%] md:w-5/12 relative">
             <button
               onClick={() => setAddModalOpen(false)}
               className="absolute top-3 left-3 text-gray-500 hover:text-red-500 cursor-pointer"

@@ -16,6 +16,7 @@ import Pagination from "../../Components/Pagination";
 import { EyeIcon } from "../../icons/work-icons";
 
 interface Project {
+  project_date: string;
   project_id: number;
   project_title: string;
   project_image_cover: string;
@@ -47,6 +48,25 @@ const Podcasts: React.FC = () => {
   const [showProjectModal, setShowProjectModal] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
   const [currentId, setCurrentId] = useState<number | null>(null);
+
+  const formatDateToArabic = (dateString?: string | null) => {
+    if (!dateString) return "-";
+    const parts = dateString.split("/");
+    if (parts.length !== 3) return dateString;
+    const [day, monthStr, year] = parts;
+    const months: Record<string, number> = {
+      Jan: 0, Feb: 1, Mar: 2, Apr: 3, May: 4, Jun: 5,
+      Jul: 6, Aug: 7, Sep: 8, Oct: 9, Nov: 10, Dec: 11,
+    };
+    const month = months[monthStr];
+    if (month === undefined) return dateString;
+    const date = new Date(Number(year), month, Number(day));
+    return new Intl.DateTimeFormat("ar-EG", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    }).format(date);
+  };
 
   const [audioFormData, setAudioFormData] = useState({
     title: "",
@@ -177,9 +197,28 @@ const Podcasts: React.FC = () => {
       return;
     }
 
+    const titleRegex = /[<>{}[\]\\|]/;
+    if (titleRegex.test(projectFormData.title)) {
+      toast.error("حقل عنوان المشروع يحتوي على رموز أو وسوم غير مسموحة.");
+      return;
+    }
+
     if (!isEditMode && !projectFormData.image) {
       toast.error("برجاء رفع صورة المشروع أولاً");
       return;
+    }
+
+    if (projectFormData.image) {
+      const allowedExtensions = ["jpeg", "png", "jpg", "gif", "svg", "webp"];
+      const fileName = projectFormData.image.name.toLowerCase();
+      const fileExtension = fileName.split(".").pop();
+
+      if (!fileExtension || !allowedExtensions.includes(fileExtension)) {
+        toast.error(
+          "صيغة صورة الغلاف يجب أن تكون jpeg أو png أو jpg أو gif أو svg أو webp.",
+        );
+        return;
+      }
     }
 
     setSubmitLoading(true);
@@ -187,6 +226,7 @@ const Podcasts: React.FC = () => {
       if (isEditMode && currentId) {
         data.append("_method", "PUT");
         await adminUpdateProject(currentId, data);
+        await handleSelectProject(currentId);
       } else {
         await adminAddProject(data);
       }
@@ -310,11 +350,18 @@ const Podcasts: React.FC = () => {
       }
 
       setDeleteModalConfig({ ...deleteModalConfig, isOpen: false });
+      toast.success("تم الحذف بنجاح");
+
     } catch (error) {
       console.error(error);
       toast.error("حدث خطأ أثناء الحذف");
     }
   };
+
+  useEffect(() => {
+    document.title = "البودكاست - دكتور مصطفي سليم";
+  }, []);
+
   return (
     <div className="font-expo min-h-screen" dir="rtl">
       <AdminPageHeader
@@ -355,13 +402,16 @@ const Podcasts: React.FC = () => {
                       <div className="flex gap-3">
                         <div className="w-14 h-14 rounded-lg bg-[#007BFF] flex items-center justify-center overflow-hidden shrink-0 shadow-sm">
                           <img
-                            src={project.project_image_cover}
-                            alt=""
+                            src={project.project_image_cover || "/default.png"}
+                            onError={(e) => {
+                              e.currentTarget.src = "/default.png";
+                            }}
+                            alt="podcast image"
                             className="w-full h-full object-cover"
                           />
                         </div>
                         <div className="text-right">
-                          <h3 className="font-bold text-[#1E4D74]">
+                          <h3 className="font-bold text-[#1E4D74] line-clamp-2 md:max-w-[150px] max-w-[100px]">
                             {project.project_title}
                           </h3>
                         </div>
@@ -372,7 +422,7 @@ const Podcasts: React.FC = () => {
                     </div>
                     <div className="text-[#1E4D74] text-[16px] font-medium space-y-1 text-center md:text-right md:pr-16">
                       <p> التصنيف : {project?.category}</p>
-                      <p>تاريخ النشر : 12/2/2025</p>
+                      <p>تاريخ النشر : {formatDateToArabic(project?.project_date)}</p>
                       <p>المتحدث : د/ مصطفي سليم</p>
                     </div>
                   </div>
@@ -397,7 +447,7 @@ const Podcasts: React.FC = () => {
         <div className="lg:col-span-8 space-y-6">
           {selectedProject && (
             <div className="bg-white rounded-[15px] p-6 border border-gray-100 flex flex-col md:flex-row gap-4 items-center justify-between shadow-sm">
-              <h3 className="text-base font-bold text-[#1E4D74]">
+              <h3 className="text-base font-bold text-[#1E4D74] max-w-[150px] truncate">
                 {selectedProject.project_title}
               </h3>
               <div className="flex flex-col md:flex-row gap-3">
@@ -432,11 +482,12 @@ const Podcasts: React.FC = () => {
                   className={`p-6 px-8 flex flex-col md:flex-row items-center justify-between gap-2 md:gap-8 transition-all ${index % 2 === 0 ? "bg-[#FFFFFF]" : "bg-[#F9F9F9]"
                     } ${index !== filteredAudios.length - 1 ? "border-b border-gray-100" : ""}`}
                 >
-                  <div className="flex-1 text-right">
-                    <h4 className="text-base font-bold text-[#1E4D74] mb-1">
+                  <div className="">
+                    <h4 className="text-base font-bold text-[#1E4D74] mb-1 truncate max-w-[200px] 
+                    lg:max-w-[400px]">
                       {segment.audio_title}
                     </h4>
-                    <p className="text-[#6B7280] text-base leading-relaxed line-clamp-2 font-medium">
+                    <p className="text-[#6B7280] text-base leading-relaxed line-clamp-2 font-medium truncate max-w-[200px] lg:max-w-[400px]">
                       {segment.audio_details}
                     </p>
                     <div className="flex items-center gap-[6px] mb-3">
@@ -526,7 +577,7 @@ const Podcasts: React.FC = () => {
                 />
                 <label
                   htmlFor="proj-img-up"
-                  className="w-full flex items-center justify-center gap-3 px-6 py-4 bg-[#4A6D8C] hover:bg-[#2d4a62] text-white rounded-[15px] cursor-pointer hover:bg-opacity-90 font-bold"
+                  className="w-full flex items-center justify-center gap-3 px-6 py-4 bg-[#4A6D8C] hover:bg-[#2d4a62] text-white rounded-[15px] truncate line-clamp-1 cursor-pointer hover:bg-opacity-90 font-bold"
                 >
                   {projectFormData.image
                     ? projectFormData.image.name

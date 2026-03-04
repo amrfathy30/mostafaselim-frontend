@@ -35,24 +35,22 @@ export default function BookCard({ book, variant = "detailed", index = 0 }: Prop
       data-aos-easing="ease-out-cubic"
       className="bg-white flex flex-col text-center border border-gray-100 h-fit p-4 md:p-6 rounded-[24px] md:rounded-[33px] transition-all hover:shadow-md hover:-translate-y-1"
     >
-      {/* الصورة */}
       <img
         data-aos="zoom-in"
         data-aos-delay={index * 120 + 120}
         src={book.image || fallbackImage}
         alt={book.book_name}
         onError={handleImageError}
-        className="w-full md:h-[200px] object-cover rounded-r-[33px] mb-4 border-l-0 border-t-0 border-2 border-black"
+        className="w-full md:h-[200px] object-cover rounded-r-[33px] mb-4"
       />
 
-      {/* العنوان + المشاهدات */}
       <div
         data-aos="fade-up"
         data-aos-delay={index * 120 + 240}
         className="flex justify-center items-center gap-2 mb-4 h-[40px] flex-wrap"
       >
         <h3
-          className="text-[14px] font-bold text-primary cursor-pointer line-clamp-1"
+          className="text-[14px] font-bold text-primary cursor-pointer line-clamp-1 truncate"
           title={book.book_name}
         >
           {book.book_name}
@@ -68,7 +66,6 @@ export default function BookCard({ book, variant = "detailed", index = 0 }: Prop
         </div>
       </div>
 
-      {/* التاريخ + دار النشر */}
       <p
         data-aos="fade-up"
         data-aos-delay={index * 120 + 360}
@@ -85,7 +82,6 @@ export default function BookCard({ book, variant = "detailed", index = 0 }: Prop
         {book.publishing_house}
       </p>
 
-      {/* الأزرار */}
       <div
         data-aos="zoom-in"
         data-aos-delay={index * 120 + 540}

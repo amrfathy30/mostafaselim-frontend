@@ -16,6 +16,25 @@ const AudioPage: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
+  const formatDateToArabic = (dateString?: string | null) => {
+    if (!dateString) return "-";
+    const parts = dateString.split("/");
+    if (parts.length !== 3) return dateString;
+    const [day, monthStr, year] = parts;
+    const months: Record<string, number> = {
+      Jan: 0, Feb: 1, Mar: 2, Apr: 3, May: 4, Jun: 5,
+      Jul: 6, Aug: 7, Sep: 8, Oct: 9, Nov: 10, Dec: 11,
+    };
+    const month = months[monthStr];
+    if (month === undefined) return dateString;
+    const date = new Date(Number(year), month, Number(day));
+    return new Intl.DateTimeFormat("ar-EG", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    }).format(date);
+  };
+
   const fetchPodcasts = async (page: number, search: string) => {
     try {
       setLoading(true);
@@ -52,6 +71,10 @@ const AudioPage: React.FC = () => {
 
     return () => clearTimeout(delay);
   }, [keyword]);
+
+  useEffect(() => {
+    document.title = "البودكاست - دكتور مصطفي سليم";
+  }, []);
 
   return (
     <main
@@ -170,7 +193,7 @@ const AudioPage: React.FC = () => {
 
                     <div className="flex justify-between flex-col md:flex-row gap-3 mb-3">
                       <div>
-                        <h3 className="text-lg font-medium text-[#3A5F7D]">
+                        <h3 className="text-lg font-medium text-[#3A5F7D] truncate max-w-[180px]">
                           {item.projectTitle}
                         </h3>
                       </div>
@@ -192,7 +215,7 @@ const AudioPage: React.FC = () => {
                       </div>
                       <div className="flex items-center gap-2">
                         <CalenderIcon className="w-[18px] h-[18px] text-[#4D4D4D]" />
-                        <span className="text-[12px]">{item.date}</span>
+                        <span className="text-[12px]">{formatDateToArabic(item.date)}</span>
                       </div>
                     </div>
 

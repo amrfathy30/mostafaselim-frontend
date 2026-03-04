@@ -51,6 +51,10 @@ const Blogs: React.FC = () => {
     }
   }, [currentPage, search]);
 
+  useEffect(() => {
+    document.title = "المدونة - دكتور مصطفي سليم";
+  }, []);
+
 
   return (
     <main

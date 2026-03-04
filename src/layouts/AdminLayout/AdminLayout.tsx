@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Outlet, Link, useNavigate, useLocation } from "react-router-dom";
 import { Logo } from "../../Components/Icons";
 import { getAdminProfile } from "../../services/authService";
-import { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import { MdCategory } from "react-icons/md";
 
 const AdminLayout: React.FC = () => {
@@ -49,6 +49,7 @@ const AdminLayout: React.FC = () => {
 
   const handleLogout = () => {
     localStorage.removeItem("adminToken");
+    toast.success("تم تسجيل الخروج بنجاح")
     navigate("/admin");
   };
 
@@ -87,7 +88,6 @@ const AdminLayout: React.FC = () => {
       className="min-h-screen bg-[#E8EDEF] p-4 md:p-8 xl:p-10 xxl:p-[74px] "
       dir="rtl"
     >
-      <Toaster position="bottom-left" />
       {/* Sidebar */}
       <aside className="w-[60px] md:w-[250px] xxl:w-[375px] bg-white flex flex-col rounded-[16px] overflow-hidden fixed top-4 md:top-8 xl:top-10 xxl:top-[74px] bottom-4 md:bottom-8 xl:bottom-10 xxl:bottom-[74px] right-4 md:right-6 lg:right-8 z-10">
         {/* Top blue border */}
@@ -111,11 +111,10 @@ const AdminLayout: React.FC = () => {
                 <Link
                   key={item.path}
                   to={item.path}
-                  className={`flex items-center justify-center md:justify-start gap-2 p-3 rounded-[8px] transition-colors ${
-                    isActive
+                  className={`flex items-center justify-center md:justify-start gap-2 p-3 rounded-[8px] transition-colors ${isActive
                       ? "bg-primary text-white"
                       : "text-[#007FFF] hover:bg-gray-50"
-                  }`}
+                    }`}
                 >
                   <span className="w-5 h-5 flex items-center justify-center">
                     {item.icon}

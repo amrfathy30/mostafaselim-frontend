@@ -96,6 +96,10 @@ const Books: React.FC = () => {
     }
   };
 
+  useEffect(() => {
+    document.title = "الكتب - دكتور مصطفي سليم";
+  }, []);
+
   return (
     <>
       <DeleteModal
@@ -127,12 +131,15 @@ const Books: React.FC = () => {
                 className="relative bg-white rounded-[12px] overflow-hidden border border-gray-200 p-3"
               >
                 <img
-                  className="w-full md:h-[200px] rounded-r-[33px] border-l-0 border-t-0 border-2 border-black object-cover"
-                  src={book?.image}
+                  className="w-full md:h-[200px] rounded-r-[33px] object-cover"
+                  src={book?.image || "/default.png"}
+                  onError={(e) => {
+                    e.currentTarget.src = "/default.png";
+                  }}
                   alt={book?.book_name}
                 />
                 <div className="p-4 text-center">
-                  <h3 className="text-primary text-[18px] font-bold mb-2">
+                  <h3 className="text-primary text-[18px] font-bold mb-2 line-clamp-1 truncate">
                     {book.book_name}
                   </h3>
                   <div className="text-gray-500 text-sm">

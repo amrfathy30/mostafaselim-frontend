@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { adminForgetPassword, adminLogin, adminResendOtp, adminResetPassword } from '../../services/authService';
-import toast, { Toaster } from 'react-hot-toast';
+import toast from 'react-hot-toast';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}$/;
@@ -80,6 +80,7 @@ const AdminLogin: React.FC = () => {
         navigate('/admin/dashboard');
       } else if (response.data?.token) {
         localStorage.setItem('adminToken', response.data.token);
+        toast.success("تم تسجيل الدخول بنجاح")
         navigate('/admin/dashboard');
       } else {
         toast.error('لم يتم استلام رمز المصادقة');
@@ -318,7 +319,6 @@ const ForgetPasswordModal = ({
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
-      <Toaster position="bottom-right" />
       <div className="max-w-md w-full bg-white rounded-xl shadow-lg p-4">
         <div className="text-center mb-4">
           <h1 className="text-xl font-bold text-primary">لوحة التحكم</h1>

@@ -35,7 +35,7 @@ const AddBook: React.FC = () => {
 
   const [bookInfo, setBookInfo] = useState({
     publisher: "",
-    publishDate: "",
+    book_date: "",
     editionNumber: "",
     language: "",
     category: "",
@@ -66,7 +66,7 @@ const AddBook: React.FC = () => {
 
           setBookInfo({
             bookName: book.book_name || "",
-            publishDate: String(book.book_date || book.date || "").substring(
+            book_date: String(book.book_date || book.date || "").substring(
               0,
               4,
             ),
@@ -97,6 +97,10 @@ const AddBook: React.FC = () => {
     };
     loadData();
   }, [id, isEdit]);
+
+  useEffect(() => {
+    document.title = isEdit ? "تعديل كتاب - دكتور مصطفي سليم" : "أضف كتاب - دكتور مصطفي سليم";
+  }, [isEdit]);
 
   const validateBookForm = (data: BookFormData) => {
     const errors: string[] = [];
@@ -139,6 +143,20 @@ const AddBook: React.FC = () => {
       }
     }
 
+    const titleRegex = /[<>{}[\\]|]/;
+    const hasInvalidSymbols = [
+      data.name,
+      data.publishing_house,
+      data.language,
+      data.edition_number,
+      data.objectives,
+      data.summary,
+      data.link,
+    ].some((val) => titleRegex.test(String(val)));
+    if (hasInvalidSymbols) {
+      errors.push("حقول معلومات الكتاب تحتوي على رموز أو وسوم غير مسموحة.");
+    }
+
     return errors;
   };
 
@@ -167,7 +185,7 @@ const AddBook: React.FC = () => {
       }
 
       formData.append("title", bookInfo.bookName);
-      formData.append("date", bookInfo.publishDate);
+      formData.append("book_date", bookInfo.book_date);
       formData.append("publishing_house", bookInfo.publisher);
       formData.append("lang", bookInfo.language);
       formData.append("pages", bookInfo.pages);
@@ -260,10 +278,13 @@ const AddBook: React.FC = () => {
             <input
               type="text"
               placeholder="تاريخ النشر"
-              value={bookInfo.publishDate}
-              onChange={(e) =>
-                setBookInfo({ ...bookInfo, publishDate: e.target.value })
-              }
+              value={bookInfo.book_date}
+              onChange={(e) => {
+                const value = e.target.value.replace(/\D/g, "");
+                if (value.length <= 4) {
+                  setBookInfo({ ...bookInfo, book_date: value });
+                }
+              }}
               className="px-4 py-3 bg-white border border-gray-200 rounded-lg text-right outline-none focus:border-primary"
             />
             <input

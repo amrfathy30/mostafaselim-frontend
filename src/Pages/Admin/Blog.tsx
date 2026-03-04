@@ -7,6 +7,7 @@ import { CalendarIcon, ClockIcon, ViewsIcon } from "../../icons/admin";
 import { Button } from "../../Components/Common/button";
 import AdminPageLoading from "../components/loading";
 import DeleteModal from "./DeleteModal";
+import toast from "react-hot-toast";
 
 interface PaginationData {
   total: number;
@@ -89,12 +90,36 @@ const Blog: React.FC = () => {
     if (!selectedBlog) return;
     try {
       await adminDeleteBlog(selectedBlog.id);
+      toast.success("تم الحذف بنجاح");
       setIsModalOpen(false);
       fetchBlogs(currentPage, searchQuery);
-    } catch (err) {
-      console.error(err);
+    } catch (err: any) {
+      toast.error(err.response?.data?.message || "فشل في الحذف");
     }
   };
+
+  const formatDateToArabic = (dateString?: string) => {
+    if (!dateString) return "-";
+    const parts = dateString.split("/");
+    if (parts.length !== 3) return dateString;
+    const [day, monthStr, year] = parts;
+    const months: Record<string, number> = {
+      Jan: 0, Feb: 1, Mar: 2, Apr: 3, May: 4, Jun: 5,
+      Jul: 6, Aug: 7, Sep: 8, Oct: 9, Nov: 10, Dec: 11,
+    };
+    const month = months[monthStr];
+    if (month === undefined) return dateString;
+    const date = new Date(Number(year), month, Number(day));
+    return new Intl.DateTimeFormat("ar-EG", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    }).format(date);
+  };
+
+  useEffect(() => {
+    document.title = "المدونات - دكتور مصطفي سليم";
+  }, []);
 
   return (
     <>
@@ -118,6 +143,8 @@ const Blog: React.FC = () => {
         onSearchClick={() => fetchBlogs(1, searchQuery)}
       />
 
+
+
       <div className="space-y-6">
         {!loading && blogs.length > 0 && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 font-expo">
@@ -131,7 +158,10 @@ const Blog: React.FC = () => {
                 </div>
                 <img
                   className="w-full h-[180px] rounded-[12px] object-cover"
-                  src={blog?.blog_image_cover}
+                  src={blog?.blog_image_cover || "/default.png"}
+                  onError={(e) => {
+                    e.currentTarget.src = "/default.png";
+                  }}
                   alt={blog?.blog_title}
                 />
 
@@ -145,7 +175,9 @@ const Blog: React.FC = () => {
                       <ClockIcon className="w-3 h-3" />
                     </div>
                     <div className="flex items-center gap-1">
-                      <span className="text-xs">{blog.blog_date}</span>
+                      <span className="text-xs">
+                        {formatDateToArabic(blog.blog_date)}
+                      </span>
                       <CalendarIcon className="w-3 h-3" />
                     </div>
                     <div className="flex items-center gap-1">
@@ -154,9 +186,9 @@ const Blog: React.FC = () => {
                     </div>
                   </div>
 
-                  <div className="flex items-center justify-center gap-3">
+                  <div className="flex items-center justify-center gap-3 flex-col md:flex-row">
                     <Button
-                      className="w-1/2 hover:bg-[#2d4a62]"
+                      className="w-full md:w-1/2 hover:bg-[#2d4a62]"
                       onClick={() =>
                         navigate(`/admin/blog/edit/${blog.blog_id}`)
                       }
@@ -165,7 +197,7 @@ const Blog: React.FC = () => {
                       تعديل المنشور
                     </Button>
                     <Button
-                      className="w-1/2 hover:bg-red-500"
+                      className="w-full md:w-1/2 hover:bg-red-500"
                       onClick={() =>
                         openDeleteModal(blog.blog_id, blog.blog_title)
                       }

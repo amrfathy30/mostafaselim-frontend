@@ -67,6 +67,10 @@ const Articles: React.FC = () => {
     }
   };
 
+  useEffect(() => {
+    document.title = "المقالات - دكتور مصطفي سليم";
+  }, []);
+
   const formatDateToArabic = (dateString?: string) => {
     if (!dateString) return "-";
 
@@ -151,13 +155,13 @@ const Articles: React.FC = () => {
             {articles.map((article) => (
               <div
                 key={article.article_id}
-                className="bg-white rounded-lg p-6 border border-gray-200 flex flex-col justify-between h-[200px] shadow-sm"
+                className="bg-white rounded-lg p-6 border border-gray-200 flex flex-col justify-between md:h-[200px] shadow-sm"
               >
                 <div>
                   <h3 className="text-primary text-xl font-bold mb-4 text-right line-clamp-1">
                     {article.article_title}
                   </h3>
-                  <div className="flex items-center gap-4 text-gray-500 text-sm mb-4">
+                  <div className="flex flex-col md:flex-row items-center gap-4 text-gray-500 text-sm mb-4">
                     <span className="flex items-center gap-1">
                       {formatTimeToArabic(article.article_time)} <ClockIcon />
                     </span>

@@ -68,6 +68,10 @@ const Dashboard: React.FC = () => {
     },
   ];
 
+    useEffect(() => {
+      document.title = "الرئيسية - دكتور مصطفي سليم";
+    }, []);
+
   if (loading) {
     return (
       <>

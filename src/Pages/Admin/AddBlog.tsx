@@ -16,7 +16,7 @@ const AddBlog: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [categories, setCategories] = useState<any[]>([]);
   const [blogInfo, setBlogInfo] = useState({
-    publisherName: "",
+    publisherName: "دكتور مصطفى سليم",
     categoryId: "",
     // year: "",
   });
@@ -24,6 +24,7 @@ const AddBlog: React.FC = () => {
   const [postDetails, setPostDetails] = useState("");
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
   useEffect(() => {
     const loadInitialData = async () => {
@@ -68,29 +69,82 @@ const AddBlog: React.FC = () => {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
+      const allowedTypes = ["image/jpeg", "image/png", "image/jpg", "image/gif", "image/svg+xml", "image/webp"];
+      const allowedExtensions = ["jpeg", "png", "jpg", "gif", "svg", "webp"];
+      const fileExtension = file.name.split('.').pop()?.toLowerCase();
+
+      if (!allowedTypes.includes(file.type) || (fileExtension && !allowedExtensions.includes(fileExtension))) {
+        toast.error("عذراً، يجب أن يكون الملف صورة من نوع: jpeg, png, jpg, gif, svg, webp");
+        e.target.value = ""; // Clear input
+        setSelectedFile(null);
+        setImagePreview(null);
+        setErrors(prev => ({ ...prev, image: "نوع الملف غير مدعوم" }));
+        return;
+      }
+
       setSelectedFile(file);
       setImagePreview(URL.createObjectURL(file));
+      // Clear image error if any
+      setErrors(prev => ({ ...prev, image: "" }));
     }
   };
 
-  const handlePublish = async () => {
+  const validateForm = () => {
+    const newErrors: Record<string, string> = {};
+
     if (!postTitle.trim()) {
-      toast.error("يجب إدخال عنوان المنشور");
-      return;
+      newErrors.title = "يجب إدخال عنوان المنشور";
+    } else if (postTitle.trim().length < 5) {
+      newErrors.title = "يجب أن يكون العنوان 5 حروف على الأقل";
     }
 
-    if (postDetails.trim().length < 20) {
-      toast.error("يجب أن يكون محتوى المنشور 20 حرف على الأقل");
-      return;
+    if (!postDetails.trim()) {
+      newErrors.content = "يجب إدخال محتوى المنشور";
+    } else if (postDetails.trim().length < 20) {
+      newErrors.content = "يجب أن يكون محتوى المنشور 20 حرف على الأقل";
+    }
+
+    const titleRegex = /[<>{}[\\]|]/;
+    const hasInvalidSymbols = [
+      postTitle,
+      postDetails,
+      blogInfo.publisherName,
+    ].some((val) => titleRegex.test(String(val)));
+    if (hasInvalidSymbols) {
+      newErrors.symbols = "حقول المدونة تحتوي على رموز أو وسوم غير مسموحة.";
     }
 
     if (!blogInfo.categoryId) {
-      toast.error("يجب اختيار نوع المنشور");
-      return;
+      newErrors.category = "يجب اختيار نوع المنشور";
+    }
+
+    if (!blogInfo.publisherName.trim()) {
+      newErrors.publisher = "يجب إدخال اسم الناشر";
     }
 
     if (!isEditMode && !selectedFile) {
-      toast.error("يجب رفع صورة غلاف المنشور");
+      newErrors.image = "يجب رفع صورة غلاف المنشور";
+    } else if (selectedFile) {
+      const allowedTypes = ["image/jpeg", "image/png", "image/jpg", "image/gif", "image/svg+xml", "image/webp"];
+      if (!allowedTypes.includes(selectedFile.type)) {
+        newErrors.image = "صورة الغلاف يجب أن تكون صورة صالحة (jpeg, png, etc.)";
+      }
+    }
+
+    setErrors(newErrors);
+
+    // Show errors in toast
+    const errorList = Object.values(newErrors);
+    if (errorList.length > 0) {
+      errorList.forEach((err) => toast.error(err));
+      return false;
+    }
+
+    return true;
+  };
+
+  const handlePublish = async () => {
+    if (!validateForm()) {
       return;
     }
 
@@ -118,14 +172,25 @@ const AddBlog: React.FC = () => {
       } else {
         await adminAddBlog(formData);
       }
-      toast.success("تم الحفظ بنجاح");
+      toast.success(isEditMode ? "تم التحديث بنجاح" : "تم الإضافة بنجاح");
 
       navigate("/admin/blog");
     } catch (error: any) {
       console.error("Error saving blog:", error);
       if (error.response?.data?.errors) {
-        const errors = error.response.data.errors;
-        const errorMessages = Object.values(errors).flat().join("\n");
+        const backendErrors = error.response.data.errors;
+        const mappedErrors: Record<string, string> = {};
+
+        // Map backend errors to local error state keys
+        if (backendErrors.title) mappedErrors.title = Array.isArray(backendErrors.title) ? backendErrors.title[0] : backendErrors.title;
+        if (backendErrors.content) mappedErrors.content = Array.isArray(backendErrors.content) ? backendErrors.content[0] : backendErrors.content;
+        if (backendErrors.category_id) mappedErrors.category = Array.isArray(backendErrors.category_id) ? backendErrors.category_id[0] : backendErrors.category_id;
+        if (backendErrors.publisher) mappedErrors.publisher = Array.isArray(backendErrors.publisher) ? backendErrors.publisher[0] : backendErrors.publisher;
+        if (backendErrors.image_cover) mappedErrors.image = Array.isArray(backendErrors.image_cover) ? backendErrors.image_cover[0] : backendErrors.image_cover;
+
+        setErrors(mappedErrors);
+
+        const errorMessages = Object.values(backendErrors).flat().join("\n");
         toast.error(`${errorMessages}`);
       } else {
         const errorMsg = error.response?.data?.message || "حدث خطأ أثناء الحفظ";
@@ -135,6 +200,10 @@ const AddBlog: React.FC = () => {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    document.title = isEditMode ? "تعديل مدونة - دكتور مصطفي سليم" : "أضف مدونة - دكتور مصطفي سليم";
+  }, [isEditMode]);
 
   return (
     <div className="md:p-8 w-full font-expo overflow-y-auto" dir="rtl">
@@ -156,42 +225,40 @@ const AddBlog: React.FC = () => {
             معلومات الناشر
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <input
-              type="text"
-              placeholder="اسم الناشر"
-              value={blogInfo.publisherName}
-              onChange={(e) =>
-                setBlogInfo({ ...blogInfo, publisherName: e.target.value })
-              }
-              className="px-4 py-3 bg-white border border-gray-200 rounded-md text-right outline-none text-black font-bold focus:border-[#3A5F7D]"
-            />
+            <div className="flex flex-col gap-1">
+              <input
+                type="text"
+                placeholder="اسم الناشر"
+                value={blogInfo.publisherName}
+                onChange={(e) => {
+                  setBlogInfo({ ...blogInfo, publisherName: e.target.value });
+                  if (errors.publisher) setErrors(prev => ({ ...prev, publisher: "" }));
+                }}
+                className={`px-4 py-3 bg-white border border-gray-200 rounded-md text-right outline-none text-black font-bold focus:border-[#3A5F7D]`}
+              />
+              {/* {errors.publisher && <span className="text-red-500 text-sm mt-1">{errors.publisher}</span>} */}
+            </div>
 
-            <select
-              value={blogInfo.categoryId}
-              onChange={(e) =>
-                setBlogInfo({ ...blogInfo, categoryId: e.target.value })
-              }
-              className="px-4 py-3 bg-white border border-gray-200 rounded-md text-right outline-none focus:border-primary cursor-pointer font-bold text-black"
-            >
-              <option value="">اختر نوع المنشور</option>
-              {categories.map((cat) => (
-                <option key={cat.category_id} value={String(cat.category_id)}>
-                  {cat.category_title}
-                </option>
-              ))}
-            </select>
+            <div className="flex flex-col gap-1">
+              <select
+                value={blogInfo.categoryId}
+                onChange={(e) => {
+                  setBlogInfo({ ...blogInfo, categoryId: e.target.value });
+                  if (errors.category) setErrors(prev => ({ ...prev, category: "" }));
+                }}
+                className={`px-4 py-3 bg-white border border-gray-200 rounded-md text-right outline-none focus:border-primary cursor-pointer font-bold text-black`}
+              >
+                <option value="">اختر نوع المنشور</option>
+                {categories.map((cat) => (
+                  <option key={cat.category_id} value={String(cat.category_id)}>
+                    {cat.category_title}
+                  </option>
+                ))}
+              </select>
+              {/* {errors.category && <span className="text-red-500 text-sm mt-1">{errors.category}</span>} */}
+            </div>
 
-            {/* <input
-              type="text"
-              placeholder="العام"
-              value={blogInfo.year}
-              onChange={(e) =>
-                setBlogInfo({ ...blogInfo, year: e.target.value })
-              }
-              className="px-4 py-3 bg-white border border-gray-200 rounded-md text-right outline-none text-black font-bold focus:border-[#3A5F7D]"
-            /> */}
-
-            <div className="relative">
+            <div className="relative col-span-1 md:col-span-2">
               <input
                 type="file"
                 id="cover"
@@ -201,7 +268,7 @@ const AddBlog: React.FC = () => {
               />
               <label
                 htmlFor="cover"
-                className="block px-4 py-3 bg-[#3A5F7D] text-white rounded-md text-center cursor-pointer hover:bg-[#2d4a62] font-bold transition-all shadow-sm"
+                className={`block px-4 py-3 bg-[#3A5F7D] hover:bg-[#2d4a62] text-white rounded-md text-center cursor-pointer font-bold transition-all shadow-sm`}
               >
                 {selectedFile
                   ? selectedFile.name
@@ -209,6 +276,7 @@ const AddBlog: React.FC = () => {
                     ? "تغيير الصورة (اختياري)"
                     : "ارفع صورة غلاف المنشور"}
               </label>
+              {/* {errors.image && <span className="text-red-500 text-sm mt-1 block text-center">{errors.image}</span>} */}
             </div>
           </div>
           {imagePreview && (
@@ -227,30 +295,36 @@ const AddBlog: React.FC = () => {
             <h2 className="text-[18px] font-bold text-[#2B2B2B]">
               محتوي المنشور
             </h2>
-            {/* <div className="flex items-center gap-2">
-              <button className="bg-[#007FFF] text-white px-4 py-2 rounded-md text-[14px] font-bold shadow-sm cursor-pointer hover:bg-primary">
-                أضف فيديو
-              </button>
-              <button className="bg-[#007FFF] text-white px-4 py-2 rounded-md text-[14px] font-bold shadow-sm cursor-pointer hover:bg-primary">
-                أضف صورة
-              </button>
-            </div> */}
           </div>
           <div className="space-y-4">
-            <input
-              type="text"
-              placeholder="عنوان المنشور"
-              value={postTitle}
-              onChange={(e) => setPostTitle(e.target.value)}
-              className="w-full px-4 py-3 bg-white border border-gray-200 rounded-md text-right outline-none focus:border-primary font-bold text-black"
-            />
-            <textarea
-              placeholder="تفاصيل المنشور"
-              value={postDetails}
-              onChange={(e) => setPostDetails(e.target.value)}
-              rows={10}
-              className="w-full px-4 py-3 bg-white border border-gray-200 rounded-md text-right outline-none focus:border-primary resize-none text-black"
-            />
+            <div className="flex flex-col gap-1">
+              <input
+                type="text"
+                placeholder="عنوان المنشور"
+                value={postTitle}
+                onChange={(e) => {
+                  setPostTitle(e.target.value);
+                  if (errors.title) setErrors(prev => ({ ...prev, title: "" }));
+                }}
+                // className={`w-full px-4 py-3 bg-white border ${errors.title ? 'border-red-500' : 'border-gray-200'} rounded-md text-right outline-none focus:border-primary font-bold text-black`}
+                className={`w-full px-4 py-3 bg-white border border-gray-200 rounded-md text-right outline-none focus:border-primary font-bold text-black`}
+              />
+              {/* {errors.title && <span className="text-red-500 text-sm mt-1">{errors.title}</span>} */}
+            </div>
+
+            <div className="flex flex-col gap-1">
+              <textarea
+                placeholder="تفاصيل المنشور"
+                value={postDetails}
+                onChange={(e) => {
+                  setPostDetails(e.target.value);
+                  if (errors.content) setErrors(prev => ({ ...prev, content: "" }));
+                }}
+                rows={10}
+                className={`w-full px-4 py-3 bg-white border border-gray-200 rounded-md text-right outline-none focus:border-primary resize-none text-black`}
+              />
+              {/* {errors.content && <span className="text-red-500 text-sm mt-1">{errors.content}</span>} */}
+            </div>
           </div>
         </div>
 

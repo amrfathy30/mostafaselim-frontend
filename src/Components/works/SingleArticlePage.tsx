@@ -45,6 +45,25 @@ const SingleArticlePage = () => {
     fetchDetails();
   }, [id]);
 
+  const formatDateToArabic = (dateString?: string | null) => {
+    if (!dateString) return "-";
+    const parts = dateString.split("/");
+    if (parts.length !== 3) return dateString;
+    const [day, monthStr, year] = parts;
+    const months: Record<string, number> = {
+      Jan: 0, Feb: 1, Mar: 2, Apr: 3, May: 4, Jun: 5,
+      Jul: 6, Aug: 7, Sep: 8, Oct: 9, Nov: 10, Dec: 11,
+    };
+    const month = months[monthStr];
+    if (month === undefined) return dateString;
+    const date = new Date(Number(year), month, Number(day));
+    return new Intl.DateTimeFormat("ar-EG", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    }).format(date);
+  };
+
   if (loading) return <div className="text-center py-20">جاري التحميل...</div>;
   if (!article)
     return <div className="text-center py-20">المقالة غير موجودة</div>;
@@ -57,7 +76,7 @@ const SingleArticlePage = () => {
       subLabel: article.article_publisher,
       icon: <PublisherIcon />,
     },
-    { label: "العام", subLabel: article.article_date, icon: <DateIcon /> },
+    { label: "العام", subLabel: formatDateToArabic(article.article_date), icon: <DateIcon /> },
     {
       label: "عدد الفقرات",
       subLabel: article.article_sections_count,

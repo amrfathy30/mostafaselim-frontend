@@ -5,7 +5,6 @@ import Footer from "./Components/Footer";
 import BodyContent from "./Components/body-content";
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { Toaster } from "react-hot-toast";
 import { getSettingsData } from "./services/homeService";
 import { Settings } from "./types";
 
@@ -38,7 +37,6 @@ function App({ isRTL }: AppProps) {
 
   return (
     <div className="App @container">
-      <Toaster position="bottom-right" />
       <div
         dir={isRTL ? "rtl" : "ltr"}
         className={isRTL ? "text-right " : "text-left"}

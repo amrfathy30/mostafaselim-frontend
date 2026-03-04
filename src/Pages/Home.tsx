@@ -28,6 +28,10 @@ export default function Home() {
     fetchHomeData();
   }, []);
 
+  useEffect(() => {
+    document.title = "الرئيسية - دكتور مصطفي سليم";
+  }, []);
+
   return (
     <>
       <AuthorHero data={homeData?.user_info} />

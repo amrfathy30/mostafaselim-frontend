@@ -70,6 +70,10 @@ const PodcastsPage: React.FC = () => {
     }
   };
 
+  useEffect(() => {
+    document.title = "البودكاست - دكتور مصطفي سليم";
+  }, []);
+
   return (
     <main
       className="min-h-screen bg-[#F5F5F5] py-8 xl:py-16 font-expo"

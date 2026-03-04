@@ -28,6 +28,25 @@ const SingleBlogPage: React.FC = () => {
     AOS.init({ duration: 800, easing: 'ease-in-out', once: true, offset: 100 });
   }, []);
 
+  const formatDateToArabic = (dateString?: string | null) => {
+    if (!dateString) return "-";
+    const parts = dateString.split("/");
+    if (parts.length !== 3) return dateString;
+    const [day, monthStr, year] = parts;
+    const months: Record<string, number> = {
+      Jan: 0, Feb: 1, Mar: 2, Apr: 3, May: 4, Jun: 5,
+      Jul: 6, Aug: 7, Sep: 8, Oct: 9, Nov: 10, Dec: 11,
+    };
+    const month = months[monthStr];
+    if (month === undefined) return dateString;
+    const date = new Date(Number(year), month, Number(day));
+    return new Intl.DateTimeFormat("ar-EG", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    }).format(date);
+  };
+
   useEffect(() => {
     (async () => {
       try {
@@ -54,12 +73,16 @@ const SingleBlogPage: React.FC = () => {
     })();
   }, [id]);
 
+  useEffect(() => {
+    document.title = "المدونة - دكتور مصطفي سليم";
+  }, []);
+
   if (loading) return <div className="py-40 text-center font-expo text-[#3A5F7D]">جاري تحميل المحتوى...</div>;
   if (!blog) return <div className="py-40 text-center font-expo">المنشور غير موجود</div>;
 
   const infoItems = [
     { label: 'الناشر', value: blog.publisher, Icon: PublisherIcon, size: "w-10 h-10" },
-    { label: 'العام', value: blog.year, Icon: YearIcon, size: "w-10 h-10" },
+    { label: 'العام', value: formatDateToArabic(blog.date), Icon: YearIcon, size: "w-10 h-10" },
     { label: 'المشاهدين', value: `${blog.views} مشاهد`, Icon: ViewsIcon, size: "w-7 h-7" },
     { label: 'نوع المنشور', value: blog.classification, Icon: CategoryIcon, size: "w-10 h-10" },
   ];
