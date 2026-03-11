@@ -187,10 +187,10 @@ const AdminLogin: React.FC = () => {
         </form>
 
         <div className="w-full flex text-center justify-between flex-col md:flex-row gap-2 mt-4">
-          <button className="text-primary hover:underline text-sm" onClick={() => setShowForgetPassword(true)}>
+          <button className="text-primary hover:underline text-sm cursor-pointer" onClick={() => setShowForgetPassword(true)}>
             هل نسيت كلمه المرور ؟
           </button>
-          <a href="/" className="text-primary hover:underline text-sm">
+          <a href="/" className="text-primary hover:underline text-sm cursor-pointer">
             العودة للموقع الرئيسي
           </a>
 
@@ -350,7 +350,7 @@ const ForgetPasswordModal = ({
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-primary hover:bg-primary/90 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full bg-primary cursor-pointer hover:bg-primary/90 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {loading ? 'جاري الارسال...' : 'ارسال كود التحقق'}
               </button>
@@ -463,10 +463,10 @@ const ForgetPasswordModal = ({
         )}
 
         <div className="w-full flex mt-6 text-center justify-between flex-col md:flex-row gap-2">
-          <button className="text-primary hover:underline text-sm" onClick={() => setShowForgetPassword(false)}>
+          <button className="text-primary hover:underline text-sm cursor-pointer" onClick={() => setShowForgetPassword(false)}>
             العوده لتسجيل الدخول
           </button>
-          <a href="/" className="text-primary hover:underline text-sm">
+          <a href="/" className="text-primary hover:underline text-sm cursor-pointer">
             العودة للموقع الرئيسي
           </a>
 

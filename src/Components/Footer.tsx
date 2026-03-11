@@ -52,7 +52,7 @@ const Footer = ({ settings }: { settings: Settings }) => {
           <h2 className="text-base lg:text-lg font-bold mb-4 text-center">
             اشترك الان ليصلك كل ما هو جديد
           </h2>
-          <div className="flex flex-col w-full max-w-lg gap-3 lg:flex-row lg:gap-3">
+          <div className="flex flex-col w-full max-w-lg gap-3 lg:flex-row lg:gap-2">
             <input
               value={email}
               onChange={(e) => {
@@ -61,10 +61,10 @@ const Footer = ({ settings }: { settings: Settings }) => {
               }}
               type="email"
               placeholder="اكتب بريدك الالكتروني"
-              className="w-full lg:w-[454px] lg:flex-1 bg-white text-gray-800 placeholder-gray-400 px-6 py-3 rounded-lg shadow-inner focus:outline-none focus:ring-2 focus:ring-primary text-right h-[56px]"
+              className="w-full lg:w-[454px] lg:flex-1 bg-white text-gray-800 placeholder-gray-400 px-6 py-3 rounded-lg shadow-inner focus:outline-none focus:ring-2 focus:ring-primary text-right h-[45px]"
             />
             <Button
-              className="h-[56px] w-full lg:w-[140px] flex items-center justify-center"
+              className="h-[45px] w-full lg:w-[140px] flex items-center justify-center"
               onClick={() => handleSubmit()}
               type={"primary"}
               disabled={!email}

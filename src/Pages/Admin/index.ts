@@ -8,3 +8,4 @@ export { default as Podcasts } from './Podcasts';
 export { default as Blog } from './Blog';
 export { default as AddBlog } from './AddBlog';
 export { default as Settings } from './Settings';
+export { default as SmtpSettings } from './smtp';

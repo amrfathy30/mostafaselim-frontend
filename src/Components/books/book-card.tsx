@@ -15,7 +15,7 @@ interface Props {
 
 export default function BookCard({ book, variant = "detailed", index = 0 }: Props) {
   const navigate = useNavigate();
-  const fallbackImage = "/default-book-image.png";
+  const fallbackImage = "/default.png";
 
   useEffect(() => {
     AOS.refresh();
@@ -38,7 +38,7 @@ export default function BookCard({ book, variant = "detailed", index = 0 }: Prop
       <img
         data-aos="zoom-in"
         data-aos-delay={index * 120 + 120}
-        src={book.image || fallbackImage}
+        src={book.image[0] || fallbackImage}
         alt={book.book_name}
         onError={handleImageError}
         className="w-full md:h-[200px] object-cover rounded-r-[33px] mb-4"

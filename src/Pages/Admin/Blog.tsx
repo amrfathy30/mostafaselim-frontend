@@ -153,8 +153,10 @@ const Blog: React.FC = () => {
                 key={blog.blog_id}
                 className="relative bg-white rounded-[12px] overflow-hidden border border-gray-200 p-3"
               >
-                <div className="absolute top-6 w-fit p-3 h-[60px] bg-gradient-to-r to-[#007FFF] from-[#3A5F7D] text-white font-bold rounded-tr-[20px] rounded-bl-[30px] flex items-center justify-center z-10">
-                  {blog?.blog_classification}
+                <div className="absolute top-6 w-[150px] p-3 h-[60px] bg-linear-to-r to-[#007FFF] from-primary text-white font-bold rounded-tr-[20px] rounded-bl-[30px] flex items-center justify-center z-10">
+                  <p className="line-clamp-1 truncate">
+                    {blog?.blog_classification}
+                  </p>
                 </div>
                 <img
                   className="w-full h-[180px] rounded-[12px] object-cover"

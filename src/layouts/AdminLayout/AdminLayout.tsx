@@ -3,7 +3,7 @@ import { Outlet, Link, useNavigate, useLocation } from "react-router-dom";
 import { Logo } from "../../Components/Icons";
 import { getAdminProfile } from "../../services/authService";
 import toast from "react-hot-toast";
-import { MdCategory } from "react-icons/md";
+import { MdCategory, MdEmail } from "react-icons/md";
 
 const AdminLayout: React.FC = () => {
   const navigate = useNavigate();
@@ -59,8 +59,10 @@ const AdminLayout: React.FC = () => {
     { title: "المدونة", path: "/admin/blog", icon: <BlogMenuIcon /> },
     { title: "الكتب", path: "/admin/books", icon: <BooksMenuIcon /> },
     { title: "المسموعات", path: "/admin/podcasts", icon: <AudioMenuIcon /> },
+    { title: "المشتركون", path: "/admin/subscribers", icon: <MdEmail /> },
     { title: "التصنيفات", path: "/admin/categories", icon: <MdCategory /> },
     { title: "الاعدادات", path: "/admin/settings", icon: <SettingsMenuIcon /> },
+    { title: "إعدادات SMTP", path: "/admin/smtp", icon: <MdEmail /> },
   ];
 
   if (isLoading) {
@@ -91,11 +93,11 @@ const AdminLayout: React.FC = () => {
       {/* Sidebar */}
       <aside className="w-[60px] md:w-[250px] xxl:w-[375px] bg-white flex flex-col rounded-[16px] overflow-hidden fixed top-4 md:top-8 xl:top-10 xxl:top-[74px] bottom-4 md:bottom-8 xl:bottom-10 xxl:bottom-[74px] right-4 md:right-6 lg:right-8 z-10">
         {/* Top blue border */}
-        <div className="h-[6px] bg-[#007FFF] w-full flex-shrink-0"></div>
+        <div className="h-[6px] bg-[#007FFF] w-full shrink-0"></div>
 
         <div className="p-3 md:p-6 flex flex-col flex-1 overflow-y-auto">
           {/* Logo - hidden on mobile */}
-          <div className="mb-4 hidden md:flex justify-center flex-shrink-0">
+          <div className="mb-4 hidden md:flex justify-center shrink-0">
             <a href="/">
               <Logo variant="dark" />
             </a>

@@ -25,12 +25,8 @@ const AddBook: React.FC = () => {
   const isEdit = !!id;
 
   const [loading, setLoading] = useState(false);
-  const [coverImage, setCoverImage] = useState<File | null>(null);
-  const [secondImage, setSecondImage] = useState<File | null>(null);
-  const [existingCover, setExistingCover] = useState<string | null>(null);
-  const [existingSecondImage, setExistingSecondImage] = useState<string | null>(
-    null,
-  );
+  const [images, setImages] = useState<(File | null)[]>([null, null]);
+  const [existingImages, setExistingImages] = useState<(string | null)[]>([null, null]);
   const [categories, setCategories] = useState<any[]>([]);
 
   const [bookInfo, setBookInfo] = useState({
@@ -82,11 +78,12 @@ const AddBook: React.FC = () => {
             link: book.book_link || "",
           });
 
-          if (book.image) setExistingCover(book.image);
-
-          if (book.image && Array.isArray(book.image)) {
-            setExistingCover(book.image[0] || null);
-            setExistingSecondImage(book.image[1] || null);
+          if (book.image) {
+            if (Array.isArray(book.image)) {
+              setExistingImages([book.image[0] || null, book.image[1] || null]);
+            } else {
+              setExistingImages([book.image, null]);
+            }
           }
         }
       } catch (err) {
@@ -194,12 +191,12 @@ const AddBook: React.FC = () => {
       formData.append("summary", bookInfo.description);
       formData.append("goals", bookInfo.goals);
       formData.append("link", bookInfo.link);
-      if (coverImage) {
-        formData.append("images[]", coverImage);
-      }
-      if (secondImage) {
-        formData.append("images[]", secondImage);
-      }
+      
+      images.forEach((img) => {
+        if (img) {
+          formData.append("images[]", img);
+        }
+      });
 
       if (isEdit) {
         await adminUpdateBook(id!, formData);
@@ -350,75 +347,46 @@ const AddBook: React.FC = () => {
           </div>
 
           <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="space-y-2">
-              {(coverImage || existingCover) && (
-                <div className="mb-2 relative w-full h-40 bg-white rounded-lg border overflow-hidden">
-                  <img
-                    src={
-                      coverImage
-                        ? URL.createObjectURL(coverImage)
-                        : existingCover!
-                    }
-                    alt="Cover"
-                    className="w-full h-full object-contain"
+            {[0, 1].map((idx) => (
+              <div key={idx} className="space-y-2">
+                {(images[idx] || existingImages[idx]) && (
+                  <div className="mb-2 relative w-full h-40 bg-white rounded-lg border overflow-hidden">
+                    <img
+                      src={
+                        images[idx]
+                          ? URL.createObjectURL(images[idx]!)
+                          : existingImages[idx]!
+                      }
+                      alt={`Book Image ${idx + 1}`}
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
+                )}
+                <div className="relative">
+                  <input
+                    type="file"
+                    id={`image-upload-${idx}`}
+                    accept="image/*"
+                    className="hidden"
+                    onChange={(e) => {
+                      const newImages = [...images];
+                      newImages[idx] = e.target.files?.[0] || null;
+                      setImages(newImages);
+                    }}
                   />
+                  <label
+                    htmlFor={`image-upload-${idx}`}
+                    className="flex items-center justify-center px-6 py-3 bg-[#3A5F7D] text-white rounded-md cursor-pointer hover:bg-[#3A5F7D]/90 transition-all text-center"
+                  >
+                    {images[idx]
+                      ? `تغيير الصورة ${idx === 0 ? "الغلاف" : "الثانية"}`
+                      : existingImages[idx]
+                        ? `تحديث الصورة ${idx === 0 ? "الغلاف" : "الثانية"}`
+                        : `ارفع صورة ${idx === 0 ? "الغلاف" : "الثانية"}`}
+                  </label>
                 </div>
-              )}
-              <div className="relative">
-                <input
-                  type="file"
-                  id="cover-upload"
-                  accept="image/*"
-                  className="hidden"
-                  onChange={(e) => setCoverImage(e.target.files?.[0] || null)}
-                />
-                <label
-                  htmlFor="cover-upload"
-                  className="flex items-center justify-center px-6 py-3 bg-[#3A5F7D] text-white rounded-md cursor-pointer hover:bg-[#3A5F7D]/90 transition-all text-center"
-                >
-                  {coverImage
-                    ? "تغيير صورة الغلاف"
-                    : existingCover
-                      ? "تحديث صورة الغلاف"
-                      : "ارفع صورة الغلاف"}
-                </label>
               </div>
-            </div>
-
-            <div className="space-y-2">
-              {(secondImage || existingSecondImage) && (
-                <div className="mb-2 relative w-full h-40 bg-white rounded-lg border overflow-hidden">
-                  <img
-                    src={
-                      secondImage
-                        ? URL.createObjectURL(secondImage)
-                        : existingSecondImage!
-                    }
-                    alt="Second"
-                    className="w-full h-full object-contain"
-                  />
-                </div>
-              )}
-              <div className="relative">
-                <input
-                  type="file"
-                  id="second-upload"
-                  accept="image/*"
-                  className="hidden"
-                  onChange={(e) => setSecondImage(e.target.files?.[0] || null)}
-                />
-                <label
-                  htmlFor="second-upload"
-                  className="flex items-center justify-center px-6 py-3 bg-[#3A5F7D] text-white rounded-md cursor-pointer hover:bg-[#3A5F7D]/90 transition-all text-center"
-                >
-                  {secondImage
-                    ? "تغيير الصورة الثانية"
-                    : existingSecondImage
-                      ? "تحديث الصورة الثانية"
-                      : "ارفع الصورة الثانية"}
-                </label>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
 

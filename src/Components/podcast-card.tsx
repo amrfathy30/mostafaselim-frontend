@@ -181,7 +181,10 @@ export default function PodcastCard({
       <div className="flex flex-col lg:flex-row gap-4">
         <div className="w-full flex justify-center lg:w-auto">
           <img
-            src={image}
+            src={image || "/default.png"}
+            onError={(e) => {
+              e.currentTarget.src = "/default.png"
+            }}
             alt={title}
             data-aos="fade-up"
             className="aspect-square rounded-[18px] w-[120px] sm:w-[130px] md:w-[130px] lg:w-[150px] h-[100px] object-cover border border-gray-100"

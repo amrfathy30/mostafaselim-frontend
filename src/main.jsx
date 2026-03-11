@@ -13,6 +13,7 @@ import {
   Blog,
   AddBlog,
   Settings,
+  SmtpSettings,
 } from "./Pages/Admin";
 import Categories from "./Pages/Admin/Categories.tsx";
 import ScrollToTop from "./Components/works/ScrollToTop.js";
@@ -45,6 +46,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         <Route path="blog" element={<Blog />} />
         <Route path="blog/add" element={<AddBlog />} />
         <Route path="settings" element={<Settings />} />
+        <Route path="smtp" element={<SmtpSettings />} />
         <Route path="categories" element={<Categories />} />
       </Route>
       <Route path="/*" element={<App isRTL={true} />} />

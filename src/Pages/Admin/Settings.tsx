@@ -344,7 +344,7 @@ const Settings: React.FC = () => {
                 onChange={(e) =>
                   setUserInfo({ ...userInfo, bio: e.target.value })
                 }
-                placeholder="تم التعديل"
+                placeholder="النبذة التعريفية"
                 rows={3}
                 className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg text-right outline-none focus:border-primary resize-none"
               />
@@ -358,7 +358,7 @@ const Settings: React.FC = () => {
                 onChange={(e) =>
                   setUserInfo({ ...userInfo, personal_aspect: e.target.value })
                 }
-                placeholder="تم التعديل"
+                placeholder="الجانب الشخصي"
                 rows={3}
                 className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg text-right outline-none focus:border-primary resize-none"
               />
@@ -375,7 +375,7 @@ const Settings: React.FC = () => {
                     educational_aspect: e.target.value,
                   })
                 }
-                placeholder="تم التعديل"
+                placeholder="الجانب التعليمي"
                 rows={3}
                 className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg text-right outline-none focus:border-primary resize-none"
               />
@@ -747,7 +747,7 @@ const Settings: React.FC = () => {
                 onChange={(e) =>
                   setWebsiteInfo({ ...websiteInfo, footer: e.target.value })
                 }
-                placeholder="تم التعديل"
+                placeholder="footer"
                 rows={3}
                 className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg text-right outline-none focus:border-primary resize-none"
               />

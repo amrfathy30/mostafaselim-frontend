@@ -58,7 +58,10 @@ const PodcastSidebar: React.FC<Props> = ({ podcast, isMobile = false }) => {
       `}>
       <div className={`flex justify-center items-center ${isMobile ? 'py-8' : 'py-10 xxl:py-14'}`}>
         <img
-          src={podcast.image || '/images/podcast-image.png'}
+          src={podcast.image || '/default.png'}
+          onError={(e) => {
+            e.currentTarget.src = "/default.png"
+          }}
           alt={podcast.title}
           className={`rounded-[18px] object-cover shadow-2xl transition-all
             ${isMobile ? 'w-[140px] h-[140px]' : 'w-[150px] h-[150px] xl:w-[170px] xl:h-[170px] xxl:w-[195px] xxl:h-[195px]'}

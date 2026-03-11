@@ -6,7 +6,7 @@ type Props = {
   className?: string;
   disabled?: boolean;
   loading?: boolean;
-  onClick: React.ButtonHTMLAttributes<
+  onClick?: React.ButtonHTMLAttributes<
     HTMLButtonElement | HTMLLabelElement
   >["onClick"];
   type: "primary" | "secondary" | "danger" | "tertiary";

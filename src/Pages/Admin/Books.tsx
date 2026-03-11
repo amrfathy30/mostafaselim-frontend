@@ -132,7 +132,7 @@ const Books: React.FC = () => {
               >
                 <img
                   className="w-full md:h-[200px] rounded-r-[33px] object-cover"
-                  src={book?.image || "/default.png"}
+                  src={book?.image[0] || "/default.png"}
                   onError={(e) => {
                     e.currentTarget.src = "/default.png";
                   }}

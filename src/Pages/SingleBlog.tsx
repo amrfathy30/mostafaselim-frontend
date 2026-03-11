@@ -7,6 +7,7 @@ import AOS from 'aos';
 import 'aos/dist/aos.css';
 
 export interface SingleBlog {
+  blog_image_cover: string | undefined;
   id: number;
   title: string;
   content: string;
@@ -55,11 +56,12 @@ const SingleBlogPage: React.FC = () => {
         setBlog({
           id: data.blog_id,
           title: data.blog_title,
+          blog_image_cover: data.blog_image_cover,
           content: data.blog_content,
           date: data.blog_date,
           time: data.blog_time,
           views: data.blog_views,
-          image: data.blog_image_cover,
+          image: data.blog_image_content,
           publisher: "د. مصطفى سليم",
           classification: data.blog_classification,
           year: data.blog_date || "2026"
@@ -98,7 +100,10 @@ const SingleBlogPage: React.FC = () => {
       {/* Hero Section */}
       <section className="relative w-full py-12 md:py-32 flex flex-col items-center" data-aos="fade-up">
         <div className="absolute top-0 left-0 w-full h-[350px] md:h-[450px] z-0 overflow-hidden">
-          <img src="/images/blog-bg.png" className="w-full h-full object-cover" alt="" />
+          <img src={blog?.blog_image_cover || "/default.png"}
+            onError={(e) => {
+              e.currentTarget.src = "/default.png"
+            }} className="w-full h-full object-cover" alt="blog_image_cover" />
         </div>
 
         <div className="container mx-auto px-4 relative z-10 max-w-5xl">
@@ -113,7 +118,11 @@ const SingleBlogPage: React.FC = () => {
 
               <QuoteIcon className="w-6 md:w-8 h-auto -mt-10 mb-4 text-[#3A5F7D]" data-aos="fade-left" />
 
-              <img src={blog.image} className="w-full h-auto object-cover max-h-[300px] rounded-xl md:rounded-2xl mb-4 shadow-md" alt="" data-aos="fade-up" data-aos-delay={100} />
+              <img src={blog.image || "/default.png"}
+                onError={(e) => {
+                  e.currentTarget.src = "/default.png"
+                }}
+                className="w-full h-auto object-cover max-h-[300px] rounded-xl md:rounded-2xl mb-4 shadow-md" alt="" data-aos="fade-up" data-aos-delay={100} />
 
               <div className="text-[#4D4D4D] text-right leading-[1.8] md:leading-[2] text-sm md:text-lg space-y-6">
                 {blog.content.split('\n').map((para, i) => (

@@ -72,7 +72,10 @@ const BlogCard: React.FC<Props> = ({ item, index = 0 }) => {
     >
       <div className="w-full h-[200px] overflow-hidden rounded-[7px] mb-[11px]" data-aos="fade-up">
         <img
-          src={item.image}
+          src={item.image || "/default.png"}
+          onError={(e)=>{
+            e.currentTarget.src="/default.png"
+          }}
           alt={item.title}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
         />

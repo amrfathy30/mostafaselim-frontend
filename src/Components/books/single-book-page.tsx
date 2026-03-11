@@ -65,8 +65,11 @@ const SingleBookPage = () => {
                     {book.image?.map((img: string, i: number) => (
                         <img
                             key={i}
-                            src={img}
-                            className="w-[46%] md:w-[42%] lg:w-[450px] h-auto aspect-square object-cover shadow-2xl rounded-md border border-gray-100 hover:scale-105 transition-transform duration-500"
+                            src={img || "/default.png"}
+                            onError={(e) => {
+                                e.currentTarget.src = "/default.png"
+                            }}
+                            className="w-[46%] md:w-[42%] lg:w-[400px] h-auto aspect-square object-cover shadow-2xl rounded-md border border-gray-100 hover:scale-101 transition-all duration-300"
                             alt="Book Page"
                             data-aos="zoom-in"
                             data-aos-delay={i * 100}

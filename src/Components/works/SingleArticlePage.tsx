@@ -45,6 +45,48 @@ const SingleArticlePage = () => {
     fetchDetails();
   }, [id]);
 
+  const formattedSources = React.useMemo(() => {
+    if (!article || !article.article_reference) return [];
+
+    const rawRefs = Array.isArray(article.article_reference)
+      ? article.article_reference
+      : [article.article_reference];
+
+    const result: { text: string }[] = [];
+
+    rawRefs.forEach((ref: any) => {
+      if (!ref) return;
+
+      if (typeof ref === 'string') {
+        const trimmed = ref.trim();
+        if ((trimmed.startsWith('[') && trimmed.endsWith(']')) || (trimmed.startsWith('{') && trimmed.endsWith('}'))) {
+          try {
+            const parsed = JSON.parse(ref);
+            if (Array.isArray(parsed)) {
+              parsed.forEach(item => {
+                if (item) result.push({ text: String(item) });
+              });
+            } else {
+              result.push({ text: String(parsed) });
+            }
+          } catch {
+            result.push({ text: ref });
+          }
+        } else {
+          result.push({ text: ref });
+        }
+      } else if (Array.isArray(ref)) {
+        ref.forEach(item => {
+          if (item) result.push({ text: String(item) });
+        });
+      } else {
+        result.push({ text: String(ref) });
+      }
+    });
+
+    return result;
+  }, [article?.article_reference]);
+
   const formatDateToArabic = (dateString?: string | null) => {
     if (!dateString) return "-";
     const parts = dateString.split("/");
@@ -93,16 +135,6 @@ const SingleArticlePage = () => {
       icon: <CategoryIcon />,
     },
   ];
-
-  const formattedSources: { text: string }[] = article.article_reference?.map((ref: string) => {
-    try {
-      const parsed = JSON.parse(ref);
-      if (Array.isArray(parsed)) return { text: parsed[0] };
-      return { text: String(parsed) };
-    } catch {
-      return { text: ref };
-    }
-  }) || [];
 
   return (
     <main

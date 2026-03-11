@@ -14,6 +14,7 @@ import AddBlog from "../Pages/Admin/AddBlog";
 import AddArticle from "../Pages/Admin/AddArticle";
 import ArticlesAdmin from "../Pages/Admin/Articles";
 import Dashboard from "../Pages/Admin/Dashboard";
+import SubscribersAdmin from "../Pages/Admin/Subscribers";
 import AudioPage from "../Pages/AudioPage";
 import AudioDetails from "../Pages/AudioDetails";
 import NotFound from "../Pages/NotFound";
@@ -42,6 +43,7 @@ export default function BodyContent() {
         <Route path="articles" element={<ArticlesAdmin />} />
         <Route path="articles/add" element={<AddArticle />} />
         <Route path="articles/edit/:id" element={<AddArticle />} />
+        <Route path="subscribers" element={<SubscribersAdmin />} />
         <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>

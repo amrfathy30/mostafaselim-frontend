@@ -61,7 +61,7 @@ const ArticleCard: React.FC<Props> = ({ item, index = 0 }) => {
       <h3
         data-aos="fade-up"
         data-aos-delay={index * 120 + 120}
-        className="text-[#3A5F7D] font-normal line-clamp-2 text-lg xl:text-xl xxl:text-[26px] leading-relaxed xxl:leading-[39px]"
+        className="text-primary font-normal truncate max-w-[250px] line-clamp-1 text-lg xl:text-xl xxl:text-[26px]"
       >
         {articleTitle}
       </h3>
