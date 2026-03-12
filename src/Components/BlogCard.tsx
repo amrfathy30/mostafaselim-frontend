@@ -68,13 +68,13 @@ const BlogCard: React.FC<Props> = ({ item, index = 0 }) => {
       data-aos="fade-up"
       data-aos-delay={index * 100}
       data-aos-duration="800"
-      className="bg-white rounded-[10px] flex flex-col w-full max-w-[453px] p-[13px] font-expo group transition-all duration-300 mx-auto h-full hover:shadow-md hover:-translate-y-1"
+      className="bg-white rounded-[10px] flex flex-col justify-between w-full p-[13px] font-expo group transition-all duration-300 mx-auto hover:shadow-md hover:-translate-y-1"
     >
-      <div className="w-full h-[200px] overflow-hidden rounded-[7px] mb-[11px]" data-aos="fade-up">
+      <div className="w-full h-[180px] overflow-hidden rounded-[7px] mb-2" data-aos="fade-up">
         <img
           src={item.image || "/default.png"}
-          onError={(e)=>{
-            e.currentTarget.src="/default.png"
+          onError={(e) => {
+            e.currentTarget.src = "/default.png"
           }}
           alt={item.title}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
@@ -86,22 +86,22 @@ const BlogCard: React.FC<Props> = ({ item, index = 0 }) => {
           {item.title}
         </h3>
 
-        <div className="w-full text-right flex items-center justify-left flex-wrap gap-[11px] mb-4">
+        <div className="w-full text-right flex items-center justify-left flex-wrap gap-[11px] mb-4 md:h-[40px]">
           <div className="flex flex-row-reverse items-center gap-[6px]" data-aos="fade-up">
             <CalenderIcon className="w-[18px] h-[18px] text-[#4D4D4D]" />
-            <span className="text-[#4D4D4D] text-[14px] leading-none">
+            <span className="text-[#4D4D4D] text-[12px] leading-none">
               {formatDateToArabic(item.blog_date)}
             </span>
           </div>
           <div className="flex flex-row-reverse items-center gap-[6px]" data-aos="fade-up">
             <ClockIcon className="w-[18px] h-[18px] text-[#4D4D4D]" />
-            <span className="text-[#4D4D4D] text-[14px] leading-none">
+            <span className="text-[#4D4D4D] text-[12px] leading-none">
               {formatTimeToArabic(item.blog_time)}
             </span>
           </div>
           <div className="flex flex-row-reverse items-center gap-[6px]" data-aos="fade-up">
             <EyeIcon className="w-[18px] h-[18px] text-[#4D4D4D]" />
-            <span className="text-[#4D4D4D] text-[14px] leading-none">
+            <span className="text-[#4D4D4D] text-[12px] leading-none">
               {item.views > 999
                 ? (item.views / 1000).toFixed(1) + "K"
                 : item.views}

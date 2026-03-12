@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect, useRef } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "../../Components/Common/button";
 import { CalendarIcon, ClockIcon } from "../../icons/admin";
 import Pagination from "../../Components/Pagination";
@@ -15,15 +15,29 @@ import { EyeIcon } from "../../icons/work-icons";
 
 const Articles: React.FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [articles, setArticles] = useState<any[]>([]);
   const [pagination, setPagination] = useState<any>(null);
-  const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [startSearch, setStartSearch] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedArticle, setSelectedArticle] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
+
+  const [currentPage, setCurrentPage] = useState(() => {
+    const params = new URLSearchParams(location.search);
+    return Number(params.get("page")) || 1;
+  });
+
+  const isInitialMount = useRef(true);
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    navigate(`/admin/articles?page=${page}`);
+  };
+
+
 
   const fetchArticles = async (page: number, keyword: string = "") => {
     try {
@@ -50,9 +64,15 @@ const Articles: React.FC = () => {
   }, [currentPage, startSearch]);
 
   useEffect(() => {
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+      return;
+    }
+
     if (searchQuery === "") {
       setCurrentPage(1);
       fetchArticles(1);
+      navigate(`/admin/articles?page=1`);
     }
   }, [searchQuery]);
 
@@ -158,7 +178,7 @@ const Articles: React.FC = () => {
                 className="bg-white rounded-lg p-6 border border-gray-200 flex flex-col justify-between md:h-[200px] shadow-sm"
               >
                 <div>
-                  <h3 className="text-primary text-xl font-bold mb-4 text-right line-clamp-1">
+                  <h3 className="text-primary font-bold mb-4 text-right line-clamp-1">
                     {article.article_title}
                   </h3>
                   <div className="flex flex-col md:flex-row items-center gap-4 text-gray-500 text-sm mb-4">
@@ -181,9 +201,7 @@ const Articles: React.FC = () => {
                 <div className="flex gap-3">
                   <Button
                     className="w-1/2 hover:bg-primary"
-                    onClick={() =>
-                      navigate(`/admin/articles/edit/${article.article_id}`)
-                    }
+                    onClick={() => navigate(`/admin/articles/edit/${article.article_id}?page=${currentPage}`)}
                     type="primary"
                   >
                     تعديل
@@ -216,7 +234,7 @@ const Articles: React.FC = () => {
             <Pagination
               currentPage={currentPage}
               totalPages={pagination.last_page}
-              onPageChange={setCurrentPage}
+              onPageChange={handlePageChange}
             />
           )}
       </div>

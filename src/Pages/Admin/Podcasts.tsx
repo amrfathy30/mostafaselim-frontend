@@ -196,6 +196,10 @@ const Podcasts: React.FC = () => {
       toast.error("برجاء ادخال عنوان المشروع");
       return;
     }
+    if (projectFormData.title.length < 5) {
+      toast.error("عنوان المشروع يجب أن يكون على الأقل 5 أحرف");
+      return;
+    }
 
     const titleRegex = /[<>{}[\]\\|]/;
     if (titleRegex.test(projectFormData.title)) {
@@ -227,8 +231,10 @@ const Podcasts: React.FC = () => {
         data.append("_method", "PUT");
         await adminUpdateProject(currentId, data);
         await handleSelectProject(currentId);
+        toast.success("تم تحديث المشروع بنجاح");
       } else {
         await adminAddProject(data);
+        toast.success("تم إضافة المشروع بنجاح");
       }
       setShowProjectModal(false);
       loadProjects(currentPage, searchQuery);
@@ -253,6 +259,16 @@ const Podcasts: React.FC = () => {
   };
 
   const handleSubmitAudio = async () => {
+    const titleRegex = /[<>{}[\\]|]/;
+    if (titleRegex.test(audioFormData.title)) {
+      toast.error("حقل عنوان المقطع يحتوي على رموز أو وسوم غير مسموحة.");
+      return;
+    }
+    if (titleRegex.test(audioFormData.details)) {
+      toast.error("حقل تفاصيل المقطع يحتوي على رموز أو وسوم غير مسموحة.");
+      return;
+    }
+
     if (!isEditMode && !audioFormData.file) {
       toast.error("برجاء رفع الملف الصوتي أولاً");
       return;
@@ -278,8 +294,10 @@ const Podcasts: React.FC = () => {
       if (isEditMode && currentId) {
         data.append("_method", "PUT");
         await adminUpdateAudio(currentId, data);
+        toast.success("تم تحديث المقطع بنجاح");
       } else {
         await adminAddAudio(data);
+        toast.success("تم إضافة المقطع بنجاح");
       }
       setShowAudioModal(false);
       if (selectedProject) handleSelectProject(selectedProject.project_id);
@@ -446,8 +464,8 @@ const Podcasts: React.FC = () => {
 
         <div className="lg:col-span-8 space-y-6">
           {selectedProject && (
-            <div className="bg-white rounded-[15px] p-6 border border-gray-100 flex flex-col md:flex-row gap-4 items-center justify-between shadow-sm">
-              <h3 className="text-base font-bold text-[#1E4D74] max-w-[150px] truncate">
+            <div className="bg-white rounded-[15px] p-6 border border-gray-100 flex flex-wrap flex-col md:flex-row gap-4 items-center justify-between shadow-sm">
+              <h3 className="text-base font-bold text-[#1E4D74] md:max-w-[500px] max-w-[200px] truncate ">
                 {selectedProject.project_title}
               </h3>
               <div className="flex flex-col md:flex-row gap-3">
@@ -646,8 +664,10 @@ const Podcasts: React.FC = () => {
               >
                 <option value="">مشروع المقطع</option>
                 {projects.map((p) => (
-                  <option key={p.project_id} value={p.project_id}>
-                    {p.project_title}
+                  <option key={p.project_id} value={p.project_id} title={p.project_title}>
+                    {p.project_title.length > 30
+                      ? p.project_title.slice(0, 30) + "..."
+                      : p.project_title}
                   </option>
                 ))}
               </select>

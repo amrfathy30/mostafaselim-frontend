@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 import {
   adminGetBook,
   adminAddBook,
@@ -22,7 +22,11 @@ interface BookFormData {
 const AddBook: React.FC = () => {
   const navigate = useNavigate();
   const { id } = useParams();
+  const location = useLocation();
   const isEdit = !!id;
+
+  const backPage = new URLSearchParams(location.search).get("page") || "1";
+  const backUrl = `/admin/books?page=${backPage}`;
 
   const [loading, setLoading] = useState(false);
   const [images, setImages] = useState<(File | null)[]>([null, null]);
@@ -205,7 +209,7 @@ const AddBook: React.FC = () => {
       }
 
       toast.success("تم الحفظ بنجاح");
-      navigate("/admin/books");
+      navigate(backUrl);
     } catch (error: any) {
       console.error("Error saving book:", error);
       if (error.response?.data?.errors) {
@@ -226,7 +230,7 @@ const AddBook: React.FC = () => {
           {isEdit ? "تعديل كتاب" : "أضف كتاب"}
         </h1>
         <button
-          onClick={() => navigate("/admin/books")}
+          onClick={() => navigate(backUrl)}
           className="text-[#2B2B2B] hover:text-primary cursor-pointer hover:underline transition-colors"
         >
           عودة

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 import { Button } from "../../Components/Common/button";
 import {
   adminAddArticle,
@@ -25,6 +25,9 @@ const AddArticle: React.FC = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const isEditMode = !!id;
+
+  const backPage = new URLSearchParams(location.search).get("page") || "1";
+  const backUrl = `/admin/articles?page=${backPage}`;
 
   const [loading, setLoading] = useState(false);
   const [categories, setCategories] = useState<any[]>([]);
@@ -143,22 +146,74 @@ const AddArticle: React.FC = () => {
       return toast.error("يرجى ملء الحقول المطلوبة");
 
     const titleRegex = /[<>{}[\\]|]/;
-    const hasInvalidSymbols = [
-      articleInfo.title,
-      articleInfo.type,
-      articleInfo.author,
-      articleInfo.published,
-      ...(articleInfo.references || []),
-      ...paragraphs.map((p) => p.title),
-      ...paragraphs.flatMap((p) =>
-        p.contents
-          .filter((c) => c.type === "text")
-          .map((c) => c.content as string),
-      ),
-    ].some((val) => titleRegex.test(String(val)));
 
-    if (hasInvalidSymbols) {
-      return toast.error("حقول المقالة تحتوي على رموز أو وسوم غير مسموحة.");
+    const mainFields = [
+      { label: "عنوان المقالة", value: articleInfo.title },
+      { label: "نوع المقالة", value: articleInfo.type },
+      { label: "الكاتب", value: articleInfo.author },
+      { label: "دار النشر", value: articleInfo.published },
+    ];
+
+    for (const field of mainFields) {
+      if (titleRegex.test(String(field.value))) {
+        return toast.error(`الحقل "${field.label}" يحتوي على رموز غير مسموحة.`);
+      }
+    }
+
+    if (articleInfo.references) {
+      for (let i = 0; i < articleInfo.references.length; i++) {
+        if (titleRegex.test(String(articleInfo.references[i]))) {
+          return toast.error(`المرجع رقم ${i + 1} يحتوي على رموز غير مسموحة.`);
+        }
+      }
+    }
+
+    for (let i = 0; i < paragraphs.length; i++) {
+      const p = paragraphs[i];
+      if (titleRegex.test(String(p.title))) {
+        return toast.error(`عنوان الفقرة ${i + 1} يحتوي على رموز غير مسموحة.`);
+      }
+
+      const textSection = p.contents.find((c) => c.type === "text");
+      if (textSection && titleRegex.test(String(textSection.content))) {
+        return toast.error(`محتوى الفقرة ${i + 1} يحتوي على رموز غير مسموحة.`);
+      }
+    }
+
+    if (!articleInfo.title || articleInfo.title.trim().length < 5) {
+      toast.error("عنوان المقالة يجب أن يكون على الأقل 5 أحرف");
+      return;
+    }
+
+    if (!articleInfo.type || articleInfo.type.trim().length < 2) {
+      toast.error("النوع يجب أن يكون على الأقل 2 أحرف");
+      return;
+    }
+
+    if (!articleInfo.author || articleInfo.author.trim().length < 5) {
+      toast.error("اسم الكاتب يجب أن يكون أطول من 5 أحرف");
+      return;
+    }
+
+    if (!articleInfo.published || articleInfo.published.trim().length < 5) {
+      toast.error("اسم الناشر يجب أن يكون أطول من 5 أحرف");
+      return;
+    }
+
+    for (let i = 0; i < paragraphs.length; i++) {
+      const p = paragraphs[i];
+      if (!p.title || p.title.trim().length < 3) {
+        return toast.error(`عنوان الفقرة رقم ${i + 1} مطلوب ويجب أن يكون على الأقل 3 أحرف`);
+      }
+      const hasValidContent = p.contents.some((c) => {
+        if (c.type === "image") {
+          return c.content instanceof File || (typeof c.content === "string" && c.content.trim() !== "");
+        }
+        return typeof c.content === "string" && c.content.trim() !== "";
+      });
+      if (!hasValidContent) {
+        return toast.error(`محتوى الفقرة رقم ${i + 1} مطلوب`);
+      }
     }
 
     setLoading(true);
@@ -176,12 +231,6 @@ const AddArticle: React.FC = () => {
 
       formData.append(`sections[${pIndex}][order]`, String(pIndex + 1));
 
-      p.contents.filter((c) => {
-        if (c.type === "image" && !(c.content instanceof File)) {
-          return false;
-        }
-        return true;
-      });
       p.contents
         .filter((c) => {
           if (c.type === "image" && !c.isNew) return false;
@@ -216,7 +265,7 @@ const AddArticle: React.FC = () => {
       if (isEditMode) await adminUpdateArticle(id!, formData);
       else await adminAddArticle(formData);
       toast.success(isEditMode ? "تم التحديث بنجاح" : "تم الحفظ بنجاح");
-      navigate("/admin/articles");
+      navigate(backUrl);
     } catch (error: any) {
       const serverErrors = error.response?.data?.errors as Record<
         string,
@@ -259,7 +308,7 @@ const AddArticle: React.FC = () => {
           {isEditMode ? "تعديل مقالة" : "أضف مقالة"}
         </h1>
         <button
-          onClick={() => navigate("/admin/articles")}
+          onClick={() => navigate(backUrl)}
           className="text-lg text-[#3A5F7D] cursor-pointer hover:underline font-bold"
         >
           عودة

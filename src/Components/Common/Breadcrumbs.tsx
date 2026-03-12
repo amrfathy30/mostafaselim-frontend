@@ -23,7 +23,7 @@ const Breadcrumbs: React.FC<Props> = ({ items }) => {
               {item.label}
             </Link>
           ) : (
-            <span className="font-bold pb-1">{item.label}</span>
+            <span className="font-bold pb-1 truncate ">{item.label}</span>
           )}
           {index < items.length - 1 && (
             <span className="text-gray-400">›</span>

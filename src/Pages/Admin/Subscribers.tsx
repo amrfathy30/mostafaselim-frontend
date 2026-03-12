@@ -176,7 +176,7 @@ const Subscribers: React.FC = () => {
                                     onChange={(e) => setModalEmail(e.target.value)}
                                     placeholder="example@mail.com"
                                     className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg text-right outline-none focus:border-primary transition-colors"
-                                    required
+                                // required
                                 />
                             </div>
                             <div className="flex gap-3 pt-4">
@@ -230,7 +230,7 @@ const Subscribers: React.FC = () => {
                                     {subscribers.map((subscriber, index) => (
                                         <tr key={subscriber.id} className="hover:bg-gray-50 transition-colors">
                                             <td className="px-6 py-4 text-[#4D4D4D] font-medium">{(currentPage - 1) * 12 + index + 1}</td>
-                                            <td className="px-6 py-4 text-[#4D4D4D] font-medium text-center">{subscriber.email}</td>
+                                            <td className="px-6 py-4 text-[#4D4D4D] font-medium text-center truncate block max-w-[250px] md:max-w-[400px]" style={{ direction: "ltr" }} title={subscriber.email}>{subscriber.email}</td>
                                             <td className="px-6 py-4 text-[#4D4D4D] text-sm text-center">
                                                 {new Date(subscriber.created_at).toLocaleDateString("ar-EG", {
                                                     year: "numeric",

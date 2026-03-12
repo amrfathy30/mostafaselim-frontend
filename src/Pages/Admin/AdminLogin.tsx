@@ -110,7 +110,6 @@ const AdminLogin: React.FC = () => {
     }
   };
 
-
   if (checkingAuth) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-100">
@@ -139,12 +138,12 @@ const AdminLogin: React.FC = () => {
               البريد الإلكتروني
             </label>
             <input
-              type="email"
+              type="text"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition"
               placeholder="admin@example.com"
-              autoComplete="email"
+              autoComplete="text"
             // required
             />
           </div>
@@ -218,6 +217,14 @@ const ForgetPasswordModal = ({
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordConfirmation, setShowPasswordConfirmation] = useState(false);
 
+  const validateEmail = (email: string) => {
+    return String(email)
+      .toLowerCase()
+      .match(
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+      );
+  };
+
   const handleForgetPassword = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email) {
@@ -225,6 +232,12 @@ const ForgetPasswordModal = ({
       setLoading(false);
       return;
     }
+
+    if (!validateEmail(email)) {
+      toast.error("البريد الإلكتروني غير صحيح");
+      return;
+    }
+
     setLoading(true);
     setError('');
     try {
@@ -233,12 +246,12 @@ const ForgetPasswordModal = ({
         setSendOtp(true)
         setLoading(false)
       }
+      toast.success("تم ارسال كود التحقق بنجاح ");
     } catch (err: any) {
       toast.error(err.response.data.message || 'حدث خطأ أثناء الارسال');
       setLoading(false);
     }
   };
-
 
   const handleResetPassword = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -338,12 +351,12 @@ const ForgetPasswordModal = ({
                   البريد الإلكتروني
                 </label>
                 <input
-                  type="email"
+                  type="text"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition"
                   placeholder="admin@example.com"
-                  autoComplete="email"
+                autoComplete="text"
                 // required
                 />
               </div>

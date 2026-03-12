@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 import {
   adminAddBlog,
   adminUpdateBlog,
@@ -11,7 +11,11 @@ import toast from "react-hot-toast";
 const AddBlog: React.FC = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
   const isEditMode = !!id;
+
+  const backPage = new URLSearchParams(location.search).get("page") || "1";
+  const backUrl = `/admin/blog?page=${backPage}`;
 
   const [loading, setLoading] = useState(false);
   const [categories, setCategories] = useState<any[]>([]);
@@ -95,7 +99,7 @@ const AddBlog: React.FC = () => {
     if (!postTitle.trim()) {
       newErrors.title = "يجب إدخال عنوان المنشور";
     } else if (postTitle.trim().length < 5) {
-      newErrors.title = "يجب أن يكون العنوان 5 حروف على الأقل";
+      newErrors.title = "يجب أن يكون عنوان المنشور 5 حروف على الأقل";
     }
 
     if (!postDetails.trim()) {
@@ -105,13 +109,17 @@ const AddBlog: React.FC = () => {
     }
 
     const titleRegex = /[<>{}[\\]|]/;
-    const hasInvalidSymbols = [
-      postTitle,
-      postDetails,
-      blogInfo.publisherName,
-    ].some((val) => titleRegex.test(String(val)));
-    if (hasInvalidSymbols) {
-      newErrors.symbols = "حقول المدونة تحتوي على رموز أو وسوم غير مسموحة.";
+
+    if (titleRegex.test(postTitle)) {
+      newErrors.title = "العنوان يحتوي على رموز غير مسموحة";
+    }
+
+    if (titleRegex.test(postDetails)) {
+      newErrors.content = "محتوى المنشور يحتوي على رموز غير مسموحة";
+    }
+
+    if (titleRegex.test(blogInfo.publisherName)) {
+      newErrors.publisher = "اسم الناشر يحتوي على رموز غير مسموحة";
     }
 
     if (!blogInfo.categoryId) {
@@ -174,7 +182,7 @@ const AddBlog: React.FC = () => {
       }
       toast.success(isEditMode ? "تم التحديث بنجاح" : "تم الإضافة بنجاح");
 
-      navigate("/admin/blog");
+      navigate(backUrl);
     } catch (error: any) {
       console.error("Error saving blog:", error);
       if (error.response?.data?.errors) {
@@ -212,7 +220,7 @@ const AddBlog: React.FC = () => {
           {isEditMode ? "تعديل مدونة" : "أضف مدونة"}
         </h1>
         <button
-          onClick={() => navigate("/admin/blog")}
+          onClick={() => navigate(backUrl)}
           className="text-[#3A5F7D] text-xl hover:text-primary transition-colors cursor-pointer hover:underline"
         >
           عودة

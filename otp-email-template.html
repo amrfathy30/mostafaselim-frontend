@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إعادة تعيين كلمة المرور</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Tajawal', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            color: #333333;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .wrapper {
+            width: 100%;
+            table-layout: fixed;
+            background-color: #f4f7f6;
+            padding-bottom: 60px;
+        }
+
+        .main {
+            background-color: #ffffff;
+            margin: 40px auto;
+            max-width: 600px;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            border: 1px solid #eaeaea;
+        }
+
+        .header {
+            background-color: #3A5F7D;
+            padding: 30px 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            color: #ffffff;
+            margin: 0;
+            font-size: 26px;
+            font-weight: 700;
+        }
+
+        .content {
+            padding: 40px 30px;
+            text-align: center;
+        }
+
+        .content h2 {
+            color: #1E4D74;
+            font-size: 22px;
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        .content p {
+            font-size: 16px;
+            line-height: 1.8;
+            color: #1E4D74;
+            /* margin-bottom: 25px; */
+        }
+
+        .otp-container {
+            background-color: #F8FAFC;
+            border: 2px dashed #1E4D74;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 0 auto 30px auto;
+            max-width: 250px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .otp-code {
+            font-size: 50px !important;
+            font-weight: bold;
+            color: #007BFF;
+            letter-spacing: 10px;
+            margin: 0;
+        }
+
+        .alert-box {
+            background-color: #FEF3C7;
+            color: #92400E;
+            padding: 15px;
+            border-radius: 8px;
+            border-right: 4px solid #F59E0B;
+            font-size: 14px;
+            text-align: right;
+            line-height: 1.6;
+        }
+
+        .footer {
+            background-color: #f9fafb;
+            padding: 20px;
+            text-align: center;
+            border-top: 1px solid #eaeaea;
+        }
+
+        .footer p {
+            margin: 0;
+            font-size: 14px;
+            color: #9CA3AF;
+        }
+
+        .highlight-link {
+            color: #007BFF;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .highlight-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrapper">
+        <div class="main">
+            <!-- Header Section -->
+            <div class="header">
+                <h1>دكتور مصطفى سليم</h1>
+            </div>
+
+            <!-- Body Section -->
+            <div class="content">
+                <h2>إعادة تعيين كلمة المرور 🔒</h2>
+                <p>مرحباً،<br>لقد تلقينا طلباً لإعادة تعيين كلمة المرور الخاصة بحساب الإدارة الخاص بك. يرجى استخدام رمز
+                    التحقق (OTP) أدناه لإكمال العملية:</p>
+
+                <!-- OTP Section -->
+                <div class="otp-container">
+                    <p class="otp-code">1234</p>
+                </div>
+
+                <p style="font-size: 15px; margin-bottom: 30px;">
+                    هذا الرمز صالح لمدة <span style="font-weight: bold; color: #E53E3E;">10 دقائق</span> فقط. يرجى عدم
+                    مشاركته مع أي شخص.
+                </p>
+
+                <!-- Notice Section -->
+                <div class="alert-box">
+                    <strong>تنبيه:</strong> إذا لم تكن أنت من طلب إعادة تعيين كلمة المرور، يرجى تجاهل هذه الرسالة فوراً،
+                    وسيظل حسابك آمناً.
+                </div>
+            </div>
+
+            <!-- Footer Section -->
+            <div class="footer">
+                <div>
+                    مع تحيات فريق منصة
+                    <a href="https://mustafaselim.net" target="_blank" class="highlight-link">
+                        د. مصطفى سليم
+                    </a>
+                </div>
+                <p style="margin-top: 10px; font-size: 12px;">© 2026 جميع الحقوق محفوظة.</p>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

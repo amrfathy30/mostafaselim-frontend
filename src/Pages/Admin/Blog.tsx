@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState, useRef } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import AdminPageHeader from "../components/page-header";
 import { getAdminBlogs, adminDeleteBlog } from "../../services/blogService";
 import Pagination from "../../Components/Pagination";
@@ -28,11 +28,17 @@ interface Blogs {
 
 const Blog: React.FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [searchQuery, setSearchQuery] = useState("");
   const [startSearch, setStartSearch] = useState(false);
   const [blogs, setBlogs] = useState<Blogs[]>([]);
   const [pagination, setPagination] = useState<PaginationData | null>(null);
-  const [currentPage, setCurrentPage] = useState(1);
+  
+  const [currentPage, setCurrentPage] = useState(() => {
+    const params = new URLSearchParams(location.search);
+    return Number(params.get("page")) || 1;
+  });
+  const isInitialMount = useRef(true);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -70,15 +76,22 @@ const Blog: React.FC = () => {
   }, [currentPage, startSearch]);
 
   useEffect(() => {
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+      return;
+    }
+
     if (searchQuery === "") {
       setCurrentPage(1);
       fetchBlogs(1);
+      navigate(`/admin/blog?page=1`);
     }
   }, [searchQuery]);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
     window.scrollTo(0, 0);
+    navigate(`/admin/blog?page=${page}`);
   };
 
   const openDeleteModal = (id: number, title: string) => {
@@ -192,7 +205,7 @@ const Blog: React.FC = () => {
                     <Button
                       className="w-full md:w-1/2 hover:bg-[#2d4a62]"
                       onClick={() =>
-                        navigate(`/admin/blog/edit/${blog.blog_id}`)
+                        navigate(`/admin/blog/edit/${blog.blog_id}?page=${currentPage}`)
                       }
                       type="primary"
                     >
