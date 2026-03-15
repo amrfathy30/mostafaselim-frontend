@@ -83,7 +83,7 @@ const SmtpSettings: React.FC = () => {
 
             <form
                 onSubmit={handleSubmit}
-                className="bg-white rounded-[20px] p-6 shadow-sm border border-gray-100 max-w-4xl"
+                className="bg-white rounded-[20px] p-6 shadow-sm border border-gray-100"
             >
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                     {/* Sender Name */}
