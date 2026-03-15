@@ -2,10 +2,12 @@ import React, { useState, useEffect } from "react";
 import { getSmtpSettings, updateSmtpSettings } from "../../services/settingService";
 import { Button } from "../../Components/Common/button";
 import toast from "react-hot-toast";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const SmtpSettings: React.FC = () => {
     const [loading, setLoading] = useState(false);
     const [fetching, setFetching] = useState(true);
+    const [showPassword, setShowPassword] = useState(false);
     const [formData, setFormData] = useState({
         SenderName: "",
         BaseUrl: "",
@@ -18,19 +20,34 @@ const SmtpSettings: React.FC = () => {
         Enabled: true,
     });
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const res = await getSmtpSettings();
-                if (res.data) {
-                    setFormData(res.data);
-                }
-            } catch (error) {
-                console.error("Error fetching SMTP settings:", error);
-            } finally {
-                setFetching(false);
+    const fetchData = async () => {
+        try {
+            const res = await getSmtpSettings();
+
+            if (res.Data?.length) {
+                const smtp = res.Data[0];
+
+                setFormData({
+                    SenderName: smtp.SenderName || "",
+                    BaseUrl: smtp.BaseUrl || "",
+                    SenderEmail: smtp.SenderEmail || "",
+                    Username: smtp.Username || "",
+                    Password: "",
+                    Host: smtp.Host || "",
+                    Port: smtp.Port || 465,
+                    UseSsl: smtp.UseSsl ?? true,
+                    Enabled: smtp.Enabled ?? true,
+                });
             }
-        };
+
+        } catch (error) {
+            console.error(error);
+        } finally {
+            setFetching(false);
+        }
+    };
+
+    useEffect(() => {
         fetchData();
     }, []);
 
@@ -40,6 +57,7 @@ const SmtpSettings: React.FC = () => {
         try {
             await updateSmtpSettings(formData);
             toast.success("تم حفظ إعدادات SMTP بنجاح");
+            fetchData();
         } catch (error: any) {
             toast.error(error.response?.data?.message || "حدث خطأ أثناء الحفظ");
         } finally {
@@ -60,7 +78,7 @@ const SmtpSettings: React.FC = () => {
     }
 
     return (
-        <div className="p-2 md:p-6" dir="rtl">
+        <div>
             <h1 className="text-2xl font-bold text-primary mb-8">إعدادات SMTP</h1>
 
             <form
@@ -71,7 +89,7 @@ const SmtpSettings: React.FC = () => {
                     {/* Sender Name */}
                     <div className="flex flex-col gap-2">
                         <label className="text-[14px] font-bold text-[#6B7280]">
-                            اسم المرسل (Sender Name)
+                            اسم المرسل (Sender Name) <span className="text-red-500">*</span>
                         </label>
                         <input
                             type="text"
@@ -85,9 +103,9 @@ const SmtpSettings: React.FC = () => {
                     </div>
 
                     {/* Base URL */}
-                    <div className="flex flex-col gap-2">
+                    {/* <div className="flex flex-col gap-2">
                         <label className="text-[14px] font-bold text-[#6B7280]">
-                            عنوان URL الأساسي (Base Url)
+                            عنوان URL الأساسي (Base Url) <span className="text-red-500">*</span>
                         </label>
                         <input
                             type="text"
@@ -98,12 +116,12 @@ const SmtpSettings: React.FC = () => {
                             }
                             className="px-4 py-3 bg-[#F9FAFB] border border-gray-200 rounded-lg text-right outline-none focus:border-primary font-semibold text-black"
                         />
-                    </div>
+                    </div> */}
 
                     {/* Sender Email */}
                     <div className="flex flex-col gap-2">
                         <label className="text-[14px] font-bold text-[#6B7280]">
-                            بريد الإرسال (Sender Email)
+                            بريد الإرسال (Sender Email) <span className="text-red-500">*</span>
                         </label>
                         <input
                             type="email"
@@ -119,7 +137,7 @@ const SmtpSettings: React.FC = () => {
                     {/* Username */}
                     <div className="flex flex-col gap-2">
                         <label className="text-[14px] font-bold text-[#6B7280]">
-                            اسم المستخدم (User name)
+                            اسم المستخدم (User name) <span className="text-red-500">*</span>
                         </label>
                         <input
                             type="text"
@@ -133,12 +151,13 @@ const SmtpSettings: React.FC = () => {
                     </div>
 
                     {/* Password */}
-                    <div className="flex flex-col gap-2">
+                    <div className="flex flex-col gap-2 relative">
                         <label className="text-[14px] font-bold text-[#6B7280]">
-                            كلمة سر التطبيق (App Password)
+                            كلمة سر التطبيق (App Password) <span className="text-red-500">*</span>
                         </label>
+
                         <input
-                            type="password"
+                            type={showPassword ? "text" : "password"}
                             placeholder="*********"
                             value={formData.Password}
                             onChange={(e) =>
@@ -146,12 +165,23 @@ const SmtpSettings: React.FC = () => {
                             }
                             className="px-4 py-3 bg-[#F9FAFB] border border-gray-200 rounded-lg text-right outline-none focus:border-primary font-semibold text-black"
                         />
+                        <button
+                            type="button"
+                            onClick={() => setShowPassword(!showPassword)}
+                            className="absolute top-6 inset-y-0 cursor-pointer left-0 pl-3 flex items-center text-gray-600"
+                        >
+                            {showPassword ? (
+                                <FaEye />
+                            ) : (
+                                <FaEyeSlash />
+                            )}
+                        </button>
                     </div>
 
                     {/* Host */}
                     <div className="flex flex-col gap-2">
                         <label className="text-[14px] font-bold text-[#6B7280]">
-                            الخادم (SMTP Host)
+                            الخادم (SMTP Host) <span className="text-red-500">*</span>
                         </label>
                         <input
                             type="text"
@@ -165,7 +195,7 @@ const SmtpSettings: React.FC = () => {
                     {/* Port */}
                     <div className="flex flex-col gap-2">
                         <label className="text-[14px] font-bold text-[#6B7280]">
-                            المنفذ (Port)
+                            المنفذ (Port) <span className="text-red-500">*</span>
                         </label>
                         <input
                             type="number"

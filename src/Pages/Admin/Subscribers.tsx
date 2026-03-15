@@ -41,6 +41,14 @@ const Subscribers: React.FC = () => {
     const [modalEmail, setModalEmail] = useState("");
     const [isActionLoading, setIsActionLoading] = useState(false);
 
+    const validateEmail = (email: string) => {
+        return String(email)
+            .toLowerCase()
+            .match(
+                /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+            );
+    };
+
     const fetchSubscribers = async (page: number, keyword: string = "") => {
         try {
             setLoading(true);
@@ -116,6 +124,11 @@ const Subscribers: React.FC = () => {
             return;
         }
 
+        if (!validateEmail(modalEmail)) {
+            toast.error("البريد الإلكتروني غير صحيح");
+            return;
+        }
+
         setIsActionLoading(true);
         try {
             if (selectedSubscriber) {
@@ -171,7 +184,7 @@ const Subscribers: React.FC = () => {
                                     البريد الإلكتروني
                                 </label>
                                 <input
-                                    type="email"
+                                    type="text"
                                     value={modalEmail}
                                     onChange={(e) => setModalEmail(e.target.value)}
                                     placeholder="example@mail.com"

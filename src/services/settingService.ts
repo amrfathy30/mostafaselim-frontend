@@ -23,11 +23,11 @@ export const updateSetting = async (data: FormData) => {
   return response;
 };
 export const getSmtpSettings = async () => {
-  const response = await axiosInstance.get("/admin/smtp");
+  const response = await axiosInstance.get("/admin/smtp-setting");
   return response.data;
 };
 
 export const updateSmtpSettings = async (data: any) => {
-  const response = await axiosInstance.post("/admin/smtp/update", data);
+  const response = await axiosInstance.post("/admin/update/smtp-setting", data);
   return response.data;
 };
